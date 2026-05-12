@@ -55,7 +55,7 @@ export default function Footer({
             <div>
               <div className="mb-4">
                 <NextImage
-                  src="/images/wags-logo.png"
+                  src="/images/wags-logo-no-bg.png"
                   alt="Wags Stay N Play"
                   width={160}
                   height={80}

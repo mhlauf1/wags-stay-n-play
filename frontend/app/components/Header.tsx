@@ -158,11 +158,11 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="flex items-start">
             <NextImage
-              src="/images/wags-logo.png"
+              src="/images/wags-logo-no-bg.png"
               alt="Wags Stay N Play"
               width={150}
               height={75}
-              className="w-[120px] lg:w-[150px] h-auto"
+              className="w-[80px] lg:w-[100px] h-auto"
               priority
             />
           </Link>
