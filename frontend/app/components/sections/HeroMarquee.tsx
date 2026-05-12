@@ -257,7 +257,7 @@ export default function HeroMarquee({block, index}: HeroMarqueeProps) {
                 >
                   <Image
                     id={img.asset._ref}
-                    alt={img.alt || 'Boxers facility'}
+                    alt={img.alt || 'Wags Stay N\' Play'}
                     width={880}
                     crop={img.crop}
                     hotspot={img.hotspot}
