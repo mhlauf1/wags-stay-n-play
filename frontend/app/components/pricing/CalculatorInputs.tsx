@@ -201,8 +201,8 @@ export function ContactNotice() {
     <div className="mt-6 p-4 rounded-lg bg-terracotta/10 border border-terracotta/30">
       <p className="font-sans text-[14px] text-cream">
         For 4 or more dogs, please contact us directly at{' '}
-        <a href="tel:3146316738" className="text-terracotta-light underline font-medium">
-          (314) 631-6738
+        <a href="tel:2182872000" className="text-terracotta-light underline font-medium">
+          (218) 287-2000
         </a>{' '}
         for custom pricing.
       </p>

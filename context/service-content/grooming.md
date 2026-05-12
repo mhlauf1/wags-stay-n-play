@@ -1,8 +1,7 @@
 # Grooming
 
 > Page: `/services/grooming`
-> Sanity ID: `402a10e1-4e98-4403-88a3-99e52b7c6c01`
-> Last verified against `pricingData.ts`: 2026-05-06
+> Sanity ID: TBD (not yet seeded)
 
 ---
 
@@ -10,36 +9,36 @@
 
 - **eyebrow:** Grooming
 - **heading:** Professional Grooming
-- **headingAccent:** with transparent pricing
-- **subtext:** From a simple bath to a full groom, we use premium shampoos and conditioners for show-quality results. Every price is listed — no surprises.
+- **headingAccent:** for dogs and cats
+- **subtext:** Full grooms, bath & works, exit baths, cat grooming, and walk-in individual services. Our grooming team keeps your pet looking and feeling their best.
 - **backgroundColor:** cream
 
 ---
 
 ## Section 2: featureCards
 
-- **heading:** What Sets Our Grooming Apart
-- **subheading:** Premium products, experienced groomers, and a calm environment designed around your dog's comfort.
+- **heading:** Our Grooming Services
+- **subheading:** From a quick nail trim to a full groom, we offer everything your pet needs.
 - **darkMode:** true
-- **cta:** Book Grooming → Gingr portal
+- **cta:** Book Grooming → POS booking URL
 
-### Card 1: Premium Products
-Two premium shampoos for show-quality results and a high-quality conditioner for a soft coat and healthy skin. Every bath.
+### Card 1: Full Groom
+Nail trim, ear cleaning, anal gland expression, bath, blow dry, brush out, and full hair trim. Starting at $65.
 
-### Card 2: Full Groom Services
-Complete grooming from $89, including breed-specific cuts. Doodle and specialty cuts welcome with a small surcharge.
+### Card 2: Bath & Works
+Everything in a full groom minus the full hair trim. Optional trimming around feet, face, and sanitary areas. Starting at $55.
 
-### Card 3: Transparent Pricing
-Every service has a listed price. No guessing, no "call for a quote." You know what you'll pay before you book.
+### Card 3: Exit Baths
+Quick bath with shampoo/conditioner and blow dry. Perfect for boarding pickups. Starting at $18.
 
-### Card 4: A La Carte Options
-Need just a nail trim or ear cleaning? Pick only the services your dog needs without paying for a full package.
+### Card 4: Cat Grooming
+Lion cuts, cat baths, foam baths, and individual services. Starting at $15.
 
-### Card 5: Teeth Cleaning Add-On
-Add teeth cleaning to any full groom for just $10. A simple way to support your dog's dental health.
+### Card 5: Individual Services
+Walk-in or add to any groom: nail trim, ear cleaning, teeth brushing, and more. Starting at $8.
 
-### Card 6: Calm, Low-Stress Environment
-Our grooming area is designed to keep dogs comfortable. No rushing, no chaos — just patient, professional care.
+### Card 6: Puppy Package
+10-week grooming program to get your puppy comfortable with the grooming process. $300.
 
 ---
 
@@ -48,114 +47,129 @@ Our grooming area is designed to keep dogs comfortable. No rushing, no chaos —
 - **calculatorType:** grooming
 - **displayMode:** single
 - **eyebrow:** Transparent Pricing
-- **heading:** Build Your Grooming Quote
-- **subheading:** Select your dog's size and service to see pricing. Add a la carte services as needed.
+- **heading:** Grooming Pricing
+- **subheading:** Prices vary by size, hair length, and services. Full pricing breakdown below.
 - **ctaText:** Book Now
-- **ctaLink:** Gingr portal
-
-> Already exists in Sanity — update fields if needed.
+- **ctaLink:** POS booking URL
 
 ---
 
-## Section 4: splitContent — Premium Products Callout
+## Section 4: splitContent — Grooming Details
 
-- **heading:** Show-Quality Results, Every Visit
-- **imagePosition:** right
+- **heading:** Professional Care for Every Pet
+- **imagePosition:** left
 - **backgroundColor:** sand
-- **link:** Book a Bath → Gingr portal
 
 ### Body
-Every bath starts with two premium shampoos and finishes with a high-quality conditioner that leaves your dog's coat soft and their skin healthy. These aren't generic products — they're the same formulas used in competitive show grooming. The difference is visible and lasting.
+Our grooming team handles dogs and cats of all sizes, breeds, and coat types. Prices may vary depending on size, hair length, matting, and additional services requested.
 
-Whether your dog needs a quick bath or a full groom with breed-specific styling, the quality of care is the same.
-
----
-
-## Section 5: whatsIncluded — A La Carte Services
-
-- **eyebrow:** A LA CARTE
-- **heading:** Individual Services
-- **description:** Add any of these to a bath or groom, or book them on their own.
-- **layout:** inline
-- **columns:** 3
-- **backgroundColor:** cream
-- **iconColor:** terracotta
-
-### Item 1: Ear Cleaning — $8
-Thorough cleaning to remove buildup and support ear health.
-
-### Item 2: Gland Expression — $12
-Professional anal gland expression for your dog's comfort.
-
-### Item 3: Nail Trim & Grind — $18
-Trim and smooth grind for comfortable, safe nail length.
-
-### Item 4: Spot Trim — $15
-Targeted trimming for problem areas between full grooms.
-
-### Item 5: Face, Feet & Sanitary — $30
-Detailed trimming of the face, paws, and sanitary areas.
-
-### Item 6: Teeth Brushing — $15
-Gentle brushing to freshen breath and support dental health.
+Individual services like nail trims, ear cleaning, and teeth brushing can be done as walk-ins or added to any groom appointment.
 
 ---
 
-## Section 6: ctaStrip
+## Section 5: pricingMatrix — Full Groom Pricing
 
-- **heading:** Add teeth cleaning to any full groom for just $10
-- **subtext:** A simple add-on that makes a real difference for your dog's dental health.
-- **cta:** Book a Groom → Gingr portal
-- **backgroundColor:** forest
+- **eyebrow:** FULL GROOM
+- **heading:** Full Groom by Size
 
----
+| Size | Starting Price |
+|------|---------------|
+| Small | $65 |
+| Medium | $70–$80 |
+| Large | $90–$125 |
+| Extra Large | $130–$180 |
 
-## Section 7: policyNotes — Grooming Policies
-
-- **eyebrow:** GOOD TO KNOW
-- **heading:** Grooming Policies
-- **backgroundColor:** cream
-
-### Category 1: Pricing Notes
-- All prices listed are starting prices. Final cost may vary based on coat condition, matting, and behavior.
-- Doodle and specialty breed cuts carry a $10 surcharge on full grooms.
-- Prices shown before applicable tax.
-
-### Category 2: Before Your Appointment
-- Please let us know about any skin conditions, sensitivities, or behavioral concerns at booking.
-- Dogs must be current on Rabies, DHLPP, and Bordetella vaccinations.
-
-### Category 3: Matting & Coat Condition
-- Severely matted coats may require additional time and cost. In some cases, a full shave-down is the safest option for your dog's comfort.
-- Regular grooming every 4–8 weeks helps prevent matting and keeps your dog comfortable.
+Can add nail file for $5.
 
 ---
 
-## Section 8: faqAccordion
+## Section 6: pricingMatrix — Bath & Works Pricing
+
+- **eyebrow:** BATH & WORKS
+- **heading:** Bath & Works by Size
+
+| Size | Starting Price |
+|------|---------------|
+| Small | $55 |
+| Medium | $60–$90 |
+| Large/XL | $100–$150 |
+
+---
+
+## Section 7: pricingMatrix — Exit Bath Pricing
+
+- **eyebrow:** EXIT BATHS
+- **heading:** Exit Bath by Size
+
+| Size | Price |
+|------|-------|
+| Small | $18 |
+| Medium | $23 |
+| Large | $28 |
+| Extra Large | varies |
+
+Add nail trim, teeth brushing, ear cleaning, or anal gland expression for $5 each.
+
+---
+
+## Section 8: pricingList — Cat Grooming
+
+- **eyebrow:** CAT GROOMING
+- **heading:** Cat Grooming Services
+
+| Service | Price |
+|---------|-------|
+| Lion Cut | $80 |
+| Lion Cut (no bath) | $70 |
+| Cat Bath & Works | $70 |
+| Foam Bath | $15 |
+
+Add nail trim or teeth brushing for $5 each.
+
+---
+
+## Section 9: pricingList — Individual Services
+
+- **eyebrow:** INDIVIDUAL SERVICES
+- **heading:** Walk-In & Add-On Services
+
+| Service | Price |
+|---------|-------|
+| Nail Trim | $8 |
+| Ear Cleaning | $8 |
+| Anal Gland Expression | $8 |
+| Teeth Brushing | $8 |
+| Nail Trim & File | $20 |
+| Blueberry Facial | $8 |
+| Trims & Brush-out | varies |
+
+---
+
+## Section 10: faqAccordion
 
 - **eyebrow:** QUESTIONS
 - **heading:** Grooming FAQs
 
-### Q: How do I know if my dog needs a bath or a full groom?
-A bath includes two premium shampoos and a high-quality conditioner — great for dogs who just need a refresh. A full groom includes everything in a bath plus a haircut, breed-specific styling, and detailed finishing. If your dog's coat is getting long or unruly, a full groom is the way to go.
+### Q: Do I need an appointment?
+Full grooms and bath & works require an appointment. Individual services (nail trim, ear cleaning, etc.) can be done as walk-ins.
 
-### Q: What does "starting at" mean for grooming prices?
-Our listed prices are the base rate for each size category. Final pricing may be higher depending on coat condition, matting, and the specific cut requested. We'll always let you know before we start.
+### Q: Why do prices vary?
+Pricing depends on your pet's size, hair length, matting, and any additional services. We'll give you an estimate when you book.
 
-### Q: Do you groom doodles and mixed breeds?
-Absolutely. Doodles and specialty cuts carry a $10 surcharge on full grooms to account for the additional time and technique required.
+### Q: Do you groom cats?
+Yes! We offer lion cuts, baths, foam baths, nail trims, and teeth brushing for cats.
 
-### Q: Can I book just a nail trim without a full groom?
-Yes. All of our a la carte services — nail trim & grind, ear cleaning, teeth brushing, and more — can be booked individually.
+### Q: What's the Puppy Package?
+A 10-week grooming program ($300) that gradually introduces your puppy to the grooming process, building comfort and trust.
 
-### Q: How often should I have my dog groomed?
-Most dogs benefit from professional grooming every 4–8 weeks. Dogs with longer coats or curly hair (like doodles) may need grooming every 4–6 weeks to prevent matting.
+### Q: What's the Senior Package?
+A discounted grooming option ($20–$30) designed for senior dogs who may need gentler handling.
 
 ---
 
-## Section 9: ctaBanner
+## Section 11: ctaBanner
 
-- **heading:** Ready to Book a Grooming Appointment?
-- **cta:** Book Grooming → Gingr portal
+- **heading:** Ready to Book a Groom?
+- **cta:** Book Grooming → POS booking URL
 - **showRating:** true
-- **ratingText:** Professional grooming in Pacific, MO
+- **ratingText:** Trusted by Fargo-Moorhead pet owners

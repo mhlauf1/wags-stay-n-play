@@ -1,200 +1,277 @@
-# Kingdom Canine Intake Content
+# Wags Stay N' Play Intake Content
 
-> Source: Brian Remo's pricing doc (emailed May 2026) + current kingdomcanine.com site content
+> Source: Wix site scrape (wagsstaynplay.com, scraped 2026-05-11) + current site content. All pricing is baseline — final numbers come from Goose POS transition.
 
 ---
 
 ## 1. Basic Location Information
 
-- **Facility Name:** Kingdom Canine
-- **Address:** 2549 Hogan Rd, Pacific, MO 63069
-- **Phone:** (314) 631-6738
-- **Email:** TBD — confirm M365 mailboxes under Peter's GoDaddy account
-- **Service Area:** St. Louis area and Franklin County, MO
-- **Play Areas:** 11,000 sqft turfed outdoor yards, 4,200 sqft indoor play space
-- **Water system:** 15 indoor water fountains with fresh flowing water (drain system skims surface)
+- **Facility Name:** Wags Stay N' Play
+- **Address:** 1601 Main Ave SE, Moorhead, MN 56560
+- **Phone:** (218) 287-2000
+- **Email:** office@wagsstaynplay.com
+- **Service Area:** Moorhead, MN / Fargo-Moorhead metro area
+- **Location:** Industrial park in Moorhead, MN
+- **Facebook:** facebook.com/wagsstaynplay
+- **Locally owned**
 
 ---
 
 ## 2. Hours of Operation
 
-- **Monday–Friday:** 6:00 AM – 11:00 AM & 1:00 PM – 7:00 PM
-- **Saturday–Sunday:** 11:00 AM – 4:00 PM
+- **Monday–Saturday:** 6:30 AM – 7:00 PM
+- **Sunday:** 8:00 AM – 12:00 PM & 2:00 PM – 6:00 PM
+
+> ⚠️ Hours appear on homepage but not contact page on current Wix site. Verify with client.
 
 ---
 
 ## 3. Homepage Content (from current site)
 
-**Tagline:** "fido can play while you're away"
-**Headline:** Boarding, daycare, and grooming!
-**Brand line:** "Enjoy your vacay while your dog has a staycay"
+**Tagline:** "Caring for Your Furry Friends"
+**Headline:** Here for you and your fur baby
+**CTA:** Contact us today!
 
-**Stats to display:**
-- 11,000 sqft of Turfed Play Yards
-- 4,200 sqft of Safe Indoor Play Space
-- Customer Portal for Reservations
-- Transport Services Available
+**Content blocks:**
+- Our Story: "Wags Stay N Play is locally owned!" → links to About Us
+- What We Do: "We offer daycare, boarding, and grooming services!" → links to Services
+- Opening Hours block
+
+**Gallery:** 12 facility photos (available in scrape assets)
 
 ---
 
-## 4. Services & Pricing
+## 4. About Us
+
+Wags Stay N' Play is a locally owned cat and dog boarding, daycare, grooming, and training (as possible) facility located in the industrial park in Moorhead, MN. We strive to offer you and your pet a different kind of daycare experience by providing our animals with weekly activities, and a variety of play areas to ensure your pet is playing safely and happily!
+
+We offer different activities, structured stimulation, and full transparency! Our staff spends every moment of the day ensuring your pet is as comfortable as can be in their time away from home. We are a fun loving and dedicated team of dog and cat lovers and take a lot of pride in caring for each one of our guests as if they were our very own. We understand it is never easy to leave your pet, so we make the safety and happiness of your pet our top priority. Your family is our family!
+
+### Team
+
+| Name | Role |
+|------|------|
+| Cindy Holtan | Manager |
+| Whitney Nelson | Grooming Manager |
+| Akaysha Delzer | Assistant Manager |
+| Ashley Harn | Grooming Associate |
+
+> ⚠️ Team photos exist but filenames are scrambled (tank1.jpg, Roger and Lois.jpg, Ebon.jpg, Poppy.jpg, Doug.jpg, Whitney.JPG). Need client to confirm which photo belongs to which person.
+
+---
+
+## 5. Services & Pricing
+
+> ⚠️ ALL PRICING WILL BE REPLACED — Goose POS transition. Use as baseline for service structure only.
 
 ### Daycare
 
-**Description (from current site):**
-Similar to "Pack Mentality" Boarding — dogs decide who they like, who they play with, and who they stay with. Groups based on size, energy, temperament, and friendships.
+**Description:**
+Dogs and cats, seven days a week. 4 separate play yards allowing creation of play groups by play style and size. Every dog gets at least one nap during the day. Play groups taken outside on weather-permitting days.
 
-**New pricing (from Brian's doc):**
+**Play schedule:** 2-hour increments: 9–11am, 11am–1pm, 1–3pm, 3–5pm. Dogs nap and/or have lunch between rotations.
+
+**Pricing:**
 
 | Service | Price |
 |---------|-------|
-| Full Day | $36 |
-| Half Day | $24 |
+| Assessment Day | $20 |
+| Full Day | $29 |
+| Half Day (5 hours or less) | $19 |
+| Cat Daycare | $18 |
 
-**Packages:**
+**Punch Cards:**
 
-| Package | Price | Per-visit | Expires |
-|---------|-------|-----------|---------|
-| 10-Day | $325 | $32.50 (Save 10%) | 2 months |
-| 20-Day | $615 | $30.75 (Save 15%) | 4 months |
-| 30-Day | $865 | $28.83 (Save 20%) | 6 months |
+| Package | Price | Notes |
+|---------|-------|-------|
+| 10-Day | $265 | — |
+| 20-Day | $475 | — |
+| 30-Day | $640 | — |
+| 90-Day Unlimited | $1,350 | Expires after 90 days |
 
-**Old pricing (for reference — DO NOT USE):**
-- Full day: $30 (1 dog), $25 (2+ dogs)
-- Half day: $15 (1 dog), $13.50 (2+ dogs)
-- No packages
+**Requirements:**
+- All dogs must pass assessment before daycare
+- Cat daycare is separate from dogs in a dedicated room
 
 ---
 
 ### Boarding
 
-**Description (from current site — "Pack Mentality" Boarding):**
-Group boarding, cage-free and all-inclusive. During the day, everyone participates in daycare at no additional charge. Dogs run and play in groups or relax — their choice. At night, animals share rooms with friends based on size, energy, and temperament. Crates available on limited basis for dogs who prefer them.
+**Description:**
+All boarders participate in daycare play groups during the day. 4 different kennel sizes available. Dogs from the same family may share a kennel or have separate ones.
 
-**Detailed narrative (preserve this — it's strong brand copy):**
-"When you think about a typical boarding facility, you probably imagine crates, cages, and runs. Or perhaps dogs sitting isolated and either cowering in a corner, or barking their heads off for some attention. How can you enjoy your vacation while your loved one is miserable? Well, we have the solution for you."
+**Daily schedule:**
+- 6:30 AM: Wake up, potty break
+- Breakfast while play groups organized
+- 9 AM – 5 PM: Supervised play groups
+- 5 PM: Supper and rest
+- 8 PM – 10 PM: Final potty break and water
 
-**New pricing (from Brian's doc):**
+**Pricing (per night, includes daycare):**
 
-| Room Type | Price | Notes |
-|-----------|-------|-------|
-| Standard Room | $64/night | — |
-| VIP Luxury Cottage Suite | $125/night | 1–4 dogs, all-inclusive |
-| Additional Dog | $55/dog/night | — |
+| Room Type | Price |
+|-----------|-------|
+| Standard | $44 |
+| Junior Suite | $48 |
+| Queen Suite | $52 |
+| Master Suite | $57 |
+| Cat Boarding | $28 |
+| Additional Pet | $5 discount in shared kennel |
 
-**VIP Luxury Cottage Suite** is a new tier — needs a real visual moment on the boarding page. This is an upsell product, not just another line item.
+**Punch Cards (any suite type):**
 
-**Included with all boarding:**
-- Daycare participation
-- Meal administration
-- Medicine administration
+| Package | Deal |
+|---------|------|
+| 10-Pack | Buy 9, get 1 free |
+| 20-Pack | Buy 17, get 3 free |
+| 30-Pack | Buy 24, get 6 free |
 
-**Old pricing (for reference — DO NOT USE):**
-- 1 dog: $58.50/night
-- 2+ dogs: $51/dog/night
+**Requirements:**
+- All dogs must pass assessment before boarding
+- Dogs must be up to date on Rabies, Distemper, and Bordetella
+- Spayed/neutered after 7 months (unless vet states otherwise)
+
+**Cat Boarding:**
+- Dedicated cat room, individual attention from staff
+- Cats from different families kept separate
+- No assessment needed for cats
+- Cats must be up to date on Rabies and Distemper
 
 ---
 
 ### Grooming
 
-**Current site approach:** Four named packages ("Just a Bath," "The Works," "The Neaten," "The Whole Thing") with no visible pricing — "Contact us for pricing."
-
-**Decision: REPLACE entirely** with Brian's new pricing matrix. The new structure is cleaner and transparent.
-
-**New pricing (from Brian's doc):**
-
-#### Bath (by size × hair length)
-
-Includes two premium shampoos (show quality results) and high quality conditioner (soft coat, healthy skin).
-
-| Size | Short Hair | Long Hair |
-|------|-----------|-----------|
-| Small (under 25 lbs) | starts at $39 | starts at $55 |
-| Medium (26–40 lbs) | starts at $49 | starts at $65 |
-| Large (41–80 lbs) | starts at $59 | starts at $75 |
-| X-Large (81+ lbs) | starts at $69 | starts at $85 |
+**Service Categories:**
 
 #### Full Groom
+Includes: nail trim, ear cleaning, anal gland expression, bath with shampoo/conditioner, blow dry, brush out, full hair trim.
 
-| Size | Starting Price |
-|------|---------------|
-| Small | $89 |
-| Medium | $99 |
-| Large | $109 |
-| X-Large | $129 |
-| Doodles / Specialty Cuts | +$10 |
+| Size | Price |
+|------|-------|
+| Small | $65 + tax |
+| Medium | $70–$80 |
+| Large | $90–$125 |
+| Extra Large | $130–$180 |
+| Puppy Package | $300 (10 week program) |
+| Senior Package | $20–$30 |
 
-Add Teeth Cleaning to any Groom for just $10.
+Can add nail file for $5.
 
-#### À la carte services
+#### Bath & Works
+Includes: nail trim, ear cleaning, anal gland expression, bath with shampoo/conditioner, blow dry, brush out, trimming around feet/face/butt/panty line (optional).
+
+| Size | Price |
+|------|-------|
+| Small | $55 + tax |
+| Medium | $60–$90 |
+| Large/XL | $100–$150 |
+
+#### Exit Baths
+Includes: bath with shampoo/conditioner, blow dry.
+
+| Size | Price |
+|------|-------|
+| Small | $18 |
+| Medium | $23 |
+| Large | $28 |
+| Extra Large | varies |
+
+Add nail trim, teeth brushing, ear cleaning, or anal gland expression for $5 each.
+
+#### Cat Grooming
 
 | Service | Price |
 |---------|-------|
+| Lion Cut | $80 |
+| Lion Cut (no bath) | $70 |
+| Cat Bath & Works | $70 |
+| Foam Bath | $15 |
+
+Add nail trim or teeth brushing for $5 each.
+
+#### Individual Services
+Walk-in or add to any groom:
+
+| Service | Price |
+|---------|-------|
+| Nail Trim | $8 |
 | Ear Cleaning | $8 |
-| Gland Expression | $12 |
-| Nail Trim and Grind | $18 |
-| Spot Trim | $15 |
-| Face, Feet & Sanitary | $30 |
-| Teeth Brushing | $15 |
+| Anal Gland Expression | $8 |
+| Teeth Brushing | $8 |
+| Nail Trim & File | $20 |
+| Blueberry Facial | $8 |
+| Trims & Brush-out | varies |
+
+*Prices may change depending on size, hair length, matting, or add-on services.*
 
 ---
 
-### Transportation
+### Extras
 
-**Description (from current site):**
-Shuttle service to/from select parts of St. Louis and Franklin County. For clients who aren't home, arriving late, or prefer not to drive.
-
-**New pricing (from Brian's doc):**
-
-| Service | Price |
-|---------|-------|
-| Single trip (per pet, per direction) | $16 |
-| 5-trip package | $75 |
-| 10-trip package | $140 |
-
-**Old pricing:** $15/pet/direction, packages listed as "Contact us"
+| Item | Price |
+|------|-------|
+| Frozen Kong (peanut butter or pumpkin) | $3 |
+| Breakaway Collars | $21–$26 |
+| Paper Rental Collars | $1/day |
+| Medication Fee (per pet/day) | $5 |
 
 ---
 
-## 5. Booking / Get Started Flow
+## 6. Assessment Process
 
-**Current platform:** Gingr Pet Parent App
-**Portal URL:** https://kingdomcanine.portal.gingrapp.com/
-**Registration:** https://kingdomcanine.portal.gingrapp.com/#/public/new_customer
+All dogs must pass an assessment before daycare or boarding.
 
-**Current 3-step flow (from HighLevel site):**
-1. **Create Account** — Register in client portal
-2. **Schedule Your Trial Day** — Most services require a trial day to ensure compatibility
-3. **Start Requesting Services** — Once pet passes trial day, begin scheduling
-
-**New site approach:** Custom form (details TBD during design pass). Maintain the 3-step concept but own the UX rather than embedding HighLevel funnel.
+- **When:** Mondays through Thursdays, 10 AM – 2 PM
+- **Duration:** Minimum 4 hours (longer is fine, no extra fee)
+- **Cost:** $20 per dog
+- **Process:** Dog acclimates to environment → introduced to staff → introduced to other dogs at their pace. Some dogs need more time than others.
+- **Purpose:** Discover which dogs get along well, ensure environment isn't too stressful/overwhelming
+- **Requirements:** Dogs must be up to date on Rabies, Distemper, and Bordetella. Spayed/neutered after 7 months unless vet states otherwise.
 
 ---
 
-## 6. POS Transition Note
+## 7. Breakaway Collars
 
-Kingdom Canine is currently on **Gingr** and transitioning to **Goose POS**. Go-live date for KC is TBD.
+Breakaway collars are required for all daycare and boarding dogs (safety — releases under pressure to prevent choking during play).
 
-**Build strategy:** Launch with Gingr URLs. Store all POS-related URLs in a single Sanity `settings` document field so the Goose swap is one content update, not a code change. Pattern already established on other Embark sites.
-
----
-
-## 7. Content Still Needed
-
-- [ ] **Photos from Brian** — promised but not received
-- [ ] **Logo source file** — current logo hosted on HighLevel CDN; need high-res or vector version
-- [ ] **Testimonials / reviews** — none provided yet
-- [ ] **Team info / staff bios** — none provided
-- [ ] **FAQ content** — vaccination requirements, what to bring, trial day process
-- [ ] **Facility email address** — confirm M365 mailbox(es)
-- [ ] **Goose POS go-live date** — determines whether we launch with Gingr or Goose URLs
-- [ ] **Cancellation / late pickup policy** — not mentioned in Brian's doc
-- [ ] **Holiday closure schedule** — not provided
+- Available at the facility: $21–$26
+- Paper rental collars: $1/day
+- Online purchase links: Chewy, Amazon, Etsy (PetSafe KeepSafe Breakaway)
 
 ---
 
-## 8. Brian's Launch Coordination Note
+## 8. Forms / Documents
 
-> "These are new prices, so I need a 24hr notice before live so I can log into the POS and update them."
+All forms need to be filled out before or on assessment day. Can be emailed to office@wagsstaynplay.com.
 
-All pricing must match POS exactly on launch day. Give Brian 24 hours heads-up before DNS cutover.
+| Form | Type |
+|------|------|
+| Registration | PDF |
+| Additional Pet Registration | PDF (for families with 2+ pets) |
+| Policies and Procedures | DOCX |
+| Waiver | DOCX |
+
+> ⚠️ Waiver file on Wix server is named "meds and add ins.docx" — may be mislabeled. Verify with client.
+
+---
+
+## 9. POS Transition Note
+
+Wags Stay N' Play is transitioning to **Goose POS**. Go-live date is TBD.
+
+**Build strategy:** Launch with current booking flow (likely direct contact). Store all POS-related URLs in a single Sanity `settings` document field so the Goose swap is one content update, not a code change. Pattern already established on other Embark sites.
+
+---
+
+## 10. Content Still Needed
+
+- [ ] **Logo source file** — current logo is Wix-hosted; need high-res or vector
+- [ ] **Team photo ↔ name confirmation** — filenames scrambled on Wix
+- [ ] **Goose POS go-live date** — determines booking URLs and final pricing
+- [ ] **Updated pricing from Goose** — current prices are baseline only
+- [ ] **Training status** — offered or not? (Assumed no — dropped from build)
+- [ ] **Hours confirmation** — verify Mon-Sat 6:30am-7pm, Sun 8am-12pm & 2pm-6pm
+- [ ] **Waiver document** — confirm "meds and add ins.docx" is the actual waiver
+- [ ] **Vaccination requirements detail** — any beyond Rabies, Distemper, Bordetella?
+- [ ] **Cancellation / late pickup policy** — not on current site
+- [ ] **Holiday closure schedule** — not on current site

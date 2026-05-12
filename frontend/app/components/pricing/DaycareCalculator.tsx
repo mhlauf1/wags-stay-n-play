@@ -52,7 +52,7 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
           total={0}
           lineItems={[]}
           ctaText="Call Us"
-          ctaLink={{_type: 'link', linkType: 'href', href: 'tel:3146316738'}}
+          ctaLink={{_type: 'link', linkType: 'href', href: 'tel:2182872000'}}
           taxNote={taxNote}
           disabled
           disabledMessage="Please call for custom pricing for 4+ dogs."

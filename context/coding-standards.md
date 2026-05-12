@@ -26,36 +26,36 @@
 ## Sanity CMS
 
 - All user-facing content comes from Sanity — no hardcoded copy in components
-- GROQ queries live in `src/lib/sanity/queries.ts`
-- Sanity client config in `src/lib/sanity/client.ts`
-- Type definitions generated from Sanity schema or manually maintained in `src/types/sanity.ts`
+- GROQ queries live in `frontend/sanity/lib/queries.ts`
+- Sanity client config in `frontend/sanity/lib/client.ts`
+- Type definitions generated from Sanity schema or manually maintained in `frontend/sanity/lib/types.ts`
 - Image URLs built with Sanity's image URL builder — never construct CDN URLs manually
 - Portable Text rendered with `@portabletext/react` for rich text fields
-- Schema files live in the `sanity/` directory at project root (Sanity Studio embedded in the Next.js project)
+- Schema files live in the `studio/` directory at project root (Sanity Studio embedded in the Next.js project)
 
 ## Tailwind CSS v4
 
 **CRITICAL**: We are using Tailwind CSS v4, which uses CSS-based configuration.
 
 - **DO NOT** create `tailwind.config.ts` or `tailwind.config.js` files (those are for v3)
-- All theme configuration must be done in CSS using the `@theme` directive in `src/app/globals.css`
+- All theme configuration must be done in CSS using the `@theme` directive in `frontend/app/globals.css`
 - Use CSS custom properties for all colors, fonts, and spacing tokens
 - No JavaScript-based Tailwind config allowed
 
 ### Theme token system
 
-KC uses a single color palette defined as CSS custom properties in `globals.css`. Components use semantic token names mapped via the Tailwind `@theme` block — never raw hex values.
+Wags uses a single color palette defined as CSS custom properties in `globals.css`. Components use semantic token names mapped via the Tailwind `@theme` block — never raw hex values.
 
 ```css
 @import 'tailwindcss';
 
 :root {
-  --theme-cream: #FBF7F4;
-  --theme-forest: #3D1952;       /* deep purple (primary dark) */
-  --theme-terracotta: #7B2D8E;   /* purple (accent) */
-  --theme-gold: #D4A843;         /* gold (highlight) */
-  --theme-charcoal: #2A1038;     /* darker purple */
-  --theme-sage: #B89DC7;         /* soft lavender */
+  --theme-cream: #faf6f1;
+  --theme-forest: #4a1c2a;       /* deep burgundy (primary dark) */
+  --theme-terracotta: #8b2f3a;   /* burgundy (accent) */
+  --theme-gold: #c49a3c;         /* gold (highlight) */
+  --theme-charcoal: #361520;     /* darker burgundy */
+  --theme-sage: #c4a882;         /* warm tan */
   /* ... etc */
   --theme-font-heading: var(--font-bricolage, 'Bricolage Grotesque', ...);
   --theme-font-body: var(--font-geist, 'Geist', ...);
@@ -70,7 +70,7 @@ KC uses a single color palette defined as CSS custom properties in `globals.css`
 ```
 
 - **Never use hardcoded color values** in components — always reference semantic tokens
-- No multi-theme system — KC has a single design direction (no theme toggle, no `data-theme` switching)
+- No multi-theme system — Wags has a single design direction (no theme toggle, no `data-theme` switching)
 
 ## File Organization
 
@@ -78,8 +78,8 @@ KC uses a single color palette defined as CSS custom properties in `globals.css`
 frontend/
 ├── app/
 │   ├── page.tsx                  # Homepage
-│   ├── [slug]/page.tsx           # Dynamic CMS pages (pricing, gallery, new-clients, contact)
-│   ├── services/[slug]/page.tsx  # Dynamic service pages (daycare, boarding, grooming, transportation)
+│   ├── [slug]/page.tsx           # Dynamic CMS pages (pricing, gallery, new-clients, contact, about)
+│   ├── services/[slug]/page.tsx  # Dynamic service pages (daycare, boarding, grooming)
 │   ├── studio/[[...tool]]/page.tsx # Embedded Sanity Studio
 │   ├── api/
 │   │   ├── contact/route.ts      # Contact form submission
@@ -92,7 +92,7 @@ frontend/
 │   │   ├── pricing/              # Pricing calculators (Daycare, Boarding, Grooming)
 │   │   └── ui/                   # Reusable primitives (Button, Badge, FadeIn, etc.)
 │   └── data/
-│       └── pricingData.ts        # KC pricing data (daycare, boarding, grooming with à la carte)
+│       └── pricingData.ts        # Wags pricing data (daycare, boarding, grooming)
 ├── sanity/
 │   └── lib/
 │       ├── client.ts             # Sanity client configuration
@@ -108,7 +108,7 @@ studio/
 │   ├── schemaTypes/
 │   │   ├── documents/            # page, service, testimonial
 │   │   ├── objects/              # 45+ page builder block types
-│   │   ├── singletons/           # settings
+│   │   ├── singletons/          # settings
 │   │   └── index.ts              # Schema registry
 │   └── structure.ts              # Custom Studio structure
 └── sanity.config.ts
@@ -150,7 +150,7 @@ studio/
 - No commented-out code unless specified
 - No unused imports or variables
 - Keep functions under 50 lines when possible
-- No HAFH or Hound Around references in any user-facing content, meta tags, alt text, or comments
+- No KC, HAFH, or Hound Around references in any user-facing content, meta tags, alt text, or comments
 
 ## Performance
 

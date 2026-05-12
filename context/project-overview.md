@@ -2,48 +2,36 @@
 
 ## What This Is
 
-This is the website for **Kingdom Canine**, a pet daycare, boarding, grooming, and transportation facility located at 2549 Hogan Rd, Pacific, MO 63069. The site lives at **kingdomcanine.com**.
+This is the website for **Wags Stay N' Play**, a locally-owned dog and cat daycare, boarding, and grooming facility located at 1601 Main Ave SE, Moorhead, MN 56560. The site lives at **wagsstaynplay.com**.
 
-Kingdom Canine is one of ~10 facilities in the **Embark Pet Services** portfolio, a pet care roll-up platform operated by **Cadence Private Capital**. Lauf Studio (lauf.co) owns the design system, tech stack, and infrastructure for all Embark portfolio websites.
+Wags Stay N' Play is one of ~10 facilities in the **Embark Pet Services** portfolio, a pet care roll-up platform operated by **Cadence Private Capital**. Lauf Studio (lauf.co) owns the design system, tech stack, and infrastructure for all Embark portfolio websites.
 
 ## Repository Origin
 
-**This repo was cloned from the Home Away From Home codebase** (`mhlauf1/home-away-fargo` on GitHub), the most recent Embark site build. The git history was wiped for a clean start — this is its own repo (`mhlauf1/kingdom-canine`), not a GitHub fork.
-
-### How this repo was created
-
-```bash
-git clone --depth 1 https://github.com/mhlauf1/home-away-fargo.git kingdom-canine
-cd kingdom-canine
-rm -rf .git
-git init
-git add .
-git commit -m "Initial commit from Home Away From Home design system"
-gh repo create mhlauf1/kingdom-canine --public --source=. --remote=origin --push
-```
+**This repo was cloned from the Kingdom Canine codebase** (`mhlauf1/kingdom-canine`), the most recent Embark site build. The git history was wiped for a clean start — this is its own repo (`mhlauf1/wags-stay-n-play`), not a GitHub fork.
 
 ### What this means in practice
 
-- The component library, page structures, layout patterns, and Sanity integration patterns all originated from the Hound Around / Home Away builds
-- The design system (colors, fonts, spacing, illustrations) will be **reskinned** for Kingdom Canine — same bones, different skin
-- Kingdom Canine is a simpler site than HAFH — no cat services, no multi-theme system, no webcams. The structure will be trimmed accordingly
+- The component library, page structures, layout patterns, and Sanity integration patterns all originated from the Embark design system (Hound Around → HAFH → Kingdom Canine → this repo)
+- The design system (colors, fonts, spacing, illustrations) has been **reskinned** for Wags — same bones, different skin
+- Wags has some features KC didn't (cat services, about page, assessment process) and drops some KC had (transportation)
 
 ### Critical rules for this repo
 
-- **Never reference Home Away From Home or Hound Around in user-facing content.** No leftover copy, image alt text, meta tags, or comments mentioning HAFH, Fargo, Hound Around, Cottage Grove, or any other facility-specific details
+- **Never reference Kingdom Canine, Home Away, or Hound Around in user-facing content.** No leftover copy, image alt text, meta tags, or comments mentioning KC, Pacific MO, HAFH, Fargo, Hound Around, Cottage Grove, or any other facility-specific details
 - **Never hardcode other facility URLs, Sanity project IDs, or API keys.** All environment-specific values must come from `.env`
 - **Preserve component architecture.** When modifying a component, keep the same prop interface and data-fetching pattern unless there is a clear reason to change it
-- **Document any structural divergence.** If KC requires a component or page pattern the template doesn't have (e.g., transportation page), note it clearly so it can be backported to the template later
+- **Document any structural divergence.** If Wags requires a component or page pattern the template doesn't have (e.g., assessment flow, cat services), note it clearly so it can be backported to the template later
 
 ## The Embark Network Context
 
-Kingdom Canine is the **fourth** website in the Embark portfolio:
+Wags Stay N' Play is the **fifth** website in the Embark portfolio:
 
 - **Hound Around Resort** (houndaroundresort.com) — Live, design system origin
 - **Boxers Bed & Biscuits** (boxersbedandbiscuits.com) — Live
-- **Home Away From Home** (homeawayfargo.com) — Live, this repo's clone source
-- **Kingdom Canine** (kingdomcanine.com) — This build
-- **Wags Stay N Play** (Moorhead, MN) — In queue
+- **Home Away From Home** (homeawayfargo.com) — Live
+- **Kingdom Canine** (kingdomcanine.com) — Live, this repo's clone source
+- **Wags Stay N' Play** (wagsstaynplay.com) — This build
 - **Canine Country Club** (West Des Moines, IA) — Migration only, no rebuild
 - **Barks & Rec** (Hastings, MN) — Future
 - **Rio Grooming School & Salon** — Future
@@ -56,58 +44,57 @@ Kingdom Canine is the **fourth** website in the Embark portfolio:
 | Language | TypeScript |
 | CMS | Sanity.io |
 | Hosting | Vercel |
-| DNS | Cloudflare |
+| DNS | TBD (investigate current registrar) |
 | CSS | Tailwind CSS v4 |
 | Animations | Framer Motion |
 | Fonts | Google Fonts |
-| Domain Registrar | Cloudflare (already there — no transfer needed) |
-| Email | GoDaddy M365 (already migrated) |
+| Current site platform | Wix |
+| Email | office@wagsstaynplay.com |
 
 ## Infrastructure Status
 
-DNS recon complete. Kingdom Canine is the cleanest infrastructure picture in the portfolio:
-
-- **Domain:** Registered at Cloudflare, DNS hosted on Cloudflare. No domain transfer needed.
-- **Current hosting:** HighLevel (GoHighLevel). www CNAME → `sites.ludicrous.cloud`. At launch, update A + www CNAME to Vercel.
-- **Email:** Already on M365 (`kingdomcanine-com.mail.protection.outlook.com`). SPF configured. No email migration needed.
-- **POS:** Currently Gingr (`kingdomcanine.portal.gingrapp.com`). Transitioning to Goose — timeline TBD. POS portal lives on gingrapp.com domain, no DNS dependency on our side.
-- **TXT records to preserve at launch:** Facebook domain verification, MS verification. Drop Mailgun SPF include (HighLevel artifact).
+- **Domain:** wagsstaynplay.com — current registrar TBD, DNS currently points to Wix
+- **Current hosting:** Wix. At launch, update DNS to point to Vercel
+- **Email:** office@wagsstaynplay.com — need to confirm provider and ensure MX records are preserved at launch
+- **POS:** Transitioning to Goose — timeline TBD. Current booking system unknown (no Gingr portal observed on current site)
+- **Social:** Facebook (facebook.com/wagsstaynplay)
 
 ## Site Structure
 
-Kingdom Canine is simpler than HAFH — Brian confirmed this is the simplest site in the portfolio. No cat services, no webcams, no about page narrative.
+Wags is a straightforward facility site. Services include dogs AND cats (unlike KC which was dogs-only). No transportation. Has an about page and assessment process.
 
 ```
-kingdomcanine.com/
+wagsstaynplay.com/
 ├── / (Homepage)
+├── /about (About Us — team, story, facility)
 ├── /services/
-│   ├── /daycare
-│   ├── /boarding
-│   ├── /grooming
-│   └── /transportation (unique to KC — not in other Embark sites)
-├── /pricing
-├── /gallery (if photos arrive from Brian)
-├── /new-clients (Get Started flow — custom form)
+│   ├── /daycare (dogs + cats)
+│   ├── /boarding (4 kennel sizes + cat boarding)
+│   └── /grooming (dogs + cats)
+├── /pricing (Rates overview)
+├── /new-clients (Getting Started — assessments, breakaway collars, forms)
+├── /gallery (facility photos)
 └── /contact
 ```
 
 ### Nav structure
 
-- **Services dropdown:** Daycare · Boarding · Grooming · Transportation
-- **Top-level:** Pricing · New Clients
-- **CTA button:** Contact / Book a Visit
+- **Services dropdown:** Daycare · Boarding · Grooming
+- **Top-level:** Pricing · About · New Clients
+- **CTA button:** Contact
 
-### Key differences from HAFH
+### Key differences from Kingdom Canine
 
-- **Transportation page** — KC offers shuttle service to/from St. Louis and Franklin County. This is unique to KC and will need a new service page. Simple content: description + pricing + packages.
-- **No cat services** — Remove cat-related schemas, pages, and pricing
-- **No multi-theme system** — Single design direction for KC (no theme toggle widget)
-- **No webcams page** — Remove webcam schemas and page
-- **No about page** — Brian didn't include about/founder content; skip unless requested
-- **Grooming pricing overhaul** — Current site hides prices behind "Contact us." New build has a full pricing matrix: baths (size × hair length), full grooms by size, à la carte services (ear cleaning, gland expression, nail trim, pad trim, teeth brushing), plus doodle/specialty surcharge. This is the biggest content shift.
-- **VIP Luxury Suite** — New boarding tier at $150/night for 1–4 dogs. Needs a visual moment, not just another row in a table.
-- **Daycare packages** — New structured packages (10/20/30 day) replacing the old flat-rate-only model.
-- **POS transition** — Gingr → Goose is in progress. All POS URLs stored in a single Sanity site-settings doc so the swap is one update, not a code change.
+- **Cat services** — Wags serves dogs AND cats (daycare, boarding, grooming). KC was dogs-only. Cat services are integrated into each service page, not separate pages.
+- **No transportation** — KC had a shuttle service; Wags does not
+- **About Us page** — Wags has a team page with 4 staff members and a facility narrative. KC skipped this.
+- **Assessment process** — All dogs must pass an assessment before daycare/boarding. $20, Mon-Thu 10am-2pm, minimum 4 hours. This is a unique onboarding flow.
+- **Breakaway collars** — Required for all daycare/boarding dogs. Dedicated section in Getting Started.
+- **4 boarding kennel sizes** — Standard, Junior Suite, Queen Suite, Master Suite (KC had Standard + VIP only)
+- **Punch cards** — Daycare and boarding use punch card packages (buy X get Y free) in addition to standard bulk discounts
+- **Structured play increments** — 2-hour play rotations (9-11, 11-1, 1-3, 3-5) with mandatory naps between
+- **4 separate play yards** — Dogs grouped by play style and size
+- **No multi-theme system** — Single design direction (tan/burgundy palette)
 
 ### Page pattern (inherited from Embark design system)
 
@@ -118,38 +105,46 @@ Each service page follows a consistent component pattern:
 4. FAQ accordion (if applicable)
 5. Bottom CTA band
 
-Homepage: hero, services overview cards, stats counter, testimonials, CTA band.
+Homepage: hero, services overview cards, about teaser, hours, gallery, stats, CTA band.
 
 ## Content Status
 
-### Have now (from Brian's pricing doc + current site)
-- All new pricing data (daycare single visits + packages, boarding tiers including VIP, grooming matrix, transportation + packages)
-- Hours of operation (Mon–Fri 6am–11am & 1pm–7pm, Sat–Sun 11am–4pm)
-- Facility info (name, address, phone)
-- Service descriptions (boarding "Pack Mentality" narrative, daycare, grooming packages, transportation)
-- Facility stats (11,000 sqft turfed outdoor, 4,200 sqft indoor)
-- Booking flow (Gingr portal — 3-step: create account → trial day → schedule)
-- Brand language ("Pack Mentality", "Enjoy your vacay while your dog has a staycay")
+### Have now (from Wix scrape + current site)
+- All current pricing data (daycare, boarding 4 tiers, grooming with cat services)
+- Hours of operation (Mon-Sat 6:30am-7pm, Sunday 8am-12pm & 2pm-6pm)
+- Facility info (name, address, phone, email)
+- Service descriptions (daycare, boarding daily schedule, grooming packages)
+- Team info (4 staff members — Cindy Holtan Manager, Whitney Nelson Grooming Manager, Akaysha Delzer Assistant Manager, Ashley Harn Grooming Associate)
+- Assessment process details
+- Breakaway collar requirement info
+- 12 homepage gallery photos from Wix
+- 6 team photos (names need re-pairing — Wix filenames scrambled)
+- 5 assessment gallery photos
+- Facility/boarding hero photos
+- 4 downloadable forms (2 PDF registration forms, 2 DOCX policies/waiver)
+- About Us narrative copy
+- Facebook page link
 
-### Waiting on
-- **Photos from Brian** — he said he'd send "PICs shortly" but they haven't come through yet
-- Logo files (current logo is hosted on HighLevel CDN — need source file or high-res version)
-- Testimonials / reviews (none provided yet)
-- Team info / staff bios (none provided)
-- FAQ content (none provided beyond what's implied by current site)
-- Vaccination / requirements info
-- Email address for the facility (need to confirm what mailboxes exist under M365)
-- Goose POS go-live date for KC
+### Waiting on / Need to confirm
+- **Logo source file** — current logo is Wix-hosted, need vector/high-res
+- **Team photo ↔ name pairing** — Wix filenames don't match team member names
+- **Goose POS go-live date** — determines booking URLs and final pricing
+- **Updated pricing from Goose** — current Wix prices are baseline, will be replaced
+- **Training status** — meta description claims training but no page exists. Assumed dropped.
+- **Hours confirmation** — hours on homepage but not contact page, verify current
+- **Waiver document** — file named "meds and add ins.docx" may be mislabeled
 
 ## Facility Quick Reference
 
-- **Name:** Kingdom Canine
-- **Address:** 2549 Hogan Rd, Pacific, MO 63069
-- **Phone:** (314) 631-6738
-- **Email:** TBD (confirm M365 mailboxes)
-- **Service area:** St. Louis area and Franklin County, MO
-- **Hours:** Mon–Fri 6am–11am & 1pm–7pm | Sat–Sun 11am–4pm
-- **Play areas:** 11,000 sqft turfed outdoor, 4,200 sqft indoor
-- **Booking:** Gingr Pet Parent App (portal: kingdomcanine.portal.gingrapp.com)
-- **Services:** Dog daycare, dog boarding (Standard + VIP Luxury Suite), grooming, transportation
-- **POS:** Gingr (transitioning to Goose — date TBD)
+- **Name:** Wags Stay N' Play
+- **Address:** 1601 Main Ave SE, Moorhead, MN 56560
+- **Phone:** (218) 287-2000
+- **Email:** office@wagsstaynplay.com
+- **Service area:** Moorhead, MN / Fargo-Moorhead metro
+- **Hours:** Mon-Sat 6:30am-7pm | Sunday 8am-12pm & 2pm-6pm
+- **Play areas:** 4 separate play yards (indoor/outdoor)
+- **Booking:** TBD (Goose POS transition)
+- **Services:** Dog & cat daycare, dog & cat boarding (4 kennel sizes), dog & cat grooming
+- **POS:** Transitioning to Goose — date TBD
+- **Social:** Facebook (facebook.com/wagsstaynplay)
+- **Locally owned**

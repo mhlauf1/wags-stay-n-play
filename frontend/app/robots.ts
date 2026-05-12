@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/studio', '/api/'],
     },
-    sitemap: 'https://kingdomcanine.com/sitemap.xml',
+    sitemap: 'https://wagsstaynplay.com/sitemap.xml',
   }
 }

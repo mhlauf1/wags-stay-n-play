@@ -30,7 +30,7 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
 
 export default defineConfig({
   name: 'default',
-  title: 'Kingdom Canine',
+  title: 'Wags Stay N Play',
 
   projectId,
   dataset,

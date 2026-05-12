@@ -158,8 +158,8 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="flex items-start">
             <NextImage
-              src="/images/kingdom-logo.png"
-              alt="Kingdom Canine"
+              src="/images/wags-logo.png"
+              alt="Wags Stay N Play"
               width={150}
               height={75}
               className="w-[120px] lg:w-[150px] h-auto"
@@ -262,10 +262,10 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center justify-end gap-6 shrink-0">
             <a
-              href="tel:3146316738"
+              href="tel:2182872000"
               className="font-sans text-[14px] text-forest/80 hover:text-terracotta transition-colors whitespace-nowrap"
             >
-              (314) 631-6738
+              (218) 287-2000
             </a>
             {ctaButton?.buttonText && (
               <Button variant="primary" link={ctaButton.link}>
@@ -445,7 +445,7 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
                 onClick={() => setMobileOpen(false)}
               >
                 <a
-                  href="tel:3146316738"
+                  href="tel:2182872000"
                   className="flex items-center justify-center gap-2 font-sans text-[16px] text-forest hover:text-terracotta transition-colors"
                 >
                   <svg
@@ -461,7 +461,7 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
                       d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
                     />
                   </svg>
-                  (314) 631-6738
+                  (218) 287-2000
                 </a>
                 {ctaButton?.buttonText && (
                   <Button variant="primary" link={ctaButton.link} className="w-full">

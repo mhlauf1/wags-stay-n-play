@@ -31,7 +31,7 @@ import {resolveOpenGraphImage, urlForImage} from '@/sanity/lib/utils'
 import Script from 'next/script'
 import {handleError} from '@/app/client-utils'
 
-const SITE_URL = 'https://kingdomcanine.com'
+const SITE_URL = 'https://wagsstaynplay.com'
 
 function buildLocalBusinessJsonLd(settings: any) {
   const lb = settings?.localBusiness
@@ -96,7 +96,7 @@ export async function generateMetadata(): Promise<Metadata> {
     query: settingsQuery,
     stega: false,
   })
-  const title = settings?.title || 'Kingdom Canine'
+  const title = settings?.title || 'Wags Stay N Play'
   const description = settings?.description
 
   const ogImage = resolveOpenGraphImage(settings?.ogImage)

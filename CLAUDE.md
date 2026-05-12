@@ -1,10 +1,10 @@
-# Kingdom Canine
+# Wags Stay N Play
 
-Website for Kingdom Canine, a pet daycare, boarding, grooming, and transportation facility in Pacific, MO. Part of the [Embark Pet Services](https://www.embarkpetservices.com/) portfolio operated by Cadence Private Capital.
+Website for Wags Stay N' Play, a locally-owned dog and cat daycare, boarding, and grooming facility in Moorhead, MN. Part of the [Embark Pet Services](https://www.embarkpetservices.com/) portfolio operated by Cadence Private Capital.
 
-**Live domain:** https://kingdomcanine.com/
-**Current site (being replaced):** HighLevel / GoHighLevel platform
-**Sister sites (design reference):** https://homeawayfargo.com/ · https://houndaroundresort.com/ · https://www.boxersbedandbiscuits.com/
+**Live domain:** https://wagsstaynplay.com/
+**Current site (being replaced):** Wix platform
+**Sister sites (design reference):** https://homeawayfargo.com/ · https://houndaroundresort.com/ · https://www.boxersbedandbiscuits.com/ · https://kingdomcanine.com/
 
 ## Context Files
 
@@ -17,7 +17,7 @@ Read the following to get the full context of the project:
 - @context/current-milestone.md
 - @context/milestones.md
 - @context/intake-content.md
-- @context/service-content/ (daycare, boarding, grooming, transportation content docs)
+- @context/service-content/ (daycare, boarding, grooming content docs)
 
 ## Commands
 

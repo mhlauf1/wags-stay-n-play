@@ -7,7 +7,7 @@
 - Ask before large refactors or architectural changes
 - Don't add features or pages not discussed in the project plan
 - Never delete files without clarification
-- If a component exists from the Hound Around codebase, modify it — don't rewrite from scratch unless structurally necessary
+- If a component exists from the Embark design system codebase, modify it — don't rewrite from scratch unless structurally necessary
 
 ## Workflow
 
@@ -30,10 +30,10 @@ Do NOT commit without permission and until the build passes. If build fails, fix
 
 Create a new branch for every milestone or significant change.
 
-- Features: `feature/[name]` (e.g., `feature/theme-system`, `feature/pricing-page`)
+- Features: `feature/[name]` (e.g., `feature/core-pages`, `feature/about-page`)
 - Fixes: `fix/[name]` (e.g., `fix/mobile-nav-overflow`)
-- Content: `content/[name]` (e.g., `content/seed-pricing-data`)
-- Chore: `chore/[name]` (e.g., `chore/remove-hound-around-refs`)
+- Content: `content/[name]` (e.g., `content/sanity-seed`)
+- Chore: `chore/[name]` (e.g., `chore/remove-kc-refs`)
 
 Ask to delete the branch once merged.
 
@@ -46,29 +46,29 @@ Ask to delete the branch once merged.
 
 ## Codebase Origin Rules
 
-This repo was cloned from the Hound Around Resort codebase (`mhlauf1/hound-3`) with a clean git history. It is its own independent repo (`mhlauf1/home-away-fargo`), not a GitHub fork. Follow these rules strictly:
+This repo was cloned from the Kingdom Canine codebase (`mhlauf1/kingdom-canine`) with a clean git history. It is its own independent repo (`mhlauf1/wags-stay-n-play`), not a GitHub fork. Follow these rules strictly:
 
 ### Do
 - Reuse existing component structures and patterns
 - Modify components to accept theme tokens instead of hardcoded values
-- Add new components alongside existing ones when HAFH needs something Hound Around doesn't have
+- Add new components alongside existing ones when Wags needs something the template doesn't have (e.g., about page, assessment flow)
 - Keep the same Sanity query patterns and data-fetching approach
 - Document any structural changes so they can inform the future Embark site template
 
 ### Don't
-- Leave any Hound Around-specific content (copy, images, alt text, meta tags, comments, URLs)
+- Leave any Kingdom Canine, HAFH, or Hound Around-specific content (copy, images, alt text, meta tags, comments, URLs)
 - Change a working component pattern just because you'd do it differently — consistency across sites matters
-- Rename files/components without a clear reason — the Hound Around naming conventions are the standard
+- Rename files/components without a clear reason — the Embark naming conventions are the standard
 - Modify the Sanity schema structure unless the content genuinely requires it
 
-### When you find HAFH or Hound Around content
-- Replace it with the Kingdom Canine equivalent from @context/project-overview.md or @context/intake-content.md
-- If KC content doesn't exist yet for that field, use a clear placeholder: `[PLACEHOLDER: description]`
-- Never leave an HAFH or Hound Around reference as a placeholder — always swap to either real KC content or an explicit `[PLACEHOLDER]` marker
+### When you find KC or other facility content
+- Replace it with the Wags Stay N' Play equivalent from @context/project-overview.md or @context/intake-content.md
+- If Wags content doesn't exist yet for that field, use a clear placeholder: `[PLACEHOLDER: description]`
+- Never leave a KC or other facility reference as a placeholder — always swap to either real Wags content or an explicit `[PLACEHOLDER]` marker
 
 ## Theme System Rules
 
-- KC uses a single color palette — no multi-theme system, no theme toggle, no `data-theme` switching
+- Wags uses a single color palette — no multi-theme system, no theme toggle, no `data-theme` switching
 - Every color and font reference in a component must use a semantic CSS custom property token
 - Never use raw hex values (e.g., `bg-[#8B2D1E]`) — use the token (e.g., `bg-cream`, `bg-forest`)
 
@@ -84,14 +84,14 @@ This repo was cloned from the Hound Around Resort codebase (`mhlauf1/hound-3`) w
 - If something isn't working after 2-3 attempts, stop and explain the issue
 - Don't keep trying random fixes
 - Ask for clarification if requirements are unclear
-- If a Hound Around pattern doesn't make sense for HAFH, explain why before changing it
+- If an Embark pattern doesn't make sense for Wags, explain why before changing it
 
 ## Code Changes
 
 - Make minimal changes to accomplish the task
 - Don't refactor unrelated code unless asked
 - Don't add "nice to have" features
-- Preserve existing patterns from the Hound Around codebase
+- Preserve existing patterns from the Embark design system
 - When modifying a shared component, consider how the change would affect other Embark sites
 
 ## What Not To Do

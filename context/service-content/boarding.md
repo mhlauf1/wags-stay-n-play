@@ -1,125 +1,144 @@
 # Boarding
 
 > Page: `/services/boarding`
-> Sanity ID: `55576abb-c716-4f3f-94af-d09ff5c4157d`
-> Last verified against `pricingData.ts`: 2026-05-06
+> Sanity ID: TBD (not yet seeded)
 
 ---
 
 ## Section 1: heroMinimal
 
 - **eyebrow:** Boarding
-- **heading:** Your Dog's Vacation Starts Here
-- **headingAccent:** while you enjoy yours
-- **subtext:** Cage-free group boarding where every dog gets all-day daycare, meals, medications, and nighttime comfort — all included. No hidden fees, no extra charges.
+- **heading:** Your Pet's Home
+- **headingAccent:** away from home
+- **subtext:** All boarders participate in daycare play groups during the day. 4 kennel sizes to choose from. Dogs and cats welcome. Your family is our family.
 - **backgroundColor:** cream
 
 ---
 
 ## Section 2: featureCards
 
-- **heading:** The Pack Mentality Experience
-- **subheading:** Forget crates, cages, and lonely runs. At Kingdom Canine, boarding means your dog joins the pack.
+- **heading:** Why Pets Love Boarding Here
+- **subheading:** Boarding isn't just a place to sleep — it's a full-day experience with play, socialization, and individual attention.
 - **darkMode:** true
-- **cta:** Book a Stay → Gingr portal
-- **trustLine:** No hidden fees. Everything is included.
+- **cta:** Book Boarding → POS booking URL
+- **trustLine:** Save with punch card packages
 
-### Card 1: Cage-Free Group Boarding
-Dogs room with friends based on size, energy, and temperament. Crates available on a limited basis for dogs who prefer them.
+### Card 1: Daycare Included
+Every boarder joins daycare play groups during the day. No extra charge — play, socialize, and burn energy.
 
-### Card 2: All-Day Daycare Included
-Every boarding guest participates in daycare at no extra charge. They run, play, and socialize all day long.
+### Card 2: 4 Kennel Sizes
+Standard, Junior Suite, Queen Suite, and Master Suite. Dogs from the same family can share or have their own kennel.
 
-### Card 3: 15 Fresh-Water Fountains
-Flowing water stations with a drain system that skims the surface, keeping water fresh and clean all day.
+### Card 3: Cat Boarding
+Dedicated cat room with individual attention. Cats from different families kept separate. No assessment needed.
 
-### Card 4: 11,000 sqft Outdoor Yards
-Fully turfed outdoor play yards plus 4,200 sqft of safe indoor play space for all-weather fun.
+### Card 4: Structured Daily Schedule
+Wake at 6:30 AM, play groups 9 AM – 5 PM, supper at 5 PM, final potty 8–10 PM. Dogs have a full, active day.
 
-### Card 5: Meals & Meds Included
-Bring your dog's food and any medications. We handle administration at no additional cost.
+### Card 5: Supervised Around the Clock
+Staff ensures every pet is comfortable, safe, and happy throughout their stay.
 
-### Card 6: Nighttime Comfort
-At night, dogs share rooms with compatible friends. They settle in naturally with the pack they've bonded with during the day.
-
----
-
-## Section 3: splitContent — VIP Luxury Cottage Suite
-
-- **heading:** VIP Luxury Cottage Suite
-- **imagePosition:** right
-- **backgroundColor:** sand
-- **link:** Reserve a Suite → Gingr portal
-
-### Body
-The ultimate stay for your dog — and up to 3 of their friends. A private suite with all-inclusive service: daycare, meals, medications, and the same Pack Mentality experience during the day. Perfect for multi-dog families or dogs who deserve something extra.
-
-**$125/night for 1–4 dogs. All-inclusive.**
+### Card 6: Assessment Required
+All dogs must pass an assessment before boarding. This ensures safe, compatible groups for everyone.
 
 ---
 
-## Section 4: pricingCalculator
+## Section 3: pricingCalculator
 
 - **calculatorType:** boarding
 - **displayMode:** single
 - **eyebrow:** Transparent Pricing
-- **heading:** Calculate Your Stay
-- **subheading:** Standard rooms start at $64/night. Additional dogs are $55/night each. Everything is included.
+- **heading:** Calculate Your Boarding Cost
+- **subheading:** 4 kennel options from $44–$57/night. Cat boarding $28/night. All boarding includes daycare.
 - **ctaText:** Book Now
-- **ctaLink:** Gingr portal
-
-> Already exists in Sanity — update fields if needed.
+- **ctaLink:** POS booking URL
 
 ---
 
-## Section 5: ctaStrip
+## Section 4: splitContent — The Boarding Experience
 
-- **heading:** First time boarding with us?
-- **subtext:** New guests start with a trial day to make sure everyone's a good fit.
-- **cta:** Register Your Dog → Gingr registration URL
-- **backgroundColor:** terracotta
+- **heading:** More Than Just a Kennel
+- **imagePosition:** left
+- **backgroundColor:** sand
+- **link:** See Our Facility → /gallery
+
+### Body
+At Wags Stay N' Play, boarding means your dog gets a full day of play, socialization, and care. During the day, every boarder participates in daycare play groups organized by size, energy, and temperament.
+
+At night, dogs settle into their chosen kennel size. Dogs from the same family can share a kennel or have their own — whatever works best for your pets.
 
 ---
 
-## Section 6: requirementsList — What to Pack
+## Section 5: whatsIncluded — Kennel Options
 
-- **eyebrow:** BEFORE YOUR STAY
-- **heading:** What to Pack for Your Dog
-- **description:** Keep it simple. Here's everything you need to bring for a boarding stay.
-- **imagePosition:** right
+- **eyebrow:** CHOOSE YOUR STAY
+- **heading:** Boarding Options
+- **description:** All boarding includes daycare participation, meals, and medication administration.
+- **layout:** card
+- **columns:** 4
 - **backgroundColor:** cream
+- **iconColor:** terracotta
 
-### Items
-1. **Your dog's regular food** — Portioned per meal or in a labeled container. Keeping them on their normal diet reduces stress.
-2. **Medications with instructions** — Bring medications in original containers with clear written dosage instructions. Administration is included at no charge.
-3. **A comfort item from home** — A favorite toy, blanket, or worn t-shirt that smells like home goes a long way, especially for first-time boarders.
-4. **Special care instructions** — Feeding quirks, anxiety triggers, best friends, favorite games — the more we know, the better we can care for them.
-5. **Proof of current vaccinations** — Rabies, DHLPP, and Bordetella must be current. Have your vet send records or bring proof at check-in.
+### Item 1: Standard — $44/night
+Comfortable kennel for your pet's stay.
+
+### Item 2: Junior Suite — $48/night
+A step up in space and comfort.
+
+### Item 3: Queen Suite — $52/night
+More room for dogs who like to stretch out.
+
+### Item 4: Master Suite — $57/night
+Our largest and most spacious kennel option.
 
 ---
 
-## Section 7: processSteps — A Day in the Life
+## Section 6: whatsIncluded — Punch Cards
 
-- **eyebrow:** A TYPICAL DAY
-- **heading:** What a Boarding Day Looks Like
-- **description:** From sunrise to lights-out, your dog is never bored and never alone.
+- **eyebrow:** SAVE MORE
+- **heading:** Boarding Punch Cards
+- **description:** Any suite type. Buy in bulk and get free nights.
+- **layout:** card
+- **columns:** 3
 - **backgroundColor:** sand
 
-### Step 1: Morning Playtime
-- **badge:** 6:00 AM
-- The pack wakes up and heads straight to the yards. Morning energy burns off with friends in 11,000 sqft of turfed outdoor space.
+### Item 1: 10-Pack — Buy 9, Get 1 Free
+Save on 10 nights of boarding.
 
-### Step 2: Mealtime & Rest
-- **badge:** 11:00 AM
-- Dogs get their own meals administered individually. After lunch, they settle in for quiet time and rest.
+### Item 2: 20-Pack — Buy 17, Get 3 Free
+Great value for frequent boarders.
 
-### Step 3: Afternoon Adventures
-- **badge:** 1:00 PM
-- Back to the yards and indoor play areas. Groups rotate based on size, energy, and temperament.
+### Item 3: 30-Pack — Buy 24, Get 6 Free
+Best deal — 6 free nights of boarding.
 
-### Step 4: Evening Settle-In
-- **badge:** 7:00 PM
-- Dogs head to their rooms for the night, bunking with friends they've bonded with during the day. Crates available for dogs who prefer them.
+---
+
+## Section 7: processSteps — A Boarding Day
+
+- **eyebrow:** YOUR DOG'S DAY
+- **heading:** What a Boarding Day Looks Like
+- **description:** A full, structured day from wake-up to bedtime.
+- **backgroundColor:** cream
+
+### Step 1: Wake Up & Potty
+- **badge:** 6:30 AM
+- Boarders wake up and go outside for their morning potty break.
+
+### Step 2: Breakfast & Groups
+- **badge:** Morning
+- Breakfast is served while staff organizes the day's play groups.
+
+### Step 3: Play Groups
+- **badge:** 9 AM – 5 PM
+- Dogs rotate through supervised play groups in our 4 separate play yards.
+
+### Step 4: Supper & Wind Down
+- **badge:** 5 PM
+- Boarders eat supper and settle in for the evening.
+
+### Step 5: Final Potty & Bed
+- **badge:** 8 – 10 PM
+- Last potty break, fresh water, and lights out.
 
 ---
 
@@ -128,29 +147,26 @@ The ultimate stay for your dog — and up to 3 of their friends. A private suite
 - **eyebrow:** QUESTIONS
 - **heading:** Boarding FAQs
 
-### Q: What's included in the nightly rate?
-Everything. Daycare participation, meal administration, medication administration, and nighttime accommodations. There are no hidden fees or surprise charges.
-
 ### Q: What vaccines are required?
-All boarding guests must be current on Rabies, DHLPP, and Bordetella. Please bring proof of vaccination or have your vet send records before your stay.
+Dogs must be up to date on Rabies, Distemper, and Bordetella. Spayed/neutered after 7 months unless vet states otherwise.
 
-### Q: Do I need to bring my dog's food?
-Yes. Please bring your dog's regular food pre-portioned or in a labeled container with feeding instructions. Keeping them on their normal diet helps reduce stress.
+### Q: Do I need to bring food?
+You can bring your own food or we can provide meals. Let us know your dog's feeding schedule and dietary needs.
 
-### Q: What is a trial day?
-New dogs spend a day with us before their first boarding stay. This lets us evaluate temperament, play style, and group fit to make sure everyone has a safe, positive experience.
+### Q: Can my dogs share a kennel?
+Yes! Dogs from the same family can board together in a shared kennel, or have their own — your choice.
 
-### Q: What's the difference between Standard and VIP?
-Standard boarding is cage-free group accommodation at $64/night per dog. The VIP Luxury Cottage Suite is a private suite for 1–4 dogs at $125/night, with all the same inclusions plus a dedicated private space.
+### Q: What about cats?
+Cats board in our dedicated cat room with individual attention. Cats from different families are kept separate. Cats must be current on Rabies and Distemper. No assessment needed.
 
-### Q: What are your drop-off and pick-up hours?
-Monday through Friday: 6:00 AM – 11:00 AM and 1:00 PM – 7:00 PM. Saturday and Sunday: 11:00 AM – 4:00 PM.
+### Q: Is there an additional pet discount?
+Yes — $5 discount per additional pet in a shared kennel.
 
 ---
 
 ## Section 9: ctaBanner
 
-- **heading:** Ready to Book a Stay?
-- **cta:** Reserve Now → Gingr portal
+- **heading:** Ready to Book Your Pet's Stay?
+- **cta:** Book Boarding → POS booking URL
 - **showRating:** true
-- **ratingText:** Trusted by Pacific, MO dog owners
+- **ratingText:** Trusted by Fargo-Moorhead pet owners

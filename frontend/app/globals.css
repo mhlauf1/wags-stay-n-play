@@ -6,30 +6,30 @@
 
 /* ============================================================
    COLOR PALETTE
-   Single palette: royal purple + gold with warm neutrals.
+   Single palette: tan + burgundy with warm neutrals.
    Fonts: Bricolage Grotesque (heading) + Geist (body)
    ============================================================ */
 
 :root {
-  --theme-cream: #fbf7f4;
-  --theme-sand: #f0ebe8;
-  --theme-forest: #3d1952;
-  --theme-forest-card: #4a2462;
-  --theme-terracotta: #7b2d8e;
-  --theme-terracotta-dark: #5e1e6e;
-  --theme-terracotta-light: #c89dd3;
-  --theme-sage: #b89dc7;
-  --theme-charcoal: #2a1038;
-  --theme-gold: #d4a843;
-  --theme-rose: #9b4daf;
-  --theme-black: #120a18;
-  --theme-black-card: #1a1022;
-  --theme-border-light: rgba(61, 25, 82, 0.15);
-  --theme-border-dark: rgba(251, 247, 244, 0.2);
-  --theme-border-black: rgba(251, 247, 244, 0.12);
-  --theme-text-muted: rgba(61, 25, 82, 0.8);
-  --theme-text-muted-dark: rgba(251, 247, 244, 0.7);
-  --theme-shadow-color: 61, 25, 82;
+  --theme-cream: #faf6f1;
+  --theme-sand: #efe8df;
+  --theme-forest: #4a1c2a;
+  --theme-forest-card: #5c2636;
+  --theme-terracotta: #8b2f3a;
+  --theme-terracotta-dark: #6e2430;
+  --theme-terracotta-light: #d4a0a0;
+  --theme-sage: #c4a882;
+  --theme-charcoal: #361520;
+  --theme-gold: #c49a3c;
+  --theme-rose: #a64452;
+  --theme-black: #1a0e12;
+  --theme-black-card: #221418;
+  --theme-border-light: rgba(74, 28, 42, 0.15);
+  --theme-border-dark: rgba(250, 246, 241, 0.2);
+  --theme-border-black: rgba(250, 246, 241, 0.12);
+  --theme-text-muted: rgba(74, 28, 42, 0.8);
+  --theme-text-muted-dark: rgba(250, 246, 241, 0.7);
+  --theme-shadow-color: 74, 28, 42;
   --theme-font-heading: var(--font-bricolage, 'Bricolage Grotesque', system-ui, sans-serif);
   --theme-font-body: var(--font-geist, 'Geist', system-ui, sans-serif);
 }

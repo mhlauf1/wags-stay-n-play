@@ -1,27 +1,23 @@
 # Current Milestone
 
-## Milestone 5: Polish & Launch Prep
+## Milestone 1: Foundation & Cleanup
 
 ### Status
-Not started
+In progress
 
 ### Goals
-- SEO optimization (meta tags, structured data, sitemap.xml, robots.txt)
-- Performance audit (Lighthouse 90+ all categories)
-- Accessibility audit (WCAG AA compliance)
-- Cross-browser testing
-- Custom 404 page
-- Final content review — audit all pricing against Brian's doc
-- Populate any content received from Brian (photos, testimonials, FAQs)
-- DNS cutover plan:
-  - Update A record + www CNAME in Cloudflare to point to Vercel
-  - Remove Mailgun SPF include
-  - Preserve Facebook domain verification + MS verification TXT records
-- 24-hour notice to Brian for POS price update coordination
+- Strip all Kingdom Canine-specific content, images, and references from the cloned codebase
+- Connect new Sanity project and set up environment
+- Update all meta tags, site title, phone numbers for Wags Stay N' Play
+- Establish tan/burgundy color palette
+- Rewrite all context files for Wags
+- Remove transportation service content (Wags doesn't offer it)
 
 ### Definition of Done
-- Lighthouse 90+ across all categories
-- All content approved
-- DNS cutover plan documented
-- Brian notified 24 hours before go-live
-- POS prices match site prices exactly on launch day
+- All KC references replaced with Wags equivalents
+- New Sanity project connected and env vars set
+- Color palette updated in globals.css (tan/burgundy)
+- All context files rewritten for Wags
+- Transportation content removed
+- Build passes clean
+- Zero references to Kingdom Canine, Pacific MO, or (314) 631-6738 in source files

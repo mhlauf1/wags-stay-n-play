@@ -4,11 +4,11 @@
 
 ## Status
 
-Schema fully set up for Kingdom Canine. Webcam types removed in M1. POS URL fields added to settings in M2. M3 added: `hero.carouselImages[]`, `serviceCards.variant` (`white` | `imageOverlay`, default `white`), `serviceCards.cards[]` named as `serviceCard`, `splitContent.hours[]` (named `hoursEntry`, label/value). All content seeded and published. Schema deployed to cloud.
+New project — schema inherited from Kingdom Canine clone. Not yet connected to a Wags-specific Sanity project. Schema needs transportation booking URL field removed from settings, and content seeded for Wags.
 
 ## Sanity Project Details
 
-- **Project ID:** `ldmtl3r7`
+- **Project ID:** `3h90m8qu`
 - **Dataset:** `production`
 - **Studio URL:** `http://localhost:3333` (dev) / embedded at `/studio` in frontend
 - **API version:** `2025-09-25`
@@ -24,22 +24,16 @@ The only standalone reference document is `testimonial`.
 ### `settings` (singleton)
 Global site config: title, tagline, logo, nav items, CTA button, footer columns, contact info, social links, **POS/booking URLs** (portalUrl, registrationUrl, per-service booking URLs), business hours, SEO (OG image, favicon, GA4, GTM, GSC), local business structured data.
 
-**KC-specific:** POS portal URLs stored here (Gingr now, Goose later) for single-point swap. The `posUrls` object field was added in M2.
+**Wags-specific:** POS portal URLs stored here for single-point swap when Goose goes live. The `posUrls` object field includes transportationBookingUrl which can be removed or left unused.
 
 ### `page`
-Generic pages (homepage, pricing, gallery, new-clients, contact). Fields: name, slug, seo, pageBuilder (42 block types).
-
-**Seeded pages:** Homepage, Pricing, Contact, New Clients.
+Generic pages (homepage, pricing, gallery, new-clients, contact, about). Fields: name, slug, seo, pageBuilder (42 block types).
 
 ### `service`
-Service detail pages (daycare, boarding, grooming, transportation). Fields: title, slug, sticker, shortDescription, tabImage, tabCta, heading, seo, pageBuilder (35 block types).
-
-**Seeded services:** Daycare, Boarding, Grooming, Transportation.
+Service detail pages (daycare, boarding, grooming). Fields: title, slug, sticker, shortDescription, tabImage, tabCta, heading, seo, pageBuilder (35 block types).
 
 ### `testimonial`
 Customer reviews. Fields: quote, authorName, authorLabel, rating (1-5, default 5).
-
-**No testimonials seeded yet** — waiting on content from Brian.
 
 ## Key Object Types (PageBuilder Blocks)
 
@@ -91,28 +85,23 @@ All queries live in `frontend/sanity/lib/queries.ts`.
 
 The pricing calculator (`pricingCalculator` block type) has a `calculatorType` field (`daycare` | `boarding` | `grooming`) and supports `single` or `tabbed` display mode. **Actual pricing data is hardcoded in `frontend/app/data/pricingData.ts`**, not in Sanity. The Sanity block only configures which calculator to show and the CTA link.
 
-**M2 update:** `pricingData.ts` has been completely rewritten with KC pricing:
-- Daycare: $36/$24 single, 10/20/30-day packages
-- Boarding: Standard $64, VIP Luxury Suite $150 (suite rate), additional dog $55
-- Grooming: Bath (size × hair length), full groom by size, doodle surcharge, 5 à la carte services, teeth cleaning add-on
+**Wags pricing structure (to be implemented in M2):**
+- Daycare: Assessment $20, Full Day $29, Half Day $19, Cat $18, punch cards (10/20/30/90-day)
+- Boarding: 4 tiers (Standard $44, Junior $48, Queen $52, Master $57), Cat $28, punch cards
+- Grooming: Full Groom, Bath & Works, Exit Bath, Cat grooming, individual services
 
 ## Seeded Content Reference
 
+No content has been seeded yet for the Wags Sanity project. This table will be populated during Milestone 2.
+
 | Document | Type | Slug | Sanity ID |
 |----------|------|------|-----------|
-| Daycare | service | daycare | `ac1c50d8-43b0-43f1-a3d9-7610223f9069` |
-| Boarding | service | boarding | `55576abb-c716-4f3f-94af-d09ff5c4157d` |
-| Grooming | service | grooming | `402a10e1-4e98-4403-88a3-99e52b7c6c01` |
-| Transportation | service | transportation | `ae6eb460-0265-4a10-94cc-4194caf02531` |
-| Homepage | page | homepage | `419c1a14-b6a4-4ef8-9313-97d7b71ccecc` |
-| Pricing | page | pricing | `bac599e8-11c6-423b-9ce5-a4b557d311e5` |
-| Contact | page | contact | `9b3488e7-b902-416e-87cf-2c1382e785ba` |
-| New Clients | page | new-clients | `5e76c40e-9e73-46f2-9bea-8625f04cbc85` |
-| Settings | settings | — | `fba58743-9937-4781-b004-ad8ced408efd` |
+| — | — | — | — |
 
 ## Notes
 
 - Keep schemas structurally aligned with other Embark sites for future template extraction
 - Don't add fields you don't need yet — only add what the current content requires
 - Schema deployed to cloud via `npx sanity schema deploy` from `studio/` directory
-- Transportation pricing uses `pricingList` block (single trip $16, 5-trip $75, 10-trip $140) — no calculator needed
+- Wags has no transportation service — don't seed a transportation service document
+- Cat services are integrated into daycare, boarding, and grooming pages, not separate documents

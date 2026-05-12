@@ -13,7 +13,7 @@ export const settings = defineType({
       description: 'Site title',
       title: 'Title',
       type: 'string',
-      initialValue: 'Kingdom Canine',
+      initialValue: 'Wags Stay N Play',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -216,7 +216,7 @@ export const settings = defineType({
       name: 'footerText',
       title: 'Footer Copyright Text',
       type: 'string',
-      description: 'e.g. "© 2026 Kingdom Canine. Part of the Embark Pet Services family."',
+      description: 'e.g. "© 2026 Wags Stay N Play. Part of the Embark Pet Services family."',
     }),
     defineField({
       name: 'footerTextLink',
