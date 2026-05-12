@@ -1,0 +1,135 @@
+import {defineField, defineType} from 'sanity'
+import {TagIcon} from '@sanity/icons'
+
+export const service = defineType({
+  name: 'service',
+  title: 'Service',
+  type: 'document',
+  icon: TagIcon,
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {source: 'title', maxLength: 96},
+    }),
+    defineField({
+      name: 'sticker',
+      title: 'Sticker Image',
+      type: 'image',
+      description: 'Small dog illustration shown above the title in the service tab',
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+          description: 'Describe this image for accessibility',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'shortDescription',
+      title: 'Short Description',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'tabImage',
+      title: 'Tab Image',
+      type: 'image',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+          description: 'Describe this image for accessibility',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'tabCta',
+      title: 'Tab CTA',
+      type: 'button',
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Page Heading',
+      type: 'string',
+      description: 'Heading shown on the individual service detail page',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO & Metadata',
+      type: 'seo',
+    }),
+    defineField({
+      name: 'pageBuilder',
+      title: 'Page builder',
+      type: 'array',
+      description: 'Content blocks for the individual service detail page',
+      of: [
+        {type: 'callToAction'},
+        {type: 'infoSection'},
+        {type: 'hero'},
+        {type: 'imageRow'},
+        {type: 'featureCards'},
+        {type: 'serviceTabs'},
+        {type: 'statsBar'},
+        {type: 'testimonials'},
+        {type: 'ctaBanner'},
+        {type: 'splitContent'},
+        {type: 'faqAccordion'},
+        {type: 'pricingTable'},
+        {type: 'teamGrid'},
+        {type: 'galleryGrid'},
+        {type: 'contactForm'},
+        {type: 'heroSplit'},
+        {type: 'heroBanner'},
+        {type: 'serviceCards'},
+        {type: 'expandingCardsRow'},
+        {type: 'featureList'},
+        {type: 'processSteps'},
+        {type: 'contentColumns'},
+        {type: 'iconGrid'},
+        {type: 'videoSection'},
+        {type: 'fullWidthMedia'},
+        {type: 'ctaStrip'},
+        {type: 'logoBar'},
+        {type: 'heroMarquee'},
+        {type: 'heroMinimal'},
+        {type: 'pricingMatrix'},
+        {type: 'pricingList'},
+        {type: 'policyNotes'},
+        {type: 'featureGrid'},
+        {type: 'pricingCalculator'},
+        {type: 'whatsIncluded'},
+        {type: 'requirementsList'},
+        {type: 'galleryCarousel'},
+        {type: 'galleryShowcase'},
+        {type: 'valuePillars'},
+        {type: 'spacer'},
+      ],
+      options: {
+        insertMenu: {
+          views: [
+            {
+              name: 'grid',
+              previewImageUrl: (schemaTypeName) =>
+                `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
+            },
+          ],
+        },
+      },
+    }),
+  ],
+  preview: {
+    select: {title: 'title', media: 'tabImage'},
+  },
+})

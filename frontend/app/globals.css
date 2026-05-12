@@ -1,0 +1,187 @@
+@import 'tailwindcss';
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   COLOR PALETTE
+   Single palette: royal purple + gold with warm neutrals.
+   Fonts: Bricolage Grotesque (heading) + Geist (body)
+   ============================================================ */
+
+:root {
+  --theme-cream: #fbf7f4;
+  --theme-sand: #f0ebe8;
+  --theme-forest: #3d1952;
+  --theme-forest-card: #4a2462;
+  --theme-terracotta: #7b2d8e;
+  --theme-terracotta-dark: #5e1e6e;
+  --theme-terracotta-light: #c89dd3;
+  --theme-sage: #b89dc7;
+  --theme-charcoal: #2a1038;
+  --theme-gold: #d4a843;
+  --theme-rose: #9b4daf;
+  --theme-black: #120a18;
+  --theme-black-card: #1a1022;
+  --theme-border-light: rgba(61, 25, 82, 0.15);
+  --theme-border-dark: rgba(251, 247, 244, 0.2);
+  --theme-border-black: rgba(251, 247, 244, 0.12);
+  --theme-text-muted: rgba(61, 25, 82, 0.8);
+  --theme-text-muted-dark: rgba(251, 247, 244, 0.7);
+  --theme-shadow-color: 61, 25, 82;
+  --theme-font-heading: var(--font-bricolage, 'Bricolage Grotesque', system-ui, sans-serif);
+  --theme-font-body: var(--font-geist, 'Geist', system-ui, sans-serif);
+}
+
+/* ============================================================
+   TAILWIND THEME — maps token names to active theme variables
+   ============================================================ */
+@theme {
+  /* Colors — resolve to whichever theme is active */
+  --color-cream: var(--theme-cream);
+  --color-sand: var(--theme-sand);
+  --color-forest: var(--theme-forest);
+  --color-forest-card: var(--theme-forest-card);
+  --color-terracotta: var(--theme-terracotta);
+  --color-terracotta-dark: var(--theme-terracotta-dark);
+  --color-terracotta-light: var(--theme-terracotta-light);
+  --color-sage: var(--theme-sage);
+  --color-charcoal: var(--theme-charcoal);
+  --color-gold: var(--theme-gold);
+  --color-rose: var(--theme-rose);
+  --color-white: #ffffff;
+  --color-black: var(--theme-black);
+  --color-black-card: var(--theme-black-card);
+  --color-border-light: var(--theme-border-light);
+  --color-border-dark: var(--theme-border-dark);
+  --color-border-black: var(--theme-border-black);
+  --color-text-muted: var(--theme-text-muted);
+  --color-text-muted-dark: var(--theme-text-muted-dark);
+
+  /* Font families — resolve to whichever theme is active */
+  --font-heading: var(--theme-font-heading);
+  --font-sans: var(--theme-font-body);
+
+  /* Font sizes — hero/heading scale */
+  --font-size-hero: 84px;
+  --font-size-h1: 84px;
+  --font-size-h2: 56px;
+  --font-size-h3: 36px;
+  --font-size-h4: 24px;
+
+  /* Font sizes — body scale */
+  --font-size-body-lg: 24px;
+  --font-size-body: 20px;
+  --font-size-body-sm: 16px;
+  --font-size-caption: 14px;
+  --font-size-badge: 14px;
+  --font-size-stat: 48px;
+  --font-size-button: 16px;
+
+  /* Spacing */
+  --spacing-section: 80px;
+  --spacing-section-lg: 120px;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-xl: 40px;
+  --radius-section: 48px;
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(var(--theme-shadow-color), 0.06);
+  --shadow-card-hover: 0 8px 24px rgba(var(--theme-shadow-color), 0.1);
+
+  --default-transition-duration: 250ms;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+}
+
+@utility container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@utility animate-progress {
+  animation: progress 7s linear forwards;
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 200s linear infinite;
+}
+
+@utility animate-ticker {
+  animation: marquee 18s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-ticker {
+    animation: none;
+  }
+}
+
+/* Pricing calculator focus styles on dark backgrounds */
+@layer base {
+  .bg-forest button:focus-visible,
+  .bg-forest label:focus-visible,
+  .bg-forest [role='radio']:focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}

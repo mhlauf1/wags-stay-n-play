@@ -1,0 +1,92 @@
+import {defineField, defineType} from 'sanity'
+import {DocumentIcon} from '@sanity/icons'
+
+export const page = defineType({
+  name: 'page',
+  title: 'Page',
+  type: 'document',
+  icon: DocumentIcon,
+  fields: [
+    defineField({
+      name: 'name',
+      title: 'Name',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      validation: (Rule) => Rule.required(),
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO & Metadata',
+      type: 'seo',
+    }),
+    defineField({
+      name: 'pageBuilder',
+      title: 'Page builder',
+      type: 'array',
+      of: [
+        {type: 'callToAction'},
+        {type: 'infoSection'},
+        {type: 'hero'},
+        {type: 'imageRow'},
+        {type: 'featureCards'},
+        {type: 'serviceTabs'},
+        {type: 'statsBar'},
+        {type: 'testimonials'},
+        {type: 'ctaBanner'},
+        {type: 'splitContent'},
+        {type: 'faqAccordion'},
+        {type: 'pricingTable'},
+        {type: 'teamGrid'},
+        {type: 'galleryGrid'},
+        {type: 'contactForm'},
+        {type: 'heroSplit'},
+        {type: 'heroBanner'},
+        {type: 'heroMarquee'},
+        {type: 'heroMinimal'},
+        {type: 'serviceCards'},
+        {type: 'expandingCardsRow'},
+        {type: 'featureList'},
+        {type: 'processSteps'},
+        {type: 'contentColumns'},
+        {type: 'iconGrid'},
+        {type: 'videoSection'},
+        {type: 'fullWidthMedia'},
+        {type: 'ctaStrip'},
+        {type: 'logoBar'},
+        {type: 'pricingMatrix'},
+        {type: 'pricingList'},
+        {type: 'policyNotes'},
+        {type: 'featureGrid'},
+        {type: 'pricingCalculator'},
+        {type: 'whatsIncluded'},
+        {type: 'requirementsList'},
+        {type: 'galleryCarousel'},
+        {type: 'galleryShowcase'},
+        {type: 'galleryPage'},
+        {type: 'valuePillars'},
+        {type: 'pricingPageTabs'},
+        {type: 'spacer'},
+      ],
+      options: {
+        insertMenu: {
+          views: [
+            {
+              name: 'grid',
+              previewImageUrl: (schemaTypeName) =>
+                `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
+            },
+          ],
+        },
+      },
+    }),
+  ],
+})
