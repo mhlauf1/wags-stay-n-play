@@ -3,7 +3,7 @@
 import {useState, useMemo, useCallback} from 'react'
 import {NumberStepper, RadioGroup, AddDogButton, ContactNotice} from './CalculatorInputs'
 import PriceOutputCard from './PriceOutputCard'
-import {calculateDaycarePerDog, daycarePackages} from '@/app/data/pricingData'
+import {calculateDaycarePerDog, daycarePackages, assessmentDayFee} from '@/app/data/pricingData'
 import type {DayType, DaycarePackage, DaycareDogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
 
@@ -55,7 +55,7 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
           ctaLink={{_type: 'link', linkType: 'href', href: 'tel:2182872000'}}
           taxNote={taxNote}
           disabled
-          disabledMessage="Please call for custom pricing for 4+ dogs."
+          disabledMessage="Please call for custom pricing for 4+ pets."
         />
       </div>
     )
@@ -65,9 +65,13 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
       {/* Inputs */}
       <div className="space-y-6">
+        <p className="font-sans text-[13px] text-cream/60 border border-border-dark rounded-md px-3 py-2">
+          New dogs require an assessment day (${assessmentDayFee}). Assessments Mon–Thu, 10 AM – 2 PM.
+        </p>
+
         <div className="space-y-3">
           <span className="block text-cream/70 font-sans text-[13px] font-medium uppercase tracking-wider">
-            {dogs.length > 1 ? 'Your Dogs' : 'Your Dog'}
+            {dogs.length > 1 ? 'Your Pets' : 'Your Pet'}
           </span>
           {dogs.map((dog, i) => (
             <DaycareDogCard
@@ -91,7 +95,7 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
         ctaLink={ctaLink}
         taxNote={taxNote}
         savings={result.savings}
-        savingsLabel="Package savings"
+        savingsLabel="Punch card savings"
       />
     </div>
   )
@@ -108,12 +112,14 @@ type DaycareDogCardProps = {
 
 function DaycareDogCard({dog, index, total, onUpdate, onRemove}: DaycareDogCardProps) {
   const meta = daycarePackages[dog.pkg]
+  const isCat = dog.dayType === 'cat'
+  const is90Day = dog.pkg === '90-day'
 
   return (
     <div className="bg-forest-card border border-border-dark rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between">
         <span className="font-sans text-[14px] font-medium text-cream">
-          {total > 1 ? `Dog ${index + 1}` : 'Your Dog'}
+          {total > 1 ? (isCat ? `Cat ${index + 1}` : `Dog ${index + 1}`) : isCat ? 'Your Cat' : 'Your Dog'}
         </span>
         {total > 1 && (
           <button
@@ -129,25 +135,32 @@ function DaycareDogCard({dog, index, total, onUpdate, onRemove}: DaycareDogCardP
       <RadioGroup
         label="Day Type"
         options={[
-          {label: 'Full Day', value: 'full'},
-          {label: 'Half Day', value: 'half'},
+          {label: 'Full Day', value: 'full', description: '$29'},
+          {label: 'Half Day', value: 'half', description: '$19 · 5hrs or less'},
+          {label: 'Cat Daycare', value: 'cat', description: '$18'},
         ]}
         value={dog.dayType}
-        onChange={(v) => onUpdate({dayType: v as DayType})}
+        onChange={(v) => {
+          const updates: Partial<DaycareDogConfig> = {dayType: v as DayType}
+          if (v === 'cat') updates.pkg = 'single'
+          onUpdate(updates)
+        }}
       />
 
-      <RadioGroup
-        label="Package"
-        options={Object.entries(daycarePackages).map(([value, pkg]) => ({
-          label: pkg.label,
-          value,
-          description: pkg.badge ? `${pkg.badge}${pkg.validity ? ` · Valid ${pkg.validity}` : ''}` : pkg.validity ? `Valid ${pkg.validity}` : undefined,
-        }))}
-        value={dog.pkg}
-        onChange={(v) => onUpdate({pkg: v as DaycarePackage})}
-      />
+      {!isCat && (
+        <RadioGroup
+          label="Package"
+          options={Object.entries(daycarePackages).map(([value, pkg]) => ({
+            label: pkg.label,
+            value,
+            description: pkg.badge ? `${pkg.badge}${pkg.validity ? ` · ${pkg.validity}` : ''}` : pkg.validity ? pkg.validity : undefined,
+          }))}
+          value={dog.pkg}
+          onChange={(v) => onUpdate({pkg: v as DaycarePackage})}
+        />
+      )}
 
-      {dog.pkg === 'single' && (
+      {dog.pkg === 'single' && !is90Day && (
         <NumberStepper
           label="Number of Days"
           value={dog.days}

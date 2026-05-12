@@ -4,7 +4,7 @@
 
 ## Status
 
-New project — schema inherited from Kingdom Canine clone. Not yet connected to a Wags-specific Sanity project. Schema needs transportation booking URL field removed from settings, and content seeded for Wags.
+Schema deployed to cloud. All content seeded and published. Pricing data rewritten in pricingData.ts for Wags service structure (4 boarding tiers, cat services, punch cards, 3 grooming service types).
 
 ## Sanity Project Details
 
@@ -85,18 +85,23 @@ All queries live in `frontend/sanity/lib/queries.ts`.
 
 The pricing calculator (`pricingCalculator` block type) has a `calculatorType` field (`daycare` | `boarding` | `grooming`) and supports `single` or `tabbed` display mode. **Actual pricing data is hardcoded in `frontend/app/data/pricingData.ts`**, not in Sanity. The Sanity block only configures which calculator to show and the CTA link.
 
-**Wags pricing structure (to be implemented in M2):**
-- Daycare: Assessment $20, Full Day $29, Half Day $19, Cat $18, punch cards (10/20/30/90-day)
-- Boarding: 4 tiers (Standard $44, Junior $48, Queen $52, Master $57), Cat $28, punch cards
-- Grooming: Full Groom, Bath & Works, Exit Bath, Cat grooming, individual services
+**Wags pricing structure (implemented in M2):**
+- Daycare: Assessment $20, Full Day $29, Half Day $19, Cat $18, punch cards (10/20/30/90-day unlimited)
+- Boarding: 4 tiers (Standard $44, Junior $48, Queen $52, Master $57), Cat $28, additional pet $5 discount, punch cards (buy X get Y free)
+- Grooming: Full Groom ($65–$130), Bath & Works ($55–$150), Exit Bath ($18–$37), Cat grooming (display only), à la carte ($8 each), exit bath add-ons ($5 each)
 
 ## Seeded Content Reference
 
-No content has been seeded yet for the Wags Sanity project. This table will be populated during Milestone 2.
-
 | Document | Type | Slug | Sanity ID |
 |----------|------|------|-----------|
-| — | — | — | — |
+| Settings | settings | — | `aa441a64-cbec-43e1-bd7b-1ac637d0a119` |
+| Daycare | service | daycare | `32d065b8-fa8f-4036-abaa-a07d75ec638f` |
+| Boarding | service | boarding | `d56ab06d-89fd-4e54-84a7-4df2b54f49ee` |
+| Grooming | service | grooming | `39a1ed77-7ef9-438d-9f25-0c8932400086` |
+| Homepage | page | homepage | `4422f53e-b3ae-4991-baa3-049fa1093329` |
+| Pricing | page | pricing | `cbdc3e6d-03f6-4116-a411-b93b8f3153ee` |
+| Contact | page | contact | `286ecd70-41ab-4b1a-90c9-d5ee1fb08220` |
+| New Clients | page | new-clients | `4af8f51f-0678-41be-a8b4-8458449a58db` |
 
 ## Notes
 

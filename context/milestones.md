@@ -40,7 +40,7 @@ Wags is a straightforward facility site with some unique features (cat services,
 
 ## Milestone 2: Sanity Schema & Content Seeding
 
-**Status:** Not Started
+**Status:** Complete (on branch `content/sanity-seed`)
 **Branch:** `content/sanity-seed`
 
 ### Goals
@@ -48,6 +48,13 @@ Wags is a straightforward facility site with some unique features (cat services,
 - Update calculator components for Wags service structure
 - Seed all Sanity content
 - Deploy schema to cloud
+
+### What was done
+- pricingData.ts completely rewritten: daycare (full/half/cat + 4 punch cards + assessment), boarding (4 tiers + cat + $5 discount + punch cards), grooming (3 service types + cat display + à la carte)
+- All 3 calculator components updated for Wags service structure
+- 8 Sanity documents seeded and published (settings, 3 services, 4 pages)
+- Schema deployed to cloud
+- Build passes clean
 
 ---
 

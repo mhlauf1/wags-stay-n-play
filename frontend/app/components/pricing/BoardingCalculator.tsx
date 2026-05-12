@@ -6,7 +6,8 @@ import PriceOutputCard from './PriceOutputCard'
 import {
   calculateBoardingPerDog,
   boardingRooms,
-  boardingAdditionalDogRate,
+  boardingAdditionalPetDiscount,
+  catBoardingRate,
 } from '@/app/data/pricingData'
 import type {RoomType, BoardingDogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
@@ -83,6 +84,26 @@ export default function BoardingCalculator({ctaText, ctaLink, taxNote}: Boarding
           ))}
           {dogs.length < 3 && <AddDogButton onClick={handleAddDog} />}
         </div>
+
+        {/* Cat boarding info */}
+        <div className="border border-border-dark rounded-md px-3 py-2 space-y-1">
+          <p className="font-sans text-[13px] text-cream/60">
+            Cat boarding: ${catBoardingRate}/night. No assessment required.
+          </p>
+          <p className="font-sans text-[12px] text-cream/40">
+            Call us at (218) 287-2000 to book cat boarding.
+          </p>
+        </div>
+
+        {/* Punch card info */}
+        <div className="border border-border-dark rounded-md px-3 py-2 space-y-1">
+          <p className="font-sans text-[13px] font-medium text-cream/70">Punch Card Deals</p>
+          <ul className="font-sans text-[12px] text-cream/50 space-y-0.5">
+            <li>10-Pack: Buy 9, get 1 free</li>
+            <li>20-Pack: Buy 17, get 3 free</li>
+            <li>30-Pack: Buy 24, get 6 free</li>
+          </ul>
+        </div>
       </div>
 
       {/* Output */}
@@ -116,8 +137,6 @@ function BoardingDogCard({
   onUpdate,
   onRemove,
 }: BoardingDogCardProps) {
-  const room = boardingRooms[dog.roomType]
-
   return (
     <div className="bg-forest-card border border-border-dark rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between">
@@ -125,7 +144,7 @@ function BoardingDogCard({
           {total > 1 ? `Dog ${index + 1}` : 'Your Dog'}
           {isAdditional && (
             <span className="text-cream/50 text-[14px] md:text-[16px] ml-2">
-              (${boardingAdditionalDogRate}/night)
+              ($${boardingAdditionalPetDiscount} off/night)
             </span>
           )}
         </span>
@@ -160,10 +179,6 @@ function BoardingDogCard({
         max={30}
         onChange={(v) => onUpdate({nights: v})}
       />
-
-      {!isAdditional && room.note && (
-        <p className="font-sans text-[12px] text-cream/50 italic">{room.note}</p>
-      )}
     </div>
   )
 }

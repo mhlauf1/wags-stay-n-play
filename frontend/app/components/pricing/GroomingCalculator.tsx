@@ -3,8 +3,8 @@
 import {useState, useMemo, useCallback} from 'react'
 import {AddDogButton, CheckboxGroup, RadioGroup} from './CalculatorInputs'
 import PriceOutputCard from './PriceOutputCard'
-import {calculateGrooming, sizeLabels, serviceLabels, hairLengthLabels, alaCarteItems} from '@/app/data/pricingData'
-import type {GroomingService, DogSize, HairLength, DogConfig} from '@/app/data/pricingData'
+import {calculateGrooming, sizeLabels, serviceLabels, serviceDescriptions, alaCarteItems, exitBathAddOns} from '@/app/data/pricingData'
+import type {GroomingService, DogSize, DogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
 
 type GroomingCalculatorProps = {
@@ -18,14 +18,13 @@ const availableSizes: DogSize[] = ['s', 'm', 'l', 'xl']
 let dogIdCounter = 1
 
 function createDog(size: DogSize = 'm'): DogConfig {
-  return {id: String(dogIdCounter++), size, hairLength: 'short', isDoodle: false}
+  return {id: String(dogIdCounter++), size}
 }
 
 export default function GroomingCalculator({ctaText, ctaLink, taxNote}: GroomingCalculatorProps) {
   const [dogs, setDogs] = useState<DogConfig[]>(() => [createDog()])
-  const [service, setService] = useState<GroomingService>('bath')
+  const [service, setService] = useState<GroomingService>('fullGroom')
   const [alaCarte, setAlaCarte] = useState<string[]>([])
-  const [addTeethCleaning, setAddTeethCleaning] = useState(false)
 
   const handleUpdateDog = useCallback((index: number, updates: Partial<DogConfig>) => {
     setDogs((prev) => prev.map((d, i) => (i === index ? {...d, ...updates} : d)))
@@ -44,17 +43,16 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
   }, [])
 
   const handleServiceChange = useCallback((v: string) => {
-    const newService = v as GroomingService
-    setService(newService)
-    if (newService === 'bath') {
-      setAddTeethCleaning(false)
-    }
+    setService(v as GroomingService)
+    setAlaCarte([])
   }, [])
 
   const result = useMemo(
-    () => calculateGrooming({service, dogs, alaCarte, addTeethCleaning}),
-    [service, dogs, alaCarte, addTeethCleaning],
+    () => calculateGrooming({service, dogs, alaCarte}),
+    [service, dogs, alaCarte],
   )
+
+  const addOnItems = service === 'exitBath' ? exitBathAddOns : alaCarteItems
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
@@ -62,7 +60,11 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
       <div className="space-y-6">
         <RadioGroup
           label="Service Type"
-          options={Object.entries(serviceLabels).map(([value, label]) => ({label, value}))}
+          options={Object.entries(serviceLabels).map(([value, label]) => ({
+            label,
+            value,
+            description: serviceDescriptions[value as GroomingService],
+          }))}
           value={service}
           onChange={handleServiceChange}
         />
@@ -78,7 +80,6 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
               dog={dog}
               index={i}
               total={dogs.length}
-              service={service}
               availableSizes={availableSizes}
               onUpdate={(updates) => handleUpdateDog(i, updates)}
               onRemove={() => handleRemoveDog(i)}
@@ -87,10 +88,10 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
           {dogs.length < 3 && <AddDogButton onClick={handleAddDog} />}
         </div>
 
-        {/* À la carte add-ons */}
+        {/* Add-ons */}
         <CheckboxGroup
-          label="À La Carte Add-Ons"
-          options={alaCarteItems.map((item) => ({
+          label={service === 'exitBath' ? 'Add-Ons ($5 each)' : 'À La Carte Add-Ons'}
+          options={addOnItems.map((item) => ({
             id: item.id,
             label: item.label,
             detail: `$${item.price}`,
@@ -99,26 +100,25 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
           onChange={setAlaCarte}
         />
 
-        {/* Teeth cleaning add-on for full groom */}
-        {service === 'fullGroom' && (
-          <label className="flex items-center gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              checked={addTeethCleaning}
-              onChange={(e) => setAddTeethCleaning(e.target.checked)}
-              className="w-4 h-4 rounded border-border-dark bg-forest-card text-terracotta focus:ring-terracotta/50"
-            />
-            <span className="font-sans text-[13px] text-cream/70 group-hover:text-cream transition-colors">
-              Add Teeth Cleaning to groom — $10/dog
-            </span>
-          </label>
-        )}
-
         {result.isStartingAt && (
           <p className="font-sans text-[12px] text-cream/50 italic">
-            Final pricing determined by behavior, coat density, coat condition, and grooming time.
+            Prices may vary depending on size, hair length, matting, or additional services.
           </p>
         )}
+
+        {/* Cat grooming info */}
+        <div className="border border-border-dark rounded-md px-3 py-2 space-y-1">
+          <p className="font-sans text-[13px] font-medium text-cream/70">Cat Grooming</p>
+          <ul className="font-sans text-[12px] text-cream/50 space-y-0.5">
+            <li>Lion Cut — $80</li>
+            <li>Lion Cut (no bath) — $70</li>
+            <li>Cat Bath & Works — $70</li>
+            <li>Foam Bath — $15</li>
+          </ul>
+          <p className="font-sans text-[11px] text-cream/40">
+            Add nail trim or teeth brushing for $5 each.
+          </p>
+        </div>
       </div>
 
       {/* Output */}
@@ -128,7 +128,6 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
         ctaText={ctaText}
         ctaLink={ctaLink}
         taxNote={taxNote}
-        includes={result.includes.length > 0 ? result.includes : undefined}
         badge={result.isStartingAt ? 'Starting at' : null}
       />
     </div>
@@ -140,13 +139,12 @@ type GroomingDogCardProps = {
   dog: DogConfig
   index: number
   total: number
-  service: GroomingService
   availableSizes: DogSize[]
   onUpdate: (updates: Partial<DogConfig>) => void
   onRemove: () => void
 }
 
-function GroomingDogCard({dog, index, total, service, availableSizes: sizes, onUpdate, onRemove}: GroomingDogCardProps) {
+function GroomingDogCard({dog, index, total, availableSizes: sizes, onUpdate, onRemove}: GroomingDogCardProps) {
   return (
     <div className="bg-forest-card border border-border-dark rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between">
@@ -186,46 +184,6 @@ function GroomingDogCard({dog, index, total, service, availableSizes: sizes, onU
           ))}
         </div>
       </div>
-
-      {/* Hair Length — only for bath */}
-      {service === 'bath' && (
-        <div>
-          <span className="block text-cream/70 font-sans text-[12px] font-medium uppercase tracking-wider mb-1.5">
-            Hair Length
-          </span>
-          <div className="flex flex-wrap gap-1.5">
-            {(['short', 'long'] as HairLength[]).map((hl) => (
-              <button
-                key={hl}
-                type="button"
-                onClick={() => onUpdate({hairLength: hl})}
-                className={`font-sans text-[13px] font-medium px-3 py-1.5 rounded-full border transition-all ${
-                  dog.hairLength === hl
-                    ? 'bg-terracotta text-white border-terracotta'
-                    : 'bg-transparent text-cream/70 border-border-dark hover:border-cream/40 hover:text-cream'
-                }`}
-              >
-                {hairLengthLabels[hl]}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Doodle/Specialty toggle — only for full groom */}
-      {service === 'fullGroom' && (
-        <label className="flex items-center gap-3 cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={dog.isDoodle}
-            onChange={(e) => onUpdate({isDoodle: e.target.checked})}
-            className="w-4 h-4 rounded border-border-dark bg-forest-card text-terracotta focus:ring-terracotta/50"
-          />
-          <span className="font-sans text-[13px] text-cream/70 group-hover:text-cream transition-colors">
-            Doodle / Specialty Breed (+$10)
-          </span>
-        </label>
-      )}
     </div>
   )
 }
