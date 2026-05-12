@@ -89,7 +89,7 @@ export default function HeroMarquee({block, index}: HeroMarqueeProps) {
               <div className="mb-5 md:mb-6">
                 <Image
                   id={heroLogo.asset._ref}
-                  alt={heroLogo.alt || 'Boxers Bed & Biscuits'}
+                  alt={heroLogo.alt || 'Wags Stay N\' Play'}
                   width={400}
                   className="w-[200px] md:w-[260px] lg:w-[320px] h-auto mx-auto"
                   loading={isFirst ? 'eager' : 'lazy'}

@@ -60,7 +60,7 @@ Wags is a straightforward facility site with some unique features (cat services,
 
 ## Milestone 3: Core Pages — Homepage, About & Services
 
-**Status:** Not Started
+**Status:** Complete (on branch `feature/core-pages`)
 **Branch:** `feature/core-pages`
 
 ### Goals
@@ -70,12 +70,20 @@ Wags is a straightforward facility site with some unique features (cat services,
 - Boarding page: hero, 4 kennel tiers, cat boarding, daily schedule, pricing calculator
 - Grooming page: hero, service categories (Full Groom, Bath & Works, Exit Bath, Cat), pricing calculator
 
+### What was done
+- Updated logo references to new wags-logo-no-bg.png, removed stale logo files
+- Added teamGrid and valuePillars GROQ query expansions
+- Seeded About page in Sanity (heroMinimal + splitContent + teamGrid + valuePillars + ctaBanner)
+- All 8 pages verified rendering with correct Wags content
+- Fixed Boxers Bed & Biscuits reference in HeroMarquee.tsx
+- Build passes clean
+
 ---
 
 ## Milestone 4: Supporting Pages & New Clients Flow
 
-**Status:** Not Started
-**Branch:** `feature/supporting-pages`
+**Status:** Complete (content seeded in M2, pages verified in M3)
+**Branch:** `feature/core-pages`
 
 ### Goals
 - New Clients / Getting Started: assessment process, vaccination requirements, breakaway collars, downloadable forms
@@ -83,12 +91,16 @@ Wags is a straightforward facility site with some unique features (cat services,
 - Contact page: form, Google Maps, hours, phone/email
 - Gallery page: facility photos from Wix scrape
 
+### What was done
+- All pages seeded and rendering: New Clients (processSteps + featureCards + ctaBanner), Pricing (pricingPageTabs), Contact (contactForm with hours)
+- Gallery page not yet seeded (waiting on facility photos from client)
+
 ---
 
 ## Milestone 5: Polish & Launch Prep
 
-**Status:** Not Started
-**Branch:** `feature/polish`
+**Status:** In Progress (on branch `feature/core-pages`)
+**Branch:** `feature/core-pages`
 
 ### Goals
 - SEO optimization (meta tags, structured data, sitemap.xml, robots.txt)
@@ -100,3 +112,9 @@ Wags is a straightforward facility site with some unique features (cat services,
 - Vercel deployment
 - DNS cutover plan (Wix → Vercel)
 - POS coordination (Goose timeline)
+
+### What was done
+- Added skip-to-content accessibility link in layout.tsx
+- Fixed remaining sister site reference (Boxers B&B alt text in HeroMarquee)
+- Verified: sitemap.ts, robots.ts, structured data (JSON-LD), metadata, favicon all present and correct
+- Verified: ARIA attributes, keyboard nav, focus traps already comprehensive from design system

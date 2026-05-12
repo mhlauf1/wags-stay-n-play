@@ -1,46 +1,50 @@
 # Current Milestone
 
-## Milestone 3: Core Pages — Homepage, About & Services
+## Milestone 5: Polish & Launch Prep
 
 ### Status
 In Progress
 
 ### Goals
-- Homepage: hero with facility photos, service cards, about teaser, hours, gallery, CTA
-- About Us page (NEW): team grid, facility narrative, differentiators
-- Daycare page: hero, 4 play yards, structured play, cat daycare, pricing calculator
-- Boarding page: hero, 4 kennel tiers, cat boarding, daily schedule, pricing calculator
-- Grooming page: hero, service categories (Full Groom, Bath & Works, Exit Bath, Cat), pricing calculator
+- SEO optimization (meta tags, structured data, sitemap.xml, robots.txt)
+- Performance audit (Lighthouse 90+ all categories)
+- Accessibility audit (WCAG AA compliance)
+- Cross-browser testing
+- Custom 404 page
+- Final content review
+- Vercel deployment
+- DNS cutover plan (Wix → Vercel)
+- POS coordination (Goose timeline)
 
 ### What's been done
 
-#### Logo fix
-- Updated Footer.tsx to reference new `wags-logo-no-bg.png`
-- Removed stale logo files: `kingdom-logo.png`, `logo-no-bg.png`, `wags-logo.png`
-- Header.tsx already had correct reference
+#### Already existed from Embark design system
+- Dynamic sitemap (`sitemap.ts`) — pulls from Sanity, filters noIndex, proper priority
+- Robots.txt (`robots.ts`) — allows /, disallows /studio and /api/, sitemap URL correct
+- Favicon — SVG paw icon at `app/icon.svg`
+- Per-page metadata — `generateMetadata()` on all routes with canonical URLs, OG images, noIndex support
+- Global metadata — title template, description, metadataBase set to wagsstaynplay.com
+- JSON-LD structured data — LocalBusiness (address, geo, hours), Organization, WebSite
+- Image optimization — Sanity CDN loader, responsive sizes, eager/lazy loading
+- Accessibility — ARIA attributes, keyboard nav, focus traps, semantic HTML
+- Styled 404 page — proper heading, message, back-to-home button
+- Vercel Speed Insights integrated
 
-#### GROQ query gaps fixed
-- Added `teamGrid` and `valuePillars` block type expansions to `pageBuilderExpansion` in `queries.ts`
-
-#### About page seeded (new for Wags)
-- Created and published About page in Sanity (slug: `about`, ID: `a9fc51c5-e7bd-4f62-ab96-18c13c29aa52`)
-- Sections: heroMinimal, splitContent (facility narrative), teamGrid (4 staff members), valuePillars (4 differentiators), ctaBanner
-- Team photos not yet added (waiting on client photo ↔ name pairing)
-
-#### Page verification
-- All 8 pages return 200 and render correct Wags content
-- Build passes clean (8 static pages generated)
+#### Added in this milestone
+- Skip-to-content accessibility link in layout.tsx
+- Fixed Boxers Bed & Biscuits alt text reference in HeroMarquee.tsx
 
 ### Still needed
-- Visual QA in browser — verify design, spacing, colors across all pages
-- Add nav link to About page in Sanity settings
-- Facility photos for hero sections and service pages
-- Team photos for About page (waiting on client)
-- Any design tweaks identified during QA
+- Lighthouse audit to identify any remaining performance/accessibility gaps
+- Cross-browser visual check
+- Vercel deployment verification
+- DNS cutover plan documentation
+- Gallery page (blocked on client photos)
+- Team photos for About page (blocked on client)
 
 ### Definition of Done
-- [ ] All core pages render correctly with Wags content
-- [ ] About page live with team grid, narrative, differentiators
-- [ ] No KC/HAFH references anywhere
-- [ ] Logo displays correctly in header and footer
+- [ ] Lighthouse 90+ across all categories
+- [ ] No remaining KC/sister site references
+- [ ] Skip-to-content link works
+- [ ] All pages render correctly on Vercel preview
 - [ ] Build passes clean

@@ -240,8 +240,14 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           </>
         )}
         <SanityLive onError={handleError} />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-terracotta focus:px-4 focus:py-2 focus:text-white focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <Header navItems={navItems as any} ctaButton={settings?.ctaButton as any} logo={settings?.logo as any} />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer
           tagline={settings?.footerTagline ?? undefined}
           columns={settings?.footerColumns as any}
