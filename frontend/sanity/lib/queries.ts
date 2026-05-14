@@ -284,6 +284,14 @@ const pageBuilderExpansion = /* groq */ `
         ${linkReference}
       }
     },
+    _type == "photoMarquee" => {
+      ...
+    },
+    _type == "videoSection" => {
+      ...,
+      primaryCta ${buttonFields},
+      secondaryCta ${buttonFields}
+    },
   }
 `
 

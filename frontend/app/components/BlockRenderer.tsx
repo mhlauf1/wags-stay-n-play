@@ -44,6 +44,7 @@ const GalleryShowcase = lazy(() => import('@/app/components/sections/GalleryShow
 const GalleryPage = lazy(() => import('@/app/components/sections/GalleryPage'))
 const ValuePillars = lazy(() => import('@/app/components/sections/ValuePillars'))
 const PricingPageTabs = lazy(() => import('@/app/components/sections/PricingPageTabs'))
+const PhotoMarquee = lazy(() => import('@/app/components/sections/PhotoMarquee'))
 const Spacer = lazy(() => import('@/app/components/sections/Spacer'))
 import {dataAttr} from '@/sanity/lib/utils'
 import {PageBuilderSection} from '@/sanity/lib/types'
@@ -112,6 +113,7 @@ const Blocks = {
   galleryPage: GalleryPage,
   valuePillars: ValuePillars,
   pricingPageTabs: PricingPageTabs,
+  photoMarquee: PhotoMarquee,
   spacer: Spacer,
 } as BlocksType
 

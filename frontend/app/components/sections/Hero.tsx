@@ -86,7 +86,7 @@ export default function Hero({block, index}: HeroProps) {
 
           {heading && (
             <Wrap delay={0.1}>
-              <h1 className="text-[48px] md:text-[56px] md:max-w-[16ch] lg:text-[82px] leading-[104%] tracking-tight font-semibold mb-5">
+              <h1 className="text-[42px] md:text-[60px] lg:text-[84px] leading-[104%]  tracking-tight font-medium mb-5">
                 {heading}
               </h1>
             </Wrap>

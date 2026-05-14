@@ -24,6 +24,16 @@ export const videoSection = defineType({
       rows: 3,
     }),
     defineField({
+      name: 'primaryCta',
+      title: 'Primary CTA',
+      type: 'button',
+    }),
+    defineField({
+      name: 'secondaryCta',
+      title: 'Secondary CTA',
+      type: 'button',
+    }),
+    defineField({
       name: 'videoUrl',
       title: 'Video URL',
       type: 'url',

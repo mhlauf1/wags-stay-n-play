@@ -5,6 +5,7 @@ import {FadeIn} from '@/app/components/ui/FadeIn'
 type CtaBannerProps = {
   block: {
     heading?: string
+    subtext?: string
     icon?: {asset?: {_ref: string}; alt?: string}
     stickerImage?: {asset?: {_ref: string}; alt?: string}
     backgroundImage?: {asset?: {_ref: string}; crop?: any; alt?: string}
@@ -38,6 +39,7 @@ export default function CtaBanner({block, index}: CtaBannerProps) {
   const isEarly = index <= 1
   const {
     heading,
+    subtext,
     icon,
     stickerImage,
     backgroundImage,
@@ -103,11 +105,19 @@ export default function CtaBanner({block, index}: CtaBannerProps) {
 
               {heading && (
                 <FadeIn delay={0.1}>
-                  <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-semibold tracking-tight leading-[95%] text-white mb-10 max-w-xl">
+                  <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-semibold tracking-tight leading-[95%] text-white mb-4 max-w-xl">
                     {heading}
                   </h2>
                 </FadeIn>
               )}
+
+              {subtext && (
+                <FadeIn delay={0.15}>
+                  <p className="text-white/80 text-lg md:text-xl max-w-lg mb-10">{subtext}</p>
+                </FadeIn>
+              )}
+
+              {!subtext && heading && <div className="mb-6" />}
 
               <FadeIn className="w-full md:w-auto" delay={0.2}>
                 {cta?.buttonText && (
@@ -201,7 +211,7 @@ export default function CtaBanner({block, index}: CtaBannerProps) {
           {heading && (
             <FadeIn delay={0.1}>
               <h2
-                className={`text-[32px] tracking-tight font-semibold text-[40px] md:text-[58px] lg:text-[72px] leading-[105%] text-white mb-10 max-w-4xl ${
+                className={`text-[32px] tracking-tight font-semibold text-[40px] md:text-[58px] lg:text-[72px] leading-[105%] text-white mb-4 md:mb-6 max-w-3xl ${
                   isLeft ? 'text-left' : 'text-center mx-auto'
                 }`}
               >
@@ -209,6 +219,21 @@ export default function CtaBanner({block, index}: CtaBannerProps) {
               </h2>
             </FadeIn>
           )}
+
+          {subtext && (
+            <FadeIn delay={0.15}>
+              <p
+                className={`text-white text-lg md:text-xl max-w-2xl mb-10 ${
+                  isLeft ? 'text-left' : 'text-center mx-auto'
+                }`}
+              >
+                {subtext}
+              </p>
+            </FadeIn>
+          )}
+
+          {!subtext && heading && <div className="mb-6" />}
+
           <FadeIn className="w-full md:w-auto" delay={0.2}>
             {cta?.buttonText && (
               <Button variant="primary" link={cta.link} className="mb-4">
