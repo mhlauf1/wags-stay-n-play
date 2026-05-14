@@ -42,6 +42,7 @@ import {galleryShowcase} from './objects/galleryShowcase'
 import {galleryPage} from './objects/galleryPage'
 import {valuePillars} from './objects/valuePillars'
 import {pricingPageTabs} from './objects/pricingPageTabs'
+import {photoMarquee} from './objects/photoMarquee'
 import {spacer} from './objects/spacer'
 import {seo} from './objects/seo'
 import {settings} from './singletons/settings'
@@ -105,5 +106,6 @@ export const schemaTypes = [
   galleryPage,
   valuePillars,
   pricingPageTabs,
+  photoMarquee,
   spacer,
 ]

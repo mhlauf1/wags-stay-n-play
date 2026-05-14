@@ -1,41 +1,50 @@
 # Current Milestone
 
-## Milestone 2: Sanity Schema & Content Seeding
+## Milestone 5: Polish & Launch Prep
 
 ### Status
-Complete
+In Progress
 
 ### Goals
-- Rewrite all pricing data with Wags values (4 boarding tiers, cat services, punch cards)
-- Update calculator components for Wags service structure
-- Seed all Sanity content
-- Deploy schema to cloud
+- SEO optimization (meta tags, structured data, sitemap.xml, robots.txt)
+- Performance audit (Lighthouse 90+ all categories)
+- Accessibility audit (WCAG AA compliance)
+- Cross-browser testing
+- Custom 404 page
+- Final content review
+- Vercel deployment
+- DNS cutover plan (Wix → Vercel)
+- POS coordination (Goose timeline)
 
-### What was done
+### What's been done
 
-#### Pricing data (`pricingData.ts` — complete rewrite)
-- Daycare: $29 full / $19 half / $18 cat, assessment day $20, 4 punch card packages (10/20/30/90-day unlimited $1,350)
-- Boarding: 4 tiers (Standard $44, Junior $48, Queen $52, Master $57), cat $28, additional pet $5 discount, punch card info
-- Grooming: 3 service types (Full Groom $65–$130, Bath & Works $55–$150, Exit Bath $18–$37), cat grooming display, 6 à la carte services ($8 each), exit bath add-ons ($5 each)
-- Removed: KC's hair length dimension, doodle surcharge, teeth cleaning add-on, VIP suite
+#### Already existed from Embark design system
+- Dynamic sitemap (`sitemap.ts`) — pulls from Sanity, filters noIndex, proper priority
+- Robots.txt (`robots.ts`) — allows /, disallows /studio and /api/, sitemap URL correct
+- Favicon — SVG paw icon at `app/icon.svg`
+- Per-page metadata — `generateMetadata()` on all routes with canonical URLs, OG images, noIndex support
+- Global metadata — title template, description, metadataBase set to wagsstaynplay.com
+- JSON-LD structured data — LocalBusiness (address, geo, hours), Organization, WebSite
+- Image optimization — Sanity CDN loader, responsive sizes, eager/lazy loading
+- Accessibility — ARIA attributes, keyboard nav, focus traps, semantic HTML
+- Styled 404 page — proper heading, message, back-to-home button
+- Vercel Speed Insights integrated
 
-#### Calculator components
-- DaycareCalculator: cat daycare option, 90-day unlimited, assessment info notice, punch card savings
-- BoardingCalculator: 4 room types, $5 discount model, cat boarding info, punch card deals display
-- GroomingCalculator: 3 service types (Full Groom / Bath & Works / Exit Bath), removed hair length and doodle toggle, cat grooming info, service-specific add-ons
+#### Added in this milestone
+- Skip-to-content accessibility link in layout.tsx
+- Fixed Boxers Bed & Biscuits alt text reference in HeroMarquee.tsx
 
-#### Sanity content (8 documents seeded and published)
-- Settings: full facility info, nav with services dropdown, footer, contact, social, local business structured data with Moorhead geo
-- 3 services: Daycare, Boarding, Grooming (each with heroMinimal + featureCards + pricingCalculator + faqAccordion + ctaBanner)
-- 4 pages: Homepage (heroMinimal + serviceCards + ctaStrip + splitContent with hours + statsBar + ctaBanner), Pricing (pricingPageTabs with 3 service tabs), Contact (contactForm with map + hours), New Clients (processSteps + featureCards requirements + ctaBanner)
-
-#### Infrastructure
-- Schema deployed to Sanity cloud
-- Build passes clean
+### Still needed
+- Lighthouse audit to identify any remaining performance/accessibility gaps
+- Cross-browser visual check
+- Vercel deployment verification
+- DNS cutover plan documentation
+- Gallery page (blocked on client photos)
+- Team photos for About page (blocked on client)
 
 ### Definition of Done
-- [x] pricingData.ts fully rewritten with Wags pricing structure
-- [x] All 3 calculators updated for Wags service model
-- [x] All Sanity content seeded and published (8 documents)
-- [x] Schema deployed to cloud
-- [x] Build passes clean
+- [ ] Lighthouse 90+ across all categories
+- [ ] No remaining KC/sister site references
+- [ ] Skip-to-content link works
+- [ ] All pages render correctly on Vercel preview
+- [ ] Build passes clean

@@ -42,6 +42,11 @@ export const ctaBanner = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'subtext',
+      title: 'Subtext',
+      type: 'string',
+    }),
+    defineField({
       name: 'backgroundImage',
       title: 'Background Image',
       type: 'image',

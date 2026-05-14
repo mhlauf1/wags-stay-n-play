@@ -89,7 +89,7 @@ export default function HeroMarquee({block, index}: HeroMarqueeProps) {
               <div className="mb-5 md:mb-6">
                 <Image
                   id={heroLogo.asset._ref}
-                  alt={heroLogo.alt || 'Boxers Bed & Biscuits'}
+                  alt={heroLogo.alt || "Wags Stay N' Play"}
                   width={400}
                   className="w-[200px] md:w-[260px] lg:w-[320px] h-auto mx-auto"
                   loading={isFirst ? 'eager' : 'lazy'}
@@ -106,7 +106,7 @@ export default function HeroMarquee({block, index}: HeroMarqueeProps) {
 
           {heading && (
             <Wrap delay={0.1}>
-              <h1 className="text-[36px] md:text-[56px] lg:text-[76px] leading-[104%]  tracking-tight font-medium mb-5">
+              <h1 className="text-[42px] md:text-[60px] lg:text-[84px] leading-[104%]  tracking-tight font-medium mb-5">
                 {heading}
                 {headingAccent && (
                   <>
@@ -257,7 +257,7 @@ export default function HeroMarquee({block, index}: HeroMarqueeProps) {
                 >
                   <Image
                     id={img.asset._ref}
-                    alt={img.alt || 'Boxers facility'}
+                    alt={img.alt || "Wags Stay N' Play"}
                     width={880}
                     crop={img.crop}
                     hotspot={img.hotspot}

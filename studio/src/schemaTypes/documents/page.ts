@@ -74,6 +74,7 @@ export const page = defineType({
         {type: 'galleryPage'},
         {type: 'valuePillars'},
         {type: 'pricingPageTabs'},
+        {type: 'photoMarquee'},
         {type: 'spacer'},
       ],
       options: {
