@@ -37,7 +37,7 @@ function getEmbedUrl(url: string): string | null {
   if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`
 
   const vimeoMatch = url.match(/vimeo\.com\/(\d+)/)
-  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&muted=1&loop=1`
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&muted=1&loop=1&title=0&byline=0&portrait=0`
 
   return null
 }
