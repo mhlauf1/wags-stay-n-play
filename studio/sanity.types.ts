@@ -132,6 +132,19 @@ export type Spacer = {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
+export type PhotoMarquee = {
+  _type: 'photoMarquee'
+  marqueeImages?: Array<{
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+    _key: string
+  }>
+}
+
 export type PricingPageTabs = {
   _type: 'pricingPageTabs'
   eyebrow?: string
@@ -394,6 +407,8 @@ export type VideoSection = {
   eyebrow?: string
   heading?: string
   description?: string
+  primaryCta?: Button
+  secondaryCta?: Button
   videoUrl: string
   thumbnail?: {
     asset?: SanityImageAssetReference
@@ -773,6 +788,7 @@ export type CtaBanner = {
     _type: 'image'
   }
   heading: string
+  subtext?: string
   backgroundImage?: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -1196,6 +1212,9 @@ export type Service = {
       } & ValuePillars)
     | ({
         _key: string
+      } & PhotoMarquee)
+    | ({
+        _key: string
       } & Spacer)
   >
 }
@@ -1497,6 +1516,9 @@ export type Page = {
       } & PricingPageTabs)
     | ({
         _key: string
+      } & PhotoMarquee)
+    | ({
+        _key: string
       } & Spacer)
   >
 }
@@ -1749,6 +1771,7 @@ export type AllSanitySchemaTypes =
   | TableData
   | MatrixData
   | Spacer
+  | PhotoMarquee
   | PricingPageTabs
   | ValuePillars
   | GalleryPage

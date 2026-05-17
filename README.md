@@ -1,8 +1,8 @@
-# Home Away From Home — Fargo
+# Wags Stay N' Play
 
-Website for **Home Away From Home**, a pet daycare, boarding, and grooming facility in Fargo, ND. Part of the [Embark Pet Services](https://www.embarkpetservices.com/) portfolio.
+Website for **Wags Stay N' Play**, a locally-owned dog and cat daycare, boarding, and grooming facility in Moorhead, MN. Part of the [Embark Pet Services](https://www.embarkpetservices.com/) portfolio.
 
-**Live domain:** https://homeawayfargo.com/
+**Live domain:** https://wagsstaynplay.com/
 
 ## Tech Stack
 
@@ -10,7 +10,6 @@ Website for **Home Away From Home**, a pet daycare, boarding, and grooming facil
 - **CMS:** Sanity.io
 - **CSS:** Tailwind CSS v4
 - **Hosting:** Vercel
-- **DNS:** Cloudflare
 
 ## Getting Started
 
@@ -31,12 +30,8 @@ npm run dev
 └── context/      # Project documentation and instructions
 ```
 
-## Theme System
+## Design
 
-Three design themes switchable via dev-only toggle widget:
+Single color palette — tan/burgundy theme. No multi-theme system.
 
-- **Hearthstone** — Warm, cozy, rustic (barn red + cream)
-- **Prairie Modern** — Clean, contemporary, airy (sage + terracotta)
-- **Farmstead Blue** — Confident, established (navy + gold)
-
-Use `?theme=hearthstone` URL param for shareable preview links.
+Colors, fonts, and spacing are defined as CSS custom properties in `frontend/app/globals.css` using Tailwind CSS v4's `@theme` directive.

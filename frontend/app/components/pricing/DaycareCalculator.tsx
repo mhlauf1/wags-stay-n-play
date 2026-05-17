@@ -3,8 +3,8 @@
 import {useState, useMemo, useCallback} from 'react'
 import {NumberStepper, RadioGroup, AddDogButton, ContactNotice} from './CalculatorInputs'
 import PriceOutputCard from './PriceOutputCard'
-import {calculateDaycarePerDog, daycarePackages, assessmentDayFee} from '@/app/data/pricingData'
-import type {DayType, DaycarePackage, DaycareDogConfig} from '@/app/data/pricingData'
+import {calculateDaycarePerDog, daycareRates} from '@/app/data/pricingData'
+import type {DayType, DaycareDogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
 
 type DaycareCalculatorProps = {
@@ -16,7 +16,7 @@ type DaycareCalculatorProps = {
 let dogIdCounter = 1
 
 function createDog(): DaycareDogConfig {
-  return {id: String(dogIdCounter++), dayType: 'full', pkg: 'single', days: 1}
+  return {id: String(dogIdCounter++), dayType: 'full', days: 1}
 }
 
 export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCalculatorProps) {
@@ -65,10 +65,6 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
       {/* Inputs */}
       <div className="space-y-6">
-        <p className="font-sans text-[13px] text-cream/60 border border-border-dark rounded-md px-3 py-2">
-          New dogs require an assessment day (${assessmentDayFee}). Assessments Mon–Thu, 10 AM – 2 PM.
-        </p>
-
         <div className="space-y-3">
           <span className="block text-cream/70 font-sans text-[13px] font-medium uppercase tracking-wider">
             {dogs.length > 1 ? 'Your Pets' : 'Your Pet'}
@@ -94,8 +90,6 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
         ctaText={ctaText}
         ctaLink={ctaLink}
         taxNote={taxNote}
-        savings={result.savings}
-        savingsLabel="Punch card savings"
       />
     </div>
   )
@@ -111,9 +105,7 @@ type DaycareDogCardProps = {
 }
 
 function DaycareDogCard({dog, index, total, onUpdate, onRemove}: DaycareDogCardProps) {
-  const meta = daycarePackages[dog.pkg]
   const isCat = dog.dayType === 'cat'
-  const is90Day = dog.pkg === '90-day'
 
   return (
     <div className="bg-forest-card border border-border-dark rounded-lg p-4 space-y-4">
@@ -135,44 +127,21 @@ function DaycareDogCard({dog, index, total, onUpdate, onRemove}: DaycareDogCardP
       <RadioGroup
         label="Day Type"
         options={[
-          {label: 'Full Day', value: 'full', description: '$29'},
-          {label: 'Half Day', value: 'half', description: '$19 · 5hrs or less'},
-          {label: 'Cat Daycare', value: 'cat', description: '$18'},
+          {label: 'Full Day', value: 'full', description: `$${daycareRates.full}`},
+          {label: 'Half Day', value: 'half', description: `$${daycareRates.half} · 5hrs or less`},
+          {label: 'Cat Daycare', value: 'cat', description: `$${daycareRates.cat}`},
         ]}
         value={dog.dayType}
-        onChange={(v) => {
-          const updates: Partial<DaycareDogConfig> = {dayType: v as DayType}
-          if (v === 'cat') updates.pkg = 'single'
-          onUpdate(updates)
-        }}
+        onChange={(v) => onUpdate({dayType: v as DayType})}
       />
 
-      {!isCat && (
-        <RadioGroup
-          label="Package"
-          options={Object.entries(daycarePackages).map(([value, pkg]) => ({
-            label: pkg.label,
-            value,
-            description: pkg.badge ? `${pkg.badge}${pkg.validity ? ` · ${pkg.validity}` : ''}` : pkg.validity ? pkg.validity : undefined,
-          }))}
-          value={dog.pkg}
-          onChange={(v) => onUpdate({pkg: v as DaycarePackage})}
-        />
-      )}
-
-      {dog.pkg === 'single' && !is90Day && (
-        <NumberStepper
-          label="Number of Days"
-          value={dog.days}
-          min={1}
-          max={30}
-          onChange={(v) => onUpdate({days: v})}
-        />
-      )}
-
-      {meta.note && (
-        <p className="font-sans text-[12px] text-cream/50 italic">{meta.note}</p>
-      )}
+      <NumberStepper
+        label="Number of Days"
+        value={dog.days}
+        min={1}
+        max={30}
+        onChange={(v) => onUpdate({days: v})}
+      />
     </div>
   )
 }
