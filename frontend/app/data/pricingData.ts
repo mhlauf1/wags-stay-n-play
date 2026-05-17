@@ -1,74 +1,15 @@
 // ─── Daycare ────────────────────────────────────────────────
 export type DayType = 'full' | 'half' | 'cat'
-export type DaycarePackage = 'single' | '10-day' | '20-day' | '30-day' | '90-day'
 
-export type PackageMeta = {
-  days: number | null
-  fullRate: number
-  halfRate: number
-  catRate: number
-  fullTotal?: number
-  halfTotal?: number
-  label: string
-  badge?: string
-  validity?: string
-  note?: string
-}
-
-export const assessmentDayFee = 20
-
-export const daycarePackages: Record<DaycarePackage, PackageMeta> = {
-  single: {
-    days: null,
-    fullRate: 29,
-    halfRate: 19,
-    catRate: 18,
-    label: 'Single Day',
-  },
-  '10-day': {
-    days: 10,
-    fullRate: 26.5,
-    halfRate: 17.42,
-    catRate: 18,
-    fullTotal: 265,
-    label: '10-Day Punch Card',
-    badge: 'Save $25',
-  },
-  '20-day': {
-    days: 20,
-    fullRate: 23.75,
-    halfRate: 15.63,
-    catRate: 18,
-    fullTotal: 475,
-    label: '20-Day Punch Card',
-    badge: 'Save $105',
-  },
-  '30-day': {
-    days: 30,
-    fullRate: 21.33,
-    halfRate: 14.03,
-    catRate: 18,
-    fullTotal: 640,
-    label: '30-Day Punch Card',
-    badge: 'Save $230',
-  },
-  '90-day': {
-    days: null,
-    fullRate: 0,
-    halfRate: 0,
-    catRate: 18,
-    fullTotal: 1350,
-    label: '90-Day Unlimited',
-    badge: 'Unlimited',
-    validity: '90 days',
-    note: 'Unlimited daycare for 90 days from purchase',
-  },
+export const daycareRates: Record<DayType, number> = {
+  full: 33,
+  half: 23,
+  cat: 22,
 }
 
 export type DaycareDogConfig = {
   id: string
   dayType: DayType
-  pkg: DaycarePackage
   days: number
 }
 
@@ -77,7 +18,6 @@ export type LineItem = {label: string; amount: number}
 export type DaycareResult = {
   total: number
   lineItems: LineItem[]
-  savings: number | null
   perVisitRate: number
 }
 
@@ -85,109 +25,69 @@ export function calculateDaycarePerDog(input: {dogs: DaycareDogConfig[]}): Dayca
   const {dogs} = input
   const lineItems: LineItem[] = []
   let total = 0
-  let totalSavings = 0
-  let hasSavings = false
 
   for (let i = 0; i < dogs.length; i++) {
     const dog = dogs[i]
-    const meta = daycarePackages[dog.pkg]
+    const rate = daycareRates[dog.dayType]
+    const cost = rate * dog.days
 
-    if (dog.dayType === 'cat') {
-      const cost = meta.catRate * (meta.days ?? dog.days)
-      const dogLabel = dogs.length > 1 ? `Cat ${i + 1}` : 'Your cat'
-      lineItems.push({
-        label: `${dogLabel} — Cat Daycare (${meta.days ?? dog.days} day${(meta.days ?? dog.days) > 1 ? 's' : ''} @ $${meta.catRate})`,
-        amount: cost,
-      })
-      total += cost
-      continue
-    }
+    const isCat = dog.dayType === 'cat'
+    const dayTypeLabel = isCat ? 'Cat Daycare' : dog.dayType === 'full' ? 'Full Day' : 'Half Day'
+    const petLabel =
+      dogs.length > 1 ? (isCat ? `Cat ${i + 1}` : `Dog ${i + 1}`) : isCat ? 'Your cat' : 'Your dog'
 
-    if (dog.pkg === '90-day') {
-      const dogLabel = dogs.length > 1 ? `Dog ${i + 1}` : 'Your dog'
-      lineItems.push({
-        label: `${dogLabel} — 90-Day Unlimited Daycare`,
-        amount: 1350,
-      })
-      total += 1350
-      const singleRate = daycarePackages.single.fullRate
-      totalSavings += singleRate * 90 - 1350
-      hasSavings = true
-      continue
-    }
-
-    const rate = dog.dayType === 'full' ? meta.fullRate : meta.halfRate
-    const numDays = meta.days ?? dog.days
-
-    const marketedTotal = dog.dayType === 'full' ? meta.fullTotal : meta.halfTotal
-    const cost = marketedTotal ?? rate * numDays
-
-    const pkgLabel = dog.pkg === 'single' ? '' : ` — ${meta.label}`
-    const dayTypeLabel = dog.dayType === 'full' ? 'Full Day' : 'Half Day'
-    const dogLabel = dogs.length > 1 ? `Dog ${i + 1}` : 'Your dog'
     lineItems.push({
-      label: `${dogLabel} — ${dayTypeLabel}${pkgLabel} (${numDays} day${numDays > 1 ? 's' : ''} @ $${rate})`,
+      label: `${petLabel} — ${dayTypeLabel} (${dog.days} day${dog.days > 1 ? 's' : ''} @ $${rate})`,
       amount: cost,
     })
-
     total += cost
-
-    if (dog.pkg !== 'single') {
-      const singleRate = dog.dayType === 'full' ? daycarePackages.single.fullRate : daycarePackages.single.halfRate
-      totalSavings += singleRate * numDays - cost
-      hasSavings = true
-    }
   }
 
-  const firstDog = dogs[0]
-  const firstMeta = daycarePackages[firstDog.pkg]
-  let perVisitRate: number
-  if (firstDog.dayType === 'cat') {
-    perVisitRate = firstMeta.catRate
-  } else if (firstDog.pkg === '90-day') {
-    perVisitRate = 15
-  } else {
-    perVisitRate = firstDog.dayType === 'full' ? firstMeta.fullRate : firstMeta.halfRate
-  }
-
-  return {total, lineItems, savings: hasSavings ? totalSavings : null, perVisitRate}
+  return {total, lineItems, perVisitRate: daycareRates[dogs[0].dayType]}
 }
 
 // ─── Boarding ───────────────────────────────────────────────
-export type RoomType = 'standard' | 'junior' | 'queen' | 'master'
+export type RoomType = 'standard' | 'junior' | 'queen' | 'master' | 'catCondo'
 
 export type RoomMeta = {
   label: string
   rate: number
   description: string
-  note?: string
+  maxPets: number
 }
 
 export const boardingRooms: Record<RoomType, RoomMeta> = {
   standard: {
-    label: 'Standard',
-    rate: 44,
+    label: 'Standard Suite',
+    rate: 48,
     description: 'Comfortable kennel boarding',
+    maxPets: 1, // TODO: confirm single-occupancy with client
   },
   junior: {
     label: 'Junior Suite',
-    rate: 48,
+    rate: 52,
     description: 'A step up in space and comfort',
+    maxPets: 2,
   },
   queen: {
     label: 'Queen Suite',
-    rate: 52,
+    rate: 56,
     description: 'More room to stretch out',
+    maxPets: 2,
   },
   master: {
     label: 'Master Suite',
-    rate: 57,
+    rate: 63,
     description: 'Our largest and most spacious option',
+    maxPets: 4,
+  },
+  catCondo: {
+    label: 'Cat Condo',
+    rate: 32,
+    description: 'Private room for cats',
+    maxPets: 2,
   },
 }
-
-export const boardingAdditionalPetDiscount = 5
-export const catBoardingRate = 28
 
 export type BoardingDogConfig = {
   id: string
@@ -212,15 +112,22 @@ export function calculateBoardingPerDog(input: {dogs: BoardingDogConfig[]}): Boa
   for (let i = 0; i < dogs.length; i++) {
     const dog = dogs[i]
     const isAdditional = i > 0
-    const rate = isAdditional ? room.rate - boardingAdditionalPetDiscount : room.rate
+    const rate = isAdditional ? Math.round(room.rate * 0.5 * 100) / 100 : room.rate
     const cost = rate * dog.nights
 
-    const dogLabel = dogs.length > 1 ? `Dog ${i + 1}` : 'Your dog'
+    const petLabel =
+      dogs.length > 1
+        ? dogs[0].roomType === 'catCondo'
+          ? `Cat ${i + 1}`
+          : `Dog ${i + 1}`
+        : dogs[0].roomType === 'catCondo'
+          ? 'Your cat'
+          : 'Your dog'
     const rateLabel = isAdditional
       ? `${room.label} (shared) — ${dog.nights} night${dog.nights > 1 ? 's' : ''} @ $${rate}/night`
       : `${room.label} — ${dog.nights} night${dog.nights > 1 ? 's' : ''} @ $${rate}/night`
     lineItems.push({
-      label: `${dogLabel} — ${rateLabel}`,
+      label: `${petLabel} — ${rateLabel}`,
       amount: cost,
     })
     total += cost
@@ -233,6 +140,22 @@ export function calculateBoardingPerDog(input: {dogs: BoardingDogConfig[]}): Boa
     includes: ['Daycare participation', 'Meal administration', 'Medicine administration'],
   }
 }
+
+// ─── Boarding & Daycare Add-Ons ─────────────────────────────
+export type AddOnItem = {
+  id: string
+  label: string
+  price: number
+  category?: 'operational' | 'treat'
+}
+
+export const boardingAddOns: AddOnItem[] = [
+  {id: 'frozenKong', label: 'Frozen Kong', price: 3, category: 'treat'},
+  {id: 'breakawayCollarSmall', label: 'Breakaway Collar (≤40 lbs)', price: 21},
+  {id: 'breakawayCollarLarge', label: 'Breakaway Collar (40+ lbs)', price: 26},
+  {id: 'rentalCollar', label: 'Paper Rental Collar', price: 1, category: 'operational'},
+  {id: 'medicationFee', label: 'Medication Fee', price: 5, category: 'operational'},
+]
 
 // ─── Grooming ───────────────────────────────────────────────
 export type GroomingService = 'fullGroom' | 'bathWorks' | 'exitBath'
@@ -249,14 +172,14 @@ export const bathWorksRates: Record<DogSize, number> = {
   s: 55,
   m: 60,
   l: 100,
-  xl: 150,
+  xl: 120,
 }
 
 export const exitBathRates: Record<DogSize, number> = {
   s: 18,
   m: 23,
   l: 28,
-  xl: 37,
+  xl: 32,
 }
 
 export const groomingRates: Record<GroomingService, Record<DogSize, number>> = {
@@ -278,13 +201,8 @@ export const alaCarteItems: AlaCarteItem[] = [
   {id: 'teethBrushing', label: 'Teeth Brushing', price: 8},
   {id: 'nailTrimFile', label: 'Nail Trim & File', price: 20},
   {id: 'blueberryFacial', label: 'Blueberry Facial', price: 8},
-]
-
-export const exitBathAddOns: AlaCarteItem[] = [
-  {id: 'nailTrim', label: 'Nail Trim', price: 5},
-  {id: 'teethBrushing', label: 'Teeth Brushing', price: 5},
-  {id: 'earCleaning', label: 'Ear Cleaning', price: 5},
-  {id: 'analGland', label: 'Anal Gland Expression', price: 5},
+  {id: 'trimsBrushOut', label: 'Trims & Brush Out', price: 25},
+  {id: 'catNailTrim', label: 'Cat Nail Trim', price: 5},
 ]
 
 export const sizeLabels: Record<DogSize, string> = {
@@ -344,9 +262,8 @@ export function calculateGrooming(input: {
     })
   }
 
-  const addOnItems = service === 'exitBath' ? exitBathAddOns : alaCarteItems
   for (const itemId of alaCarte) {
-    const item = addOnItems.find((a) => a.id === itemId)
+    const item = alaCarteItems.find((a) => a.id === itemId)
     if (item) {
       const itemTotal = item.price * dogs.length
       total += itemTotal

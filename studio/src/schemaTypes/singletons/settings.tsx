@@ -264,7 +264,7 @@ export const settings = defineType({
       name: 'posUrls',
       title: 'POS & Booking URLs',
       type: 'object',
-      description: 'External POS system URLs. Update these when swapping providers (Gingr → Goose).',
+      description: 'Goose POS booking URLs. TODO: confirm portal slug with Goose before launch.',
       options: {collapsible: true, collapsed: true},
       fields: [
         defineField({name: 'portalUrl', title: 'Customer Portal URL', type: 'url', description: 'Main customer portal / booking page'}),

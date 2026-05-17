@@ -132,6 +132,19 @@ export type Spacer = {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
+export type PhotoMarquee = {
+  _type: 'photoMarquee'
+  marqueeImages?: Array<{
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+    _key: string
+  }>
+}
+
 export type PricingPageTabs = {
   _type: 'pricingPageTabs'
   eyebrow?: string
@@ -394,6 +407,8 @@ export type VideoSection = {
   eyebrow?: string
   heading?: string
   description?: string
+  primaryCta?: Button
+  secondaryCta?: Button
   videoUrl: string
   thumbnail?: {
     asset?: SanityImageAssetReference
@@ -773,6 +788,7 @@ export type CtaBanner = {
     _type: 'image'
   }
   heading: string
+  subtext?: string
   backgroundImage?: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -1196,6 +1212,9 @@ export type Service = {
       } & ValuePillars)
     | ({
         _key: string
+      } & PhotoMarquee)
+    | ({
+        _key: string
       } & Spacer)
   >
 }
@@ -1497,6 +1516,9 @@ export type Page = {
       } & PricingPageTabs)
     | ({
         _key: string
+      } & PhotoMarquee)
+    | ({
+        _key: string
       } & Spacer)
   >
 }
@@ -1749,6 +1771,7 @@ export type AllSanitySchemaTypes =
   | TableData
   | MatrixData
   | Spacer
+  | PhotoMarquee
   | PricingPageTabs
   | ValuePillars
   | GalleryPage
@@ -2210,6 +2233,7 @@ export type GetPageQueryResult = {
           _type: 'image'
         }
         heading: string
+        subtext?: string
         backgroundImage?: {
           asset?: SanityImageAssetReference
           media?: unknown
@@ -2863,6 +2887,19 @@ export type GetPageQueryResult = {
       }
     | {
         _key: string
+        _type: 'photoMarquee'
+        marqueeImages?: Array<{
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          _type: 'image'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
         _type: 'policyNotes'
         eyebrow?: string
         heading?: string
@@ -3258,6 +3295,32 @@ export type GetPageQueryResult = {
         eyebrow?: string
         heading?: string
         description?: string
+        primaryCta: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'page'
+            href?: string
+            page: string | null
+            queryString?: string
+            openInNewTab?: boolean
+            pageType: 'page' | 'service' | null
+          } | null
+        } | null
+        secondaryCta: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'page'
+            href?: string
+            page: string | null
+            queryString?: string
+            openInNewTab?: boolean
+            pageType: 'page' | 'service' | null
+          } | null
+        } | null
         videoUrl: string
         thumbnail?: {
           asset?: SanityImageAssetReference
@@ -3268,8 +3331,6 @@ export type GetPageQueryResult = {
         }
         layout?: 'full' | 'split'
         backgroundColor?: 'cream' | 'forest' | 'sand'
-        primaryCta: null
-        secondaryCta: null
       }
     | {
         _key: string
@@ -3484,6 +3545,7 @@ export type HomepageQueryResult = {
           _type: 'image'
         }
         heading: string
+        subtext?: string
         backgroundImage?: {
           asset?: SanityImageAssetReference
           media?: unknown
@@ -4137,6 +4199,19 @@ export type HomepageQueryResult = {
       }
     | {
         _key: string
+        _type: 'photoMarquee'
+        marqueeImages?: Array<{
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          _type: 'image'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
         _type: 'policyNotes'
         eyebrow?: string
         heading?: string
@@ -4532,6 +4607,32 @@ export type HomepageQueryResult = {
         eyebrow?: string
         heading?: string
         description?: string
+        primaryCta: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'page'
+            href?: string
+            page: string | null
+            queryString?: string
+            openInNewTab?: boolean
+            pageType: 'page' | 'service' | null
+          } | null
+        } | null
+        secondaryCta: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'page'
+            href?: string
+            page: string | null
+            queryString?: string
+            openInNewTab?: boolean
+            pageType: 'page' | 'service' | null
+          } | null
+        } | null
         videoUrl: string
         thumbnail?: {
           asset?: SanityImageAssetReference
@@ -4542,8 +4643,6 @@ export type HomepageQueryResult = {
         }
         layout?: 'full' | 'split'
         backgroundColor?: 'cream' | 'forest' | 'sand'
-        primaryCta: null
-        secondaryCta: null
       }
     | {
         _key: string
@@ -4785,6 +4884,7 @@ export type GetServiceQueryResult = {
           _type: 'image'
         }
         heading: string
+        subtext?: string
         backgroundImage?: {
           asset?: SanityImageAssetReference
           media?: unknown
@@ -5419,6 +5519,19 @@ export type GetServiceQueryResult = {
       }
     | {
         _key: string
+        _type: 'photoMarquee'
+        marqueeImages?: Array<{
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          _type: 'image'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
         _type: 'policyNotes'
         eyebrow?: string
         heading?: string
@@ -5787,6 +5900,32 @@ export type GetServiceQueryResult = {
         eyebrow?: string
         heading?: string
         description?: string
+        primaryCta: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'page'
+            href?: string
+            page: string | null
+            queryString?: string
+            openInNewTab?: boolean
+            pageType: 'page' | 'service' | null
+          } | null
+        } | null
+        secondaryCta: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'page'
+            href?: string
+            page: string | null
+            queryString?: string
+            openInNewTab?: boolean
+            pageType: 'page' | 'service' | null
+          } | null
+        } | null
         videoUrl: string
         thumbnail?: {
           asset?: SanityImageAssetReference
@@ -5797,8 +5936,6 @@ export type GetServiceQueryResult = {
         }
         layout?: 'full' | 'split'
         backgroundColor?: 'cream' | 'forest' | 'sand'
-        primaryCta: null
-        secondaryCta: null
       }
     | {
         _key: string

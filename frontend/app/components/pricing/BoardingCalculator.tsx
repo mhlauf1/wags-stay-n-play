@@ -3,12 +3,7 @@
 import {useState, useMemo, useCallback} from 'react'
 import {NumberStepper, RadioGroup, AddDogButton, ContactNotice} from './CalculatorInputs'
 import PriceOutputCard from './PriceOutputCard'
-import {
-  calculateBoardingPerDog,
-  boardingRooms,
-  boardingAdditionalPetDiscount,
-  catBoardingRate,
-} from '@/app/data/pricingData'
+import {calculateBoardingPerDog, boardingRooms} from '@/app/data/pricingData'
 import type {RoomType, BoardingDogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
 
@@ -27,6 +22,8 @@ function createDog(): BoardingDogConfig {
 export default function BoardingCalculator({ctaText, ctaLink, taxNote}: BoardingCalculatorProps) {
   const [dogs, setDogs] = useState<BoardingDogConfig[]>(() => [createDog()])
 
+  const selectedRoom = boardingRooms[dogs[0].roomType]
+
   const handleUpdateDog = useCallback((index: number, updates: Partial<BoardingDogConfig>) => {
     setDogs((prev) => prev.map((d, i) => (i === index ? {...d, ...updates} : d)))
   }, [])
@@ -37,14 +34,26 @@ export default function BoardingCalculator({ctaText, ctaLink, taxNote}: Boarding
 
   const handleAddDog = useCallback(() => {
     setDogs((prev) => {
-      if (prev.length >= 3) return prev
+      const room = boardingRooms[prev[0].roomType]
+      if (prev.length >= room.maxPets) return prev
       return [...prev, createDog()]
+    })
+  }, [])
+
+  const handleRoomChange = useCallback((roomType: RoomType) => {
+    const newRoom = boardingRooms[roomType]
+    setDogs((prev) => {
+      const updated = prev.map((d) => ({...d, roomType}))
+      if (updated.length > newRoom.maxPets) {
+        return updated.slice(0, newRoom.maxPets)
+      }
+      return updated
     })
   }, [])
 
   const result = useMemo(() => calculateBoardingPerDog({dogs}), [dogs])
 
-  if (dogs.length > 3) {
+  if (dogs.length > selectedRoom.maxPets) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
         <div className="space-y-6">
@@ -57,11 +66,13 @@ export default function BoardingCalculator({ctaText, ctaLink, taxNote}: Boarding
           ctaLink={{_type: 'link', linkType: 'href', href: 'tel:2182872000'}}
           taxNote={taxNote}
           disabled
-          disabledMessage="Please call for custom pricing for 4+ dogs."
+          disabledMessage="Please call for custom pricing."
         />
       </div>
     )
   }
+
+  const canAddPet = dogs.length < selectedRoom.maxPets
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
@@ -69,7 +80,7 @@ export default function BoardingCalculator({ctaText, ctaLink, taxNote}: Boarding
       <div className="space-y-6">
         <div className="space-y-3">
           <span className="block text-cream/70 font-sans text-[14px] md:text-[16px] font-medium uppercase tracking-wider">
-            {dogs.length > 1 ? 'Your Dogs' : 'Your Dog'}
+            {dogs.length > 1 ? (dogs[0].roomType === 'catCondo' ? 'Your Cats' : 'Your Dogs') : dogs[0].roomType === 'catCondo' ? 'Your Cat' : 'Your Dog'}
           </span>
           {dogs.map((dog, i) => (
             <BoardingDogCard
@@ -80,29 +91,10 @@ export default function BoardingCalculator({ctaText, ctaLink, taxNote}: Boarding
               isAdditional={i > 0}
               onUpdate={(updates) => handleUpdateDog(i, updates)}
               onRemove={() => handleRemoveDog(i)}
+              onRoomChange={i === 0 ? handleRoomChange : undefined}
             />
           ))}
-          {dogs.length < 3 && <AddDogButton onClick={handleAddDog} />}
-        </div>
-
-        {/* Cat boarding info */}
-        <div className="border border-border-dark rounded-md px-3 py-2 space-y-1">
-          <p className="font-sans text-[13px] text-cream/60">
-            Cat boarding: ${catBoardingRate}/night. No assessment required.
-          </p>
-          <p className="font-sans text-[12px] text-cream/40">
-            Call us at (218) 287-2000 to book cat boarding.
-          </p>
-        </div>
-
-        {/* Punch card info */}
-        <div className="border border-border-dark rounded-md px-3 py-2 space-y-1">
-          <p className="font-sans text-[13px] font-medium text-cream/70">Punch Card Deals</p>
-          <ul className="font-sans text-[12px] text-cream/50 space-y-0.5">
-            <li>10-Pack: Buy 9, get 1 free</li>
-            <li>20-Pack: Buy 17, get 3 free</li>
-            <li>30-Pack: Buy 24, get 6 free</li>
-          </ul>
+          {canAddPet && <AddDogButton onClick={handleAddDog} />}
         </div>
       </div>
 
@@ -127,6 +119,7 @@ type BoardingDogCardProps = {
   isAdditional: boolean
   onUpdate: (updates: Partial<BoardingDogConfig>) => void
   onRemove: () => void
+  onRoomChange?: (roomType: RoomType) => void
 }
 
 function BoardingDogCard({
@@ -136,16 +129,17 @@ function BoardingDogCard({
   isAdditional,
   onUpdate,
   onRemove,
+  onRoomChange,
 }: BoardingDogCardProps) {
+  const isCat = dog.roomType === 'catCondo'
+
   return (
     <div className="bg-forest-card border border-border-dark rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between">
         <span className="font-sans text-[14px] md:text-[16px] font-medium text-cream">
-          {total > 1 ? `Dog ${index + 1}` : 'Your Dog'}
+          {total > 1 ? (isCat ? `Cat ${index + 1}` : `Dog ${index + 1}`) : isCat ? 'Your Cat' : 'Your Dog'}
           {isAdditional && (
-            <span className="text-cream/50 text-[14px] md:text-[16px] ml-2">
-              ($${boardingAdditionalPetDiscount} off/night)
-            </span>
+            <span className="text-cream/50 text-[14px] md:text-[16px] ml-2">(50% off)</span>
           )}
         </span>
         {total > 1 && (
@@ -159,7 +153,7 @@ function BoardingDogCard({
         )}
       </div>
 
-      {!isAdditional && (
+      {!isAdditional && onRoomChange && (
         <RadioGroup
           label="Room Type"
           options={Object.entries(boardingRooms).map(([value, meta]) => ({
@@ -168,7 +162,7 @@ function BoardingDogCard({
             description: meta.description,
           }))}
           value={dog.roomType}
-          onChange={(v) => onUpdate({roomType: v as RoomType})}
+          onChange={(v) => onRoomChange(v as RoomType)}
         />
       )}
 

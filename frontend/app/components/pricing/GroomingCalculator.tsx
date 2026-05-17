@@ -3,7 +3,7 @@
 import {useState, useMemo, useCallback} from 'react'
 import {AddDogButton, CheckboxGroup, RadioGroup} from './CalculatorInputs'
 import PriceOutputCard from './PriceOutputCard'
-import {calculateGrooming, sizeLabels, serviceLabels, serviceDescriptions, alaCarteItems, exitBathAddOns} from '@/app/data/pricingData'
+import {calculateGrooming, sizeLabels, serviceLabels, serviceDescriptions, alaCarteItems} from '@/app/data/pricingData'
 import type {GroomingService, DogSize, DogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
 
@@ -52,8 +52,6 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
     [service, dogs, alaCarte],
   )
 
-  const addOnItems = service === 'exitBath' ? exitBathAddOns : alaCarteItems
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
       {/* Inputs */}
@@ -90,8 +88,8 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
 
         {/* Add-ons */}
         <CheckboxGroup
-          label={service === 'exitBath' ? 'Add-Ons ($5 each)' : 'À La Carte Add-Ons'}
-          options={addOnItems.map((item) => ({
+          label="À La Carte Add-Ons"
+          options={alaCarteItems.map((item) => ({
             id: item.id,
             label: item.label,
             detail: `$${item.price}`,
