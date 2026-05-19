@@ -139,14 +139,16 @@ function BoardingDogCard({
         <span className="font-sans text-[14px] md:text-[16px] font-medium text-cream">
           {total > 1 ? (isCat ? `Cat ${index + 1}` : `Dog ${index + 1}`) : isCat ? 'Your Cat' : 'Your Dog'}
           {isAdditional && (
-            <span className="text-cream/50 text-[14px] md:text-[16px] ml-2">(50% off)</span>
+            <span className="text-cream/50 text-[14px] md:text-[16px] ml-2">
+              ({dog.roomType === 'catCondo' ? '50' : '35'}% off)
+            </span>
           )}
         </span>
         {total > 1 && (
           <button
             type="button"
             onClick={onRemove}
-            className="font-sans text-[12px] md:text-[14px] text-cream/40 hover:text-terracotta-light transition-colors"
+            className="font-sans text-[14px] text-cream/40 hover:text-terracotta-light transition-colors"
           >
             Remove
           </button>

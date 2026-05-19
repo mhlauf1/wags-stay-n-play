@@ -18,6 +18,13 @@ export const teamGrid = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'columns',
+      title: 'Desktop Columns',
+      type: 'number',
+      options: {list: [2, 3, 4]},
+      initialValue: 3,
+    }),
+    defineField({
       name: 'members',
       title: 'Team Members',
       type: 'array',

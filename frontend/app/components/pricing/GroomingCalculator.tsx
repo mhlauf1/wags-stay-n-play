@@ -69,7 +69,7 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
 
         {/* Dog Cards */}
         <div className="space-y-3">
-          <span className="block text-cream/70 font-sans text-[13px] font-medium uppercase tracking-wider">
+          <span className="block text-cream/70 font-sans text-[14px] font-medium uppercase tracking-wider">
             {dogs.length > 1 ? 'Your Dogs' : 'Your Dog'}
           </span>
           {dogs.map((dog, i) => (
@@ -99,21 +99,21 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
         />
 
         {result.isStartingAt && (
-          <p className="font-sans text-[12px] text-cream/50 italic">
+          <p className="font-sans text-[14px] text-cream/50 italic">
             Prices may vary depending on size, hair length, matting, or additional services.
           </p>
         )}
 
         {/* Cat grooming info */}
-        <div className="border border-border-dark rounded-md px-3 py-2 space-y-1">
-          <p className="font-sans text-[13px] font-medium text-cream/70">Cat Grooming</p>
-          <ul className="font-sans text-[12px] text-cream/50 space-y-0.5">
+        <div className="border border-border-dark rounded-md px-5 py-4 space-y-2">
+          <p className="font-sans text-[16px] font-medium text-cream/80">Cat Grooming</p>
+          <ul className="font-sans text-[15px] text-cream/60 space-y-1">
             <li>Lion Cut — $80</li>
             <li>Lion Cut (no bath) — $70</li>
             <li>Cat Bath & Works — $70</li>
             <li>Foam Bath — $15</li>
           </ul>
-          <p className="font-sans text-[11px] text-cream/40">
+          <p className="font-sans text-[14px] text-cream/50">
             Add nail trim or teeth brushing for $5 each.
           </p>
         </div>
@@ -153,7 +153,7 @@ function GroomingDogCard({dog, index, total, availableSizes: sizes, onUpdate, on
           <button
             type="button"
             onClick={onRemove}
-            className="font-sans text-[12px] text-cream/40 hover:text-terracotta-light transition-colors"
+            className="font-sans text-[14px] text-cream/40 hover:text-terracotta-light transition-colors"
           >
             Remove
           </button>
@@ -162,7 +162,7 @@ function GroomingDogCard({dog, index, total, availableSizes: sizes, onUpdate, on
 
       {/* Size */}
       <div>
-        <span className="block text-cream/70 font-sans text-[12px] font-medium uppercase tracking-wider mb-1.5">
+        <span className="block text-cream/70 font-sans text-[14px] font-medium uppercase tracking-wider mb-1.5">
           Size
         </span>
         <div className="flex flex-wrap gap-1.5">
@@ -171,7 +171,7 @@ function GroomingDogCard({dog, index, total, availableSizes: sizes, onUpdate, on
               key={s}
               type="button"
               onClick={() => onUpdate({size: s})}
-              className={`font-sans text-[13px] font-medium px-3 py-1.5 rounded-full border transition-all ${
+              className={`font-sans text-[14px] font-medium px-3 py-1.5 rounded-full border transition-all ${
                 dog.size === s
                   ? 'bg-terracotta text-white border-terracotta'
                   : 'bg-transparent text-cream/70 border-border-dark hover:border-cream/40 hover:text-cream'

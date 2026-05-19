@@ -117,7 +117,7 @@ export function RadioGroup({label, options, value, onChange}: RadioGroupProps) {
           >
             {option.label}
             {option.description && (
-              <span className="block text-[12px] md:text-[13px] opacity-70 mt-0.5">
+              <span className="block text-[14px] opacity-70 mt-0.5">
                 {option.description}
               </span>
             )}
@@ -153,7 +153,7 @@ export function CheckboxGroup({label, options, selected, onChange}: CheckboxGrou
 
   return (
     <fieldset>
-      <legend className="block text-cream/70 font-sans text-[13px] font-medium uppercase tracking-wider mb-2">
+      <legend className="block text-cream/70 font-sans text-[14px] font-medium uppercase tracking-wider mb-2">
         {label}
       </legend>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">

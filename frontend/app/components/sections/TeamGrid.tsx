@@ -6,6 +6,7 @@ type TeamGridProps = {
   block: {
     eyebrow?: string
     heading?: string
+    columns?: 2 | 3 | 4
     members?: Array<{
       _key: string
       name?: string
@@ -21,7 +22,8 @@ type TeamGridProps = {
 }
 
 export default function TeamGrid({block}: TeamGridProps) {
-  const {eyebrow, heading, members} = block
+  const {eyebrow, heading, columns, members} = block
+  const gridCols = columns === 2 ? 'lg:grid-cols-2 max-w-4xl mx-auto' : columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
 
   return (
     <section className="bg-cream">
@@ -38,7 +40,7 @@ export default function TeamGrid({block}: TeamGridProps) {
         </FadeIn>
 
         {members && members.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${gridCols} gap-10 lg:gap-16`}>
             {members.map((member, i) => (
               <FadeIn key={member._key} delay={0.1 * i}>
                 <div className="text-center">

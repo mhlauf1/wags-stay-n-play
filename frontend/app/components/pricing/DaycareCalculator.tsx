@@ -3,7 +3,7 @@
 import {useState, useMemo, useCallback} from 'react'
 import {NumberStepper, RadioGroup, AddDogButton, ContactNotice} from './CalculatorInputs'
 import PriceOutputCard from './PriceOutputCard'
-import {calculateDaycarePerDog, daycareRates} from '@/app/data/pricingData'
+import {calculateDaycarePerDog, daycareRates, daycarePackages} from '@/app/data/pricingData'
 import type {DayType, DaycareDogConfig} from '@/app/data/pricingData'
 import type {DereferencedLink} from '@/sanity/lib/types'
 
@@ -62,35 +62,62 @@ export default function DaycareCalculator({ctaText, ctaLink, taxNote}: DaycareCa
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-      {/* Inputs */}
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <span className="block text-cream/70 font-sans text-[13px] font-medium uppercase tracking-wider">
-            {dogs.length > 1 ? 'Your Pets' : 'Your Pet'}
-          </span>
-          {dogs.map((dog, i) => (
-            <DaycareDogCard
-              key={dog.id}
-              dog={dog}
-              index={i}
-              total={dogs.length}
-              onUpdate={(updates) => handleUpdateDog(i, updates)}
-              onRemove={() => handleRemoveDog(i)}
-            />
-          ))}
-          {dogs.length < 3 && <AddDogButton onClick={handleAddDog} />}
+    <div className="space-y-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+        {/* Inputs */}
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <span className="block text-cream/70 font-sans text-[14px] font-medium uppercase tracking-wider">
+              {dogs.length > 1 ? 'Your Pets' : 'Your Pet'}
+            </span>
+            {dogs.map((dog, i) => (
+              <DaycareDogCard
+                key={dog.id}
+                dog={dog}
+                index={i}
+                total={dogs.length}
+                onUpdate={(updates) => handleUpdateDog(i, updates)}
+                onRemove={() => handleRemoveDog(i)}
+              />
+            ))}
+            {dogs.length < 3 && <AddDogButton onClick={handleAddDog} />}
+          </div>
         </div>
+
+        {/* Output */}
+        <PriceOutputCard
+          total={result.total}
+          lineItems={result.lineItems}
+          ctaText={ctaText}
+          ctaLink={ctaLink}
+          taxNote={taxNote}
+        />
       </div>
 
-      {/* Output */}
-      <PriceOutputCard
-        total={result.total}
-        lineItems={result.lineItems}
-        ctaText={ctaText}
-        ctaLink={ctaLink}
-        taxNote={taxNote}
-      />
+      {/* Daycare Packages */}
+      <div>
+        <span className="block text-cream/70 font-sans text-[14px] font-medium uppercase tracking-wider mb-3">
+          Daycare Packages
+        </span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {daycarePackages.map((pkg) => (
+            <div
+              key={pkg.days}
+              className="bg-forest-card border border-border-dark rounded-lg px-5 py-5 text-center"
+            >
+              <span className="block text-cream font-semibold text-[20px] md:text-[24px] mb-1">
+                {pkg.days}-Day Pack
+              </span>
+              <span className="block text-sand text-[28px] md:text-[32px] font-semibold tracking-tight">
+                ${pkg.price}
+              </span>
+              <span className="block text-cream/50 font-sans text-[14px] mt-1">
+                Expires in {pkg.expiration}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -117,7 +144,7 @@ function DaycareDogCard({dog, index, total, onUpdate, onRemove}: DaycareDogCardP
           <button
             type="button"
             onClick={onRemove}
-            className="font-sans text-[12px] text-cream/40 hover:text-terracotta-light transition-colors"
+            className="font-sans text-[14px] text-cream/40 hover:text-terracotta-light transition-colors"
           >
             Remove
           </button>

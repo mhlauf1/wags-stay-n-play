@@ -45,13 +45,13 @@ export default function PricingMatrixDisplay({tables, footnotes}: PricingMatrixD
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-forest text-cream">
-                    <th className="text-left font-sans text-[13px] md:text-[14px] font-medium uppercase tracking-wider px-4 py-3 rounded-tl-lg">
+                    <th className="text-left font-sans text-[14px] font-medium uppercase tracking-wider px-4 py-3 rounded-tl-lg">
                       &nbsp;
                     </th>
                     {table.columnHeaders?.map((header, hi) => (
                       <th
                         key={hi}
-                        className={`w-[200px] text-center font-sans text-[13px] md:text-[14px] font-medium px-4 py-3 ${hi === (table.columnHeaders?.length ?? 0) - 1 ? 'rounded-tr-lg' : ''}`}
+                        className={`w-[200px] text-center font-sans text-[14px] font-medium px-4 py-3 ${hi === (table.columnHeaders?.length ?? 0) - 1 ? 'rounded-tr-lg' : ''}`}
                       >
                         {header}
                       </th>
@@ -72,7 +72,7 @@ export default function PricingMatrixDisplay({tables, footnotes}: PricingMatrixD
                                 {cell.value}
                               </span>
                               {cell.note && (
-                                <p className="font-sans text-[12px] italic text-charcoal/50 mt-0.5">
+                                <p className="font-sans text-[14px] italic text-charcoal/50 mt-0.5">
                                   {cell.note}
                                 </p>
                               )}
@@ -107,7 +107,7 @@ export default function PricingMatrixDisplay({tables, footnotes}: PricingMatrixD
                           <>
                             {row.cells[0].value}
                             {row.cells[0].note && (
-                              <span className="block font-sans text-[11px] italic text-charcoal/50 text-right">
+                              <span className="block font-sans text-[14px] italic text-charcoal/50 text-right">
                                 {row.cells[0].note}
                               </span>
                             )}
@@ -132,7 +132,7 @@ export default function PricingMatrixDisplay({tables, footnotes}: PricingMatrixD
                           const cell = row.cells?.[hi]
                           return (
                             <div key={hi} className="flex items-baseline justify-between">
-                              <span className="font-sans text-[13px] text-charcoal/70">
+                              <span className="font-sans text-[14px] text-charcoal/70">
                                 {header}
                               </span>
                               <span className="font-sans text-[15px] font-medium text-terracotta">
@@ -148,7 +148,7 @@ export default function PricingMatrixDisplay({tables, footnotes}: PricingMatrixD
                               .map((c) => (
                                 <p
                                   key={c._key}
-                                  className="font-sans text-[11px] italic text-charcoal/50"
+                                  className="font-sans text-[14px] italic text-charcoal/50"
                                 >
                                   {c.note}
                                 </p>
@@ -169,7 +169,7 @@ export default function PricingMatrixDisplay({tables, footnotes}: PricingMatrixD
         <FadeIn delay={0.2}>
           <div className="mt-8 space-y-1">
             {footnotes.map((note, i) => (
-              <p key={i} className="font-sans text-[13px] text-charcoal/60 italic">
+              <p key={i} className="font-sans text-[14px] text-charcoal/60 italic">
                 {note}
               </p>
             ))}

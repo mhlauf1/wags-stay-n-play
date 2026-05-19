@@ -49,11 +49,11 @@ export default function PriceOutputCard({
     <div className="bg-cream rounded-2xl p-6 md:p-8 lg:sticky lg:top-32">
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
-        <span className="font-sans text-[13px] md:text-[14px] uppercase tracking-wider text-terracotta">
+        <span className="font-sans text-[14px] uppercase tracking-wider text-terracotta">
           Estimated Cost
         </span>
         {badge && (
-          <span className="text-[12px] font-sans  bg-sage/20  text-forest px-2.5 py-1 rounded-full">
+          <span className="text-[14px] font-sans  bg-sage/20  text-forest px-2.5 py-1 rounded-full">
             {badge}
           </span>
         )}
@@ -124,7 +124,7 @@ export default function PriceOutputCard({
       {/* Includes */}
       {!disabled && includes && includes.length > 0 && (
         <div className="border-t border-forest/10 pt-4 mb-4">
-          <span className="font-sans text-[13px] md:text-[14px]  uppercase tracking-wider text-charcoal/70 mb-2 block">
+          <span className="font-sans text-[14px]  uppercase tracking-wider text-charcoal/70 mb-2 block">
             Included
           </span>
           <ul className="space-y-1.5">
@@ -164,12 +164,12 @@ export default function PriceOutputCard({
               d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span className="font-sans text-[13px]">Estimated time: {timeEstimate}</span>
+          <span className="font-sans text-[14px]">Estimated time: {timeEstimate}</span>
         </div>
       )}
 
       {/* Tax Note */}
-      {taxNote && <p className="font-sans text-[12px] italic text-charcoal/50 mb-4">{taxNote}</p>}
+      {taxNote && <p className="font-sans text-[14px] italic text-charcoal/50 mb-4">{taxNote}</p>}
 
       {/* CTA */}
       <Button

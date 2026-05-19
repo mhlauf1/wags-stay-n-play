@@ -7,6 +7,18 @@ export const daycareRates: Record<DayType, number> = {
   cat: 22,
 }
 
+export type DaycarePackage = {
+  days: number
+  price: number
+  expiration: string
+}
+
+export const daycarePackages: DaycarePackage[] = [
+  {days: 10, price: 300, expiration: '2 months'},
+  {days: 20, price: 575, expiration: '4 months'},
+  {days: 30, price: 795, expiration: '6 months'},
+]
+
 export type DaycareDogConfig = {
   id: string
   dayType: DayType
@@ -60,13 +72,13 @@ export const boardingRooms: Record<RoomType, RoomMeta> = {
   standard: {
     label: 'Standard Suite',
     rate: 48,
-    description: 'Comfortable kennel boarding',
-    maxPets: 1, // TODO: confirm single-occupancy with client
+    description: 'Up to 35 lbs · Single dog only',
+    maxPets: 1,
   },
   junior: {
     label: 'Junior Suite',
     rate: 52,
-    description: 'A step up in space and comfort',
+    description: 'Up to 65 lbs · A step up in space and comfort',
     maxPets: 2,
   },
   queen: {
@@ -112,7 +124,9 @@ export function calculateBoardingPerDog(input: {dogs: BoardingDogConfig[]}): Boa
   for (let i = 0; i < dogs.length; i++) {
     const dog = dogs[i]
     const isAdditional = i > 0
-    const rate = isAdditional ? Math.round(room.rate * 0.5 * 100) / 100 : room.rate
+    const discountRate =
+      dogs[0].roomType === 'catCondo' ? 0.5 : 0.65
+    const rate = isAdditional ? Math.round(room.rate * discountRate * 100) / 100 : room.rate
     const cost = rate * dog.nights
 
     const petLabel =
