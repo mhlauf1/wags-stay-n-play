@@ -178,150 +178,152 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
   }
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out bg-cream ${hidden ? '-translate-y-full' : 'translate-y-0'}`}>
-      <div className="px-2 md:px-12  border-b border-black/20">
-        <div className="flex lg:grid lg:grid-cols-3 bg-cream/95 backdrop-blur-sm   items-center justify-between py-3">
-          {/* Logo */}
-          <Link href="/" className="flex items-start">
-            <NextImage
-              src="/images/wags-logo-no-bg.png"
-              alt="Wags Stay N Play"
-              width={150}
-              height={75}
-              className="w-[80px] lg:w-[100px] h-auto"
-              priority
-            />
-          </Link>
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out bg-cream ${hidden ? '-translate-y-full' : 'translate-y-0'}`}>
+        <div className="px-2 md:px-12 border-b border-black/20">
+          <div className="flex lg:grid lg:grid-cols-3 bg-cream/95 backdrop-blur-sm items-center justify-between py-3">
+            {/* Logo */}
+            <Link href="/" className="flex items-start">
+              <NextImage
+                src="/images/wags-logo-no-bg.png"
+                alt="Wags Stay N Play"
+                width={150}
+                height={75}
+                className="w-[80px] lg:w-[100px] h-auto"
+                priority
+              />
+            </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center justify-center gap-7">
-            {navItems?.map((item) => {
-              const active = isLinkActive(item.link, item.children)
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center justify-center gap-7">
+              {navItems?.map((item) => {
+                const active = isLinkActive(item.link, item.children)
 
-              return (
-                <div
-                  key={item._key}
-                  className="relative"
-                  onMouseEnter={() =>
-                    item.children && item.children.length > 0
-                      ? setDropdownOpen(item._key)
-                      : undefined
-                  }
-                  onMouseLeave={() =>
-                    item.children && item.children.length > 0 ? setDropdownOpen(null) : undefined
-                  }
-                >
-                  {item.children && item.children.length > 0 ? (
-                    <button
-                      type="button"
-                      aria-expanded={dropdownOpen === item._key}
-                      aria-haspopup="true"
-                      onKeyDown={(e) => handleDropdownKeyDown(e, item)}
-                      className={`relative flex items-center gap-1 font-sans text-[14px] transition-colors cursor-default whitespace-nowrap pb-1 ${
-                        active
-                          ? 'text-terracotta font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-terracotta after:rounded-full'
-                          : 'text-forest hover:text-forest/70'
-                      }`}
-                    >
-                      {item.label}
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        className="mt-0.5"
+                return (
+                  <div
+                    key={item._key}
+                    className="relative"
+                    onMouseEnter={() =>
+                      item.children && item.children.length > 0
+                        ? setDropdownOpen(item._key)
+                        : undefined
+                    }
+                    onMouseLeave={() =>
+                      item.children && item.children.length > 0 ? setDropdownOpen(null) : undefined
+                    }
+                  >
+                    {item.children && item.children.length > 0 ? (
+                      <button
+                        type="button"
+                        aria-expanded={dropdownOpen === item._key}
+                        aria-haspopup="true"
+                        onKeyDown={(e) => handleDropdownKeyDown(e, item)}
+                        className={`relative flex items-center gap-1 font-sans text-[14px] transition-colors cursor-default whitespace-nowrap pb-1 ${
+                          active
+                            ? 'text-terracotta font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-terracotta after:rounded-full'
+                            : 'text-forest hover:text-forest/70'
+                        }`}
                       >
-                        <path
-                          d="M3 5L6 8L9 5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </button>
-                  ) : (
-                    <Link
-                      href={resolveNavLink(item.link) || '#'}
-                      className={`relative font-sans cursor-pointer text-[14px] transition-colors whitespace-nowrap pb-1 ${
-                        active
-                          ? 'text-terracotta font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-terracotta after:rounded-full'
-                          : 'text-forest hover:text-forest/70'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-
-                  {/* Dropdown */}
-                  {item.children && item.children.length > 0 && dropdownOpen === item._key && (
-                    <div className="absolute top-full left-0 pt-2" ref={dropdownRef}>
-                      <div
-                        className="bg-white rounded-md shadow-card-hover py-2 min-w-[160px] border border-border-light"
-                        role="menu"
+                        {item.label}
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                          className="mt-0.5"
+                        >
+                          <path
+                            d="M3 5L6 8L9 5"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </button>
+                    ) : (
+                      <Link
+                        href={resolveNavLink(item.link) || '#'}
+                        className={`relative font-sans cursor-pointer text-[14px] transition-colors whitespace-nowrap pb-1 ${
+                          active
+                            ? 'text-terracotta font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-terracotta after:rounded-full'
+                            : 'text-forest hover:text-forest/70'
+                        }`}
                       >
-                        {item.children.map((child) => {
-                          const childActive = resolveNavLink(child.link) === pathname
-                          return (
-                            <Link
-                              key={child._key}
-                              href={resolveNavLink(child.link) || '#'}
-                              role="menuitem"
-                              onKeyDown={(e) => handleDropdownItemKeyDown(e, item)}
-                              className={`block px-4 py-2 cursor-pointer text-[14px] font-sans transition-colors ${
-                                childActive
-                                  ? 'text-terracotta font-medium bg-sand/20'
-                                  : 'text-forest hover:bg-sand/30'
-                              }`}
-                            >
-                              {child.label}
-                            </Link>
-                          )
-                        })}
+                        {item.label}
+                      </Link>
+                    )}
+
+                    {/* Dropdown */}
+                    {item.children && item.children.length > 0 && dropdownOpen === item._key && (
+                      <div className="absolute top-full left-0 pt-2" ref={dropdownRef}>
+                        <div
+                          className="bg-white rounded-md shadow-card-hover py-2 min-w-[160px] border border-border-light"
+                          role="menu"
+                        >
+                          {item.children.map((child) => {
+                            const childActive = resolveNavLink(child.link) === pathname
+                            return (
+                              <Link
+                                key={child._key}
+                                href={resolveNavLink(child.link) || '#'}
+                                role="menuitem"
+                                onKeyDown={(e) => handleDropdownItemKeyDown(e, item)}
+                                className={`block px-4 py-2 cursor-pointer text-[14px] font-sans transition-colors ${
+                                  childActive
+                                    ? 'text-terracotta font-medium bg-sand/20'
+                                    : 'text-forest hover:bg-sand/30'
+                                }`}
+                              >
+                                {child.label}
+                              </Link>
+                            )
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </nav>
+                    )}
+                  </div>
+                )
+              })}
+            </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center justify-end gap-6 shrink-0">
-            <a
-              href="tel:2182872000"
-              className="font-sans text-[14px] text-forest/80 hover:text-terracotta transition-colors whitespace-nowrap"
+            {/* Desktop CTA */}
+            <div className="hidden lg:flex items-center justify-end gap-6 shrink-0">
+              <a
+                href="tel:2182872000"
+                className="font-sans text-[14px] text-forest/80 hover:text-terracotta transition-colors whitespace-nowrap"
+              >
+                (218) 287-2000
+              </a>
+              {ctaButton?.buttonText && (
+                <Button variant="primary" link={ctaButton.link}>
+                  {ctaButton.buttonText}
+                </Button>
+              )}
+            </div>
+
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden flex flex-col gap-1.5 p-2"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
             >
-              (218) 287-2000
-            </a>
-            {ctaButton?.buttonText && (
-              <Button variant="primary" link={ctaButton.link}>
-                {ctaButton.buttonText}
-              </Button>
-            )}
+              <span
+                className={`block w-6 h-[2px] bg-forest transition-transform ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`}
+              />
+              <span
+                className={`block w-6 h-[2px] bg-forest transition-opacity ${mobileOpen ? 'opacity-0' : ''}`}
+              />
+              <span
+                className={`block w-6 h-[2px] bg-forest transition-transform ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`}
+              />
+            </button>
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-2"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-          >
-            <span
-              className={`block w-6 h-[2px] bg-forest transition-transform ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`}
-            />
-            <span
-              className={`block w-6 h-[2px] bg-forest transition-opacity ${mobileOpen ? 'opacity-0' : ''}`}
-            />
-            <span
-              className={`block w-6 h-[2px] bg-forest transition-transform ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`}
-            />
-          </button>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile menu slide-in */}
+      {/* Mobile menu — rendered outside header to avoid stacking context issues */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -331,7 +333,7 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               transition={{duration: 0.3}}
-              className="fixed inset-0 bg-forest/40 z-40 lg:hidden"
+              className="fixed inset-0 bg-forest/40 z-[60] lg:hidden"
               onClick={() => setMobileOpen(false)}
             />
 
@@ -346,7 +348,7 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
               animate={{x: 0}}
               exit={{x: '100%'}}
               transition={{type: 'spring', damping: 30, stiffness: 300}}
-              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-[360px] bg-cream z-50 lg:hidden flex flex-col shadow-xl"
+              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-[360px] bg-cream z-[70] lg:hidden flex flex-col shadow-xl"
             >
               {/* Close button */}
               <div className="flex justify-end p-5">
@@ -499,7 +501,7 @@ export default function Header({navItems, ctaButton, logo}: HeaderProps) {
           </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   )
 }
 
