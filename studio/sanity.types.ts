@@ -685,6 +685,7 @@ export type TeamGrid = {
   _type: 'teamGrid'
   eyebrow?: string
   heading?: string
+  columns?: 2 | 3 | 4
   members?: Array<{
     name: string
     role?: string

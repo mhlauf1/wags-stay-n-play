@@ -108,14 +108,9 @@ export default function GroomingCalculator({ctaText, ctaLink, taxNote}: Grooming
         <div className="border border-border-dark rounded-md px-5 py-4 space-y-2">
           <p className="font-sans text-[16px] font-medium text-cream/80">Cat Grooming</p>
           <ul className="font-sans text-[15px] text-cream/60 space-y-1">
-            <li>Lion Cut — $80</li>
-            <li>Lion Cut (no bath) — $70</li>
-            <li>Cat Bath & Works — $70</li>
-            <li>Foam Bath — $15</li>
+            <li>Cat Bath — $15</li>
+            <li>Cat Nail Trim — $10</li>
           </ul>
-          <p className="font-sans text-[14px] text-cream/50">
-            Add nail trim or teeth brushing for $5 each.
-          </p>
         </div>
       </div>
 

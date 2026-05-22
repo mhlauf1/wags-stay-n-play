@@ -15,8 +15,8 @@ export type DaycarePackage = {
 
 export const daycarePackages: DaycarePackage[] = [
   {days: 10, price: 300, expiration: '2 months'},
-  {days: 20, price: 575, expiration: '4 months'},
-  {days: 30, price: 795, expiration: '6 months'},
+  {days: 20, price: 575, expiration: '6 months'},
+  {days: 30, price: 795, expiration: '9 months'},
 ]
 
 export type DaycareDogConfig = {
@@ -209,14 +209,14 @@ export type AlaCarteItem = {
 }
 
 export const alaCarteItems: AlaCarteItem[] = [
-  {id: 'nailTrim', label: 'Nail Trim', price: 8},
-  {id: 'earCleaning', label: 'Ear Cleaning', price: 8},
-  {id: 'analGland', label: 'Anal Gland Expression', price: 8},
-  {id: 'teethBrushing', label: 'Teeth Brushing', price: 8},
+  {id: 'nailTrim', label: 'Nail Trim', price: 10},
+  {id: 'earCleaning', label: 'Ear Cleaning', price: 10},
+  {id: 'analGland', label: 'Anal Gland Expression', price: 10},
+  {id: 'teethBrushing', label: 'Teeth Brushing', price: 10},
   {id: 'nailTrimFile', label: 'Nail Trim & File', price: 20},
-  {id: 'blueberryFacial', label: 'Blueberry Facial', price: 8},
+  {id: 'blueberryFacial', label: 'Blueberry Facial', price: 10},
   {id: 'trimsBrushOut', label: 'Trims & Brush Out', price: 25},
-  {id: 'catNailTrim', label: 'Cat Nail Trim', price: 5},
+  {id: 'catNailTrim', label: 'Cat Nail Trim', price: 10},
 ]
 
 export const sizeLabels: Record<DogSize, string> = {
