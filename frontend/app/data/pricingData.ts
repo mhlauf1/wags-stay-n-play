@@ -210,6 +210,7 @@ export type AlaCarteItem = {
 
 export const alaCarteItems: AlaCarteItem[] = [
   {id: 'nailTrim', label: 'Nail Trim', price: 10},
+  {id: 'nailFile', label: 'Nail File', price: 10},
   {id: 'earCleaning', label: 'Ear Cleaning', price: 10},
   {id: 'analGland', label: 'Anal Gland Expression', price: 10},
   {id: 'teethBrushing', label: 'Teeth Brushing', price: 10},
