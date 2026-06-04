@@ -12,7 +12,7 @@
 - Functional components only (no class components)
 - Use hooks for state and side effects
 - Keep components focused — one job per component
-- Extract reusable logic into custom hooks
+- Extract reusable logic into custom hook
 
 ## Next.js
 
@@ -51,11 +51,11 @@ Wags uses a single color palette defined as CSS custom properties in `globals.cs
 
 :root {
   --theme-cream: #faf6f1;
-  --theme-forest: #4a1c2a;       /* deep burgundy (primary dark) */
-  --theme-terracotta: #8b2f3a;   /* burgundy (accent) */
-  --theme-gold: #c49a3c;         /* gold (highlight) */
-  --theme-charcoal: #361520;     /* darker burgundy */
-  --theme-sage: #c4a882;         /* warm tan */
+  --theme-forest: #4a1c2a; /* deep burgundy (primary dark) */
+  --theme-terracotta: #8b2f3a; /* burgundy (accent) */
+  --theme-gold: #c49a3c; /* gold (highlight) */
+  --theme-charcoal: #361520; /* darker burgundy */
+  --theme-sage: #c4a882; /* warm tan */
   /* ... etc */
   --theme-font-heading: var(--font-bricolage, 'Bricolage Grotesque', ...);
   --theme-font-body: var(--font-geist, 'Geist', ...);
