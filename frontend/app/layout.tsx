@@ -142,6 +142,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   const localBusinessJsonLd = buildLocalBusinessJsonLd(settings)
   const ga4Id = settings?.ga4MeasurementId
   const gtmId = settings?.gtmContainerId
+  const ctmScriptUrl = settings?.ctmScriptUrl
   let logoUrl: string | undefined
   try {
     if (settings?.logo?.asset?._ref) logoUrl = urlForImage(settings.logo).width(600).url()
@@ -220,6 +221,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             </Script>
           </>
         )}
+        {ctmScriptUrl && <Script id="ctm" async src={ctmScriptUrl} strategy="afterInteractive" />}
       </head>
       <body>
         {gtmId && (
