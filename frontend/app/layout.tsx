@@ -20,11 +20,13 @@ const geist = Geist({
 import {draftMode} from 'next/headers'
 import {toPlainText} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
+import {Suspense} from 'react'
 import {Toaster} from 'sonner'
 
 import DraftModeToast from '@/app/components/DraftModeToast'
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
+import TrackingRouteEvents from '@/app/components/TrackingRouteEvents'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery, servicesNavQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage, urlForImage} from '@/sanity/lib/utils'
@@ -224,6 +226,9 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         {ctmScriptUrl && <Script id="ctm" async src={ctmScriptUrl} strategy="afterInteractive" />}
       </head>
       <body>
+        <Suspense fallback={null}>
+          <TrackingRouteEvents />
+        </Suspense>
         {gtmId && (
           <noscript>
             <iframe
