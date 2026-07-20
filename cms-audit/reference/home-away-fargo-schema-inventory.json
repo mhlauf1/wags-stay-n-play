@@ -1,0 +1,613 @@
+{
+  "repo": "home-away-fargo (NOTE: root package.json name is still 'hound-3' — clone leftover)",
+  "site": "Home Away From Home (Fargo, ND)",
+  "auditDate": "2026-07-10",
+  "model": "claude-fable-5",
+  "cloneLineage": "Cloned from hound-3 (Hound Around Resort). Schema drift vs hound-3 verified by byte-level diff: 3 NEW block types (heroMarquee, expandingCardsRow, spacer), 1 changed block (ctaBanner + alignment field), settings.tsx differs only in initialValue/description strings and ctmScriptUrl field order. All other schema files byte-identical to hound-3.",
+  "sanity": {
+    "projectId": "dafhmkyq",
+    "dataset": "production",
+    "apiVersion": "2025-09-25",
+    "studioEmbedded": true,
+    "studioEmbeddedNotes": "Studio exists twice: standalone workspace `studio/` (studio/sanity.config.ts, `sanity deploy`, studioHost from SANITY_STUDIO_STUDIO_HOST) AND embedded at frontend/app/studio/[[...tool]]/page.tsx using frontend/sanity.config.ts which imports schema/structure from ../studio/src. next.config.ts transpilePackages:['studio']. DRIFT vs hound-3: frontend/sanity.config.ts has a proper /services/:slug mainDocument + service locations resolver; studio/sanity.config.ts still carries hound-3's template leftovers (post routes/locations for a nonexistent `post` type, studio/sanity.config.ts:38,77,101).",
+    "dependencies": {
+      "sanity": "^5.1.0",
+      "next-sanity": "^12.0.5",
+      "@sanity/client": "^7.13.2 (transitive; stega import from @sanity/client/stega)",
+      "@sanity/image-url": "^1.2.0",
+      "@sanity/vision": "^5.13.0",
+      "@sanity/assist": "^5.0.3",
+      "@sanity/uuid": "^3.0.2",
+      "sanity-image": "^1.0.0",
+      "sanity-plugin-asset-source-unsplash": "^7.0.4",
+      "@next/third-parties": "^16.1.1 (GoogleTagManager in layout)",
+      "@portabletext/react": "NOT A DIRECT DEPENDENCY — imported in 5 components (FaqAccordion, SplitContent, FeatureList, ContentColumns, ContactForm) but resolved transitively via next-sanity"
+    },
+    "plugins": ["presentationTool", "structureTool (custom structure)", "unsplashImageAsset", "assist", "visionTool"],
+    "envVars": ["NEXT_PUBLIC_SANITY_PROJECT_ID", "NEXT_PUBLIC_SANITY_DATASET", "NEXT_PUBLIC_SANITY_API_VERSION", "NEXT_PUBLIC_SANITY_STUDIO_URL", "SANITY_API_READ_TOKEN", "SANITY_STUDIO_PROJECT_ID", "SANITY_STUDIO_DATASET", "SANITY_STUDIO_PREVIEW_URL", "SANITY_STUDIO_STUDIO_HOST", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "SMTP_FROM", "CONTACT_FORM_TO_EMAIL", "WEBCAM_PASSWORD", "WEBCAM_OPEN_HOUR", "WEBCAM_CLOSE_HOUR", "WEBCAM_AUTH_SECRET (new vs hound-3 — HMAC secret, fallback 'hafh-webcam', frontend/app/api/webcam-auth/route.ts:6-8)"]
+  },
+  "framework": {"next": "16.1.1", "router": "app", "react": "19.2.3", "tailwind": "4.x (@tailwindcss/postcss; no tailwind.config.ts — hound-3's leftover v3 config was deleted here)"},
+  "documentTypes": [
+    {
+      "name": "page",
+      "title": "Page",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/page.ts",
+      "fields": [
+        {"name": "name", "title": "Name", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/[slug]/page.tsx (generateMetadata title fallback)", "studio locations resolver"], "unused": false},
+        {"name": "slug", "title": "Slug", "type": "slug", "required": true, "validation": "Rule.required()", "notes": "source: 'name', maxLength: 96, no custom slugify", "consumedBy": ["frontend/app/[slug]/page.tsx", "frontend/app/sitemap.ts", "frontend/sanity/lib/utils.ts linkResolver"], "unused": false},
+        {"name": "seo", "title": "SEO & Metadata", "type": "seo", "required": false, "consumedBy": ["frontend/app/[slug]/page.tsx generateMetadata", "frontend/app/page.tsx generateMetadata", "frontend/app/sitemap.ts (noIndex)"], "unused": false, "notes": "DRIFT vs hound-3: populated (metaTitle + metaDescription) on ALL 7 live pages; ogImage and noIndex populated nowhere"},
+        {"name": "pageBuilder", "title": "Page builder", "type": "array", "of": ["callToAction", "infoSection", "hero", "imageRow", "featureCards", "serviceTabs", "statsBar", "webcamPreview", "testimonials", "ctaBanner", "splitContent", "faqAccordion", "pricingTable", "teamGrid", "galleryGrid", "contactForm", "heroSplit", "heroBanner", "heroMarquee", "heroMinimal", "serviceCards", "expandingCardsRow", "featureList", "processSteps", "contentColumns", "iconGrid", "videoSection", "fullWidthMedia", "ctaStrip", "logoBar", "pricingMatrix", "pricingList", "policyNotes", "featureGrid", "pricingCalculator", "whatsIncluded", "requirementsList", "webcamGrid", "galleryCarousel", "galleryShowcase", "galleryPage", "valuePillars", "pricingPageTabs", "spacer"], "required": false, "consumedBy": ["frontend/app/components/PageBuilder.tsx", "frontend/app/components/BlockRenderer.tsx"], "unused": false, "notes": "44 member types (hound-3 had 41; adds heroMarquee, expandingCardsRow, spacer). insertMenu grid view expects /static/page-builder-thumbnails/<type>.webp but only 2 thumbnails exist (callToAction, infoSection) — 42 broken preview images in the Studio insert menu"}
+      ]
+    },
+    {
+      "name": "service",
+      "title": "Service",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/service.ts",
+      "preview": "select: {title: 'title', media: 'tabImage'}",
+      "fields": [
+        {"name": "title", "title": "Title", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/services/[slug]/page.tsx", "frontend/app/layout.tsx (services nav injection — INERT on this site, see riskFlags)", "frontend/app/components/sections/ServiceTabs.tsx (block unused live)"], "unused": false},
+        {"name": "slug", "title": "Slug", "type": "slug", "required": false, "notes": "source: 'title', maxLength: 96", "consumedBy": ["frontend/app/services/[slug]/page.tsx", "frontend/app/sitemap.ts", "frontend/app/layout.tsx"], "unused": false},
+        {"name": "sticker", "title": "Sticker Image", "type": "image", "hotspot": false, "notes": "image field: alt (string)", "consumedBy": ["frontend/app/components/sections/ServiceTabs.tsx"], "unused": true, "notesUnused": "serviceTabs block has ZERO live usage on this site and sticker is unset on all 4 services — dead in practice"},
+        {"name": "shortDescription", "title": "Short Description", "type": "text", "consumedBy": ["frontend/app/components/sections/ServiceTabs.tsx (block unused live)", "frontend/app/services/[slug]/page.tsx (meta description fallback)"], "unused": false, "notes": "Set on all 4 services; only reachable consumer is the metadata fallback, which never fires because seo.metaDescription is set everywhere"},
+        {"name": "tabImage", "title": "Tab Image", "type": "image", "hotspot": true, "notes": "image field: alt (string)", "consumedBy": ["frontend/app/components/sections/ServiceTabs.tsx", "studio preview media"], "unused": true, "notesUnused": "unset on all 4 services; serviceTabs block unused live"},
+        {"name": "tabCta", "title": "Tab CTA", "type": "button", "consumedBy": ["frontend/app/components/sections/ServiceTabs.tsx"], "unused": true, "notesUnused": "unset on all 4 services; serviceTabs block unused live"},
+        {"name": "heading", "title": "Page Heading", "type": "string", "consumedBy": ["frontend/app/services/[slug]/page.tsx (meta description fallback only)"], "unused": false, "notes": "DRIFT vs hound-3: populated on all 4 live services (e.g. 'Dog Boarding') but still only consumed as a metadata-description fallback that never fires (seo.metaDescription set everywhere) — near-dead"},
+        {"name": "seo", "title": "SEO & Metadata", "type": "seo", "consumedBy": ["frontend/app/services/[slug]/page.tsx generateMetadata"], "unused": false, "notes": "Populated (metaTitle + metaDescription) on all 4 live services"},
+        {"name": "pageBuilder", "title": "Page builder", "type": "array", "of": ["same 42 types as page.pageBuilder EXCEPT galleryPage and pricingPageTabs"], "consumedBy": ["frontend/app/components/PageBuilder.tsx"], "unused": false, "notes": "Drift vs page: omits galleryPage, pricingPageTabs (same omission as hound-3); includes the 3 new types (heroMarquee, expandingCardsRow, spacer); order differs slightly (service.ts:77-120)"}
+      ]
+    },
+    {
+      "name": "testimonial",
+      "title": "Testimonial",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/testimonial.ts",
+      "preview": "select: {title: 'authorName', subtitle: 'quote'}",
+      "fields": [
+        {"name": "quote", "title": "Quote", "type": "text", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/Testimonials.tsx"], "unused": false},
+        {"name": "authorName", "title": "Author Name", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/Testimonials.tsx"], "unused": false},
+        {"name": "authorLabel", "title": "Author Label", "type": "string", "consumedBy": ["frontend/app/components/sections/Testimonials.tsx"], "unused": false},
+        {"name": "rating", "title": "Rating", "type": "number", "validation": "Rule.min(1).max(5)", "initialValue": 5, "consumedBy": ["frontend/app/components/sections/Testimonials.tsx"], "unused": false}
+      ]
+    },
+    {
+      "name": "webcam",
+      "title": "Webcam",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/webcam.ts",
+      "preview": "select {title:'name', group, enabled}; prepare adds emoji + (disabled) suffix",
+      "orderings": "groupSortOrder: group asc, sortOrder asc",
+      "notes": "ZERO webcam documents in the live dataset (the /webcams page renders webcamGrid with an empty list)",
+      "fields": [
+        {"name": "name", "title": "Camera Name", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/WebcamGrid.tsx", "frontend/app/components/sections/WebcamEmbed.tsx"], "unused": false},
+        {"name": "cameraId", "title": "Camera ID", "type": "string", "required": true, "validation": "Rule.required()", "notes": "IPCamLive camera alias", "consumedBy": ["frontend/app/components/sections/WebcamEmbed.tsx (IPCamLive iframe alias)"], "unused": false},
+        {"name": "group", "title": "Group", "type": "string", "required": true, "validation": "Rule.required()", "notes": "options list: indoor|outdoor, radio", "consumedBy": ["frontend/app/components/sections/WebcamGrid.tsx", "frontend/sanity/lib/queries.ts (order)"], "unused": false},
+        {"name": "sortOrder", "title": "Sort Order", "type": "number", "consumedBy": ["frontend/sanity/lib/queries.ts (order)"], "unused": false},
+        {"name": "enabled", "title": "Enabled", "type": "boolean", "initialValue": true, "consumedBy": ["frontend/sanity/lib/queries.ts (filter enabled == true)"], "unused": false}
+      ]
+    }
+  ],
+  "objectTypes": [
+    {"name": "seo", "title": "SEO & Metadata", "file": "studio/src/schemaTypes/objects/seo.ts", "identicalToHound3": true, "notes": "options collapsible/collapsed", "fields": [
+      {"name": "metaTitle", "title": "Meta Title", "type": "string", "validation": "Rule.warning().max(70)", "consumedBy": ["frontend/app/page.tsx", "frontend/app/[slug]/page.tsx", "frontend/app/services/[slug]/page.tsx"], "unused": false, "notes": "Live values already include '| Home Away From Home' while the layout title template appends '%s | Home Away From Home' again → doubled brand suffix in rendered <title> (see riskFlags)"},
+      {"name": "metaDescription", "title": "Meta Description", "type": "text", "validation": "Rule.warning().max(160)", "consumedBy": ["same 3 generateMetadata fns"], "unused": false},
+      {"name": "ogImage", "title": "Social Share Image", "type": "image", "hotspot": true, "notes": "image field: alt (string)", "consumedBy": ["same 3 generateMetadata fns via resolveOpenGraphImage"], "unused": false, "notes2": "populated nowhere in live data"},
+      {"name": "noIndex", "title": "Hide from Search Engines", "type": "boolean", "initialValue": false, "consumedBy": ["3 generateMetadata fns (robots)", "frontend/app/sitemap.ts (exclusion)"], "unused": false, "notes": "populated nowhere in live data"}
+    ]},
+    {"name": "button", "title": "(no title)", "file": "studio/src/schemaTypes/objects/button.ts", "identicalToHound3": true, "fields": [
+      {"name": "buttonText", "title": "Button Text", "type": "string", "consumedBy": ["frontend/app/components/ui/Button.tsx via section components"], "unused": false},
+      {"name": "link", "title": "Button Link", "type": "link", "consumedBy": ["frontend/app/components/ui/Button.tsx", "frontend/app/components/ResolvedLink.tsx"], "unused": false}
+    ]},
+    {"name": "link", "title": "Link", "file": "studio/src/schemaTypes/objects/link.ts", "identicalToHound3": true, "fields": [
+      {"name": "linkType", "title": "Link Type", "type": "string", "notes": "options: href|page, radio. NO initialValue (unlike blockContent annotation which defaults 'href')", "consumedBy": ["frontend/sanity/lib/utils.ts linkResolver"], "unused": false},
+      {"name": "href", "title": "URL", "type": "url", "hidden": "({parent}) => parent?.linkType !== 'href'", "validation": "custom: 'URL is required when Link Type is URL' when linkType==='href' && !value", "consumedBy": ["linkResolver"], "unused": false},
+      {"name": "page", "title": "Page", "type": "reference", "to": ["page", "service"], "hidden": "({parent}) => parent?.linkType !== 'page'", "validation": "custom: 'Page reference is required when Link Type is Page' when linkType==='page' && !value", "consumedBy": ["linkResolver (dereferenced to slug + pageType in GROQ)"], "unused": false, "notes": "Dereference adds /services/ prefix when pageType==='service'"},
+      {"name": "queryString", "title": "Query String", "type": "string", "hidden": "({parent}) => parent?.linkType !== 'page'", "consumedBy": ["linkResolver (appends ?qs)"], "unused": false, "notes": "unset everywhere in live data"},
+      {"name": "openInNewTab", "title": "Open in new tab", "type": "boolean", "initialValue": false, "consumedBy": ["ResolvedLink.tsx", "Button.tsx (target/rel)"], "unused": false}
+    ]},
+    {"name": "blockContent", "title": "Block Content", "file": "studio/src/schemaTypes/objects/blockContent.tsx", "identicalToHound3": true, "fields": [], "notes": "type: array — see portableTextConfigs[0]"},
+    {"name": "blockContentTextOnly", "title": "Block Content (Simple - Text Only)", "file": "studio/src/schemaTypes/objects/blockContentTextOnly.tsx", "identicalToHound3": true, "fields": [], "notes": "type: array — see portableTextConfigs[1]"},
+    {"name": "callToAction", "title": "Call to Action", "file": "studio/src/schemaTypes/objects/callToAction.ts", "identicalToHound3": true, "notes": "field groups: contents (default), media, button, designSystem. Preview: heading + image. UNUSED in live dataset.", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/Cta.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["Cta.tsx"], "unused": false},
+      {"name": "body", "title": "(none)", "type": "blockContentTextOnly", "consumedBy": ["Cta.tsx via CustomPortableText"], "unused": false},
+      {"name": "button", "title": "(none)", "type": "button", "consumedBy": ["Cta.tsx"], "unused": false},
+      {"name": "image", "title": "(none)", "type": "image", "hotspot": true, "consumedBy": ["Cta.tsx (alt hardcoded 'Demo image')"], "unused": false},
+      {"name": "theme", "title": "Theme", "type": "string", "initialValue": "light", "notes": "options light|dark radio", "consumedBy": ["Cta.tsx"], "unused": false},
+      {"name": "contentAlignment", "title": "Content Order", "type": "string", "initialValue": "textFirst", "hidden": "({parent}) => !Boolean(parent?.image?.asset)", "notes": "options textFirst|imageFirst radio", "consumedBy": ["Cta.tsx"], "unused": false}
+    ]},
+    {"name": "infoSection", "title": "Info Section", "file": "studio/src/schemaTypes/objects/infoSection.ts", "identicalToHound3": true, "notes": "USED live (1 instance, contact page) — was unused in hound-3", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["frontend/app/components/InfoSection.tsx"], "unused": false},
+      {"name": "subheading", "title": "Subheading", "type": "string", "consumedBy": ["InfoSection.tsx"], "unused": false},
+      {"name": "content", "title": "Content", "type": "blockContent", "consumedBy": ["InfoSection.tsx via CustomPortableText (components map — links/images DO render here)"], "unused": false}
+    ]},
+    {"name": "hero", "title": "Hero", "file": "studio/src/schemaTypes/objects/hero.ts", "identicalToHound3": true, "notes": "USED live: 4 instances (one per service page). Component drift vs hound-3: HAFH's Hero.tsx removed hound-3's hardcoded Boarding/Daycare/Grooming chip links.", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/Hero.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["Hero.tsx"], "unused": false},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["Hero.tsx"], "unused": false},
+      {"name": "primaryCta", "title": "Primary CTA", "type": "button", "consumedBy": ["Hero.tsx"], "unused": false},
+      {"name": "secondaryCta", "title": "Secondary CTA", "type": "button", "consumedBy": ["Hero.tsx"], "unused": false},
+      {"name": "reviewRating", "title": "Review Star Rating", "type": "number", "validation": "Rule.min(1).max(5)", "consumedBy": ["Hero.tsx"], "unused": false, "notes": "unset on all 4 live instances"},
+      {"name": "reviewText", "title": "Review Text", "type": "string", "consumedBy": ["Hero.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "trustLine", "title": "Trust Line", "type": "string", "consumedBy": ["Hero.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "heroImage", "title": "Hero Image", "type": "image", "hotspot": true, "consumedBy": ["Hero.tsx (width 960)"], "unused": false, "notes": "unset on all 4 live instances — all service heroes render text-only"}
+    ]},
+    {"name": "heroMarquee", "title": "Hero Marquee", "file": "studio/src/schemaTypes/objects/heroMarquee.ts", "identicalToHound3": false, "notes": "NEW TYPE — does not exist in hound-3. USED live (1 instance: homepage hero). Component contains cross-site alt-text leakage: fallbacks 'Boxers Bed & Biscuits' and 'Boxers facility' (HeroMarquee.tsx:92,~262) — evidently backported from the Boxers build. Also renders hardcoded /illustrations/hero-left-dog.png + hero-right-image.png from public/.", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/HeroMarquee.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["HeroMarquee.tsx"], "unused": false},
+      {"name": "headingAccent", "title": "Heading Accent", "type": "string", "notes": "second line in brand color", "consumedBy": ["HeroMarquee.tsx"], "unused": false, "notes2": "unset live"},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["HeroMarquee.tsx"], "unused": false},
+      {"name": "primaryCta", "title": "Primary CTA", "type": "button", "consumedBy": ["HeroMarquee.tsx"], "unused": false},
+      {"name": "secondaryCta", "title": "Secondary CTA", "type": "button", "consumedBy": ["HeroMarquee.tsx"], "unused": false},
+      {"name": "reviewRating", "title": "Review Star Rating", "type": "number", "validation": "Rule.min(1).max(5)", "consumedBy": ["HeroMarquee.tsx (star row)"], "unused": false},
+      {"name": "reviewText", "title": "Review Text", "type": "string", "consumedBy": ["HeroMarquee.tsx"], "unused": false},
+      {"name": "trustLine", "title": "Trust Line", "type": "string", "consumedBy": ["HeroMarquee.tsx"], "unused": false},
+      {"name": "bubbleText", "title": "Bubble Text", "type": "string", "notes": "text split across top/bottom arcs of a decorative SVG circle badge", "consumedBy": ["HeroMarquee.tsx"], "unused": false, "notes2": "unset live — badge not rendered"},
+      {"name": "heroLogo", "title": "Hero Logo", "type": "image", "notes": "field: alt (string)", "consumedBy": ["HeroMarquee.tsx (width 400; alt fallback 'Boxers Bed & Biscuits')"], "unused": false, "notes2": "unset live"},
+      {"name": "marqueeImages", "title": "Marquee Images", "type": "array", "of": ["image (hotspot, fields: alt string)"], "consumedBy": ["HeroMarquee.tsx (width 880, duplicated array, CSS marquee animation 120s)"], "unused": false, "notes": "9 images live, all with alt"}
+    ]},
+    {"name": "expandingCardsRow", "title": "Expanding Cards Row", "file": "studio/src/schemaTypes/objects/expandingCardsRow.ts", "identicalToHound3": false, "notes": "NEW TYPE — does not exist in hound-3. USED live (1 instance: homepage, 4 cards → the 4 service pages).", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/ExpandingCardsRow.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["ExpandingCardsRow.tsx"], "unused": false},
+      {"name": "subheading", "title": "Subheading", "type": "text", "consumedBy": ["ExpandingCardsRow.tsx"], "unused": false},
+      {"name": "cards", "title": "Cards", "type": "array", "validation": "Rule.min(2).max(4)", "of": ["inline object {image: image hotspot REQUIRED (Rule.required(), NO alt field — component uses card.title as alt), title: string required, subtext: text, link: button (title 'Learn More Link')}"], "consumedBy": ["ExpandingCardsRow.tsx (width 1200)"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["ExpandingCardsRow.tsx"], "unused": false}
+    ]},
+    {"name": "spacer", "title": "Spacer", "file": "studio/src/schemaTypes/objects/spacer.ts", "identicalToHound3": false, "notes": "NEW TYPE — does not exist in hound-3. USED live: 15 instances across pages/services (pure layout block).", "fields": [
+      {"name": "size", "title": "Size", "type": "string", "initialValue": "md", "notes": "sm|md|lg|xl radio. Component quirk: sm and md both map to h-16 (Spacer.tsx:1-6)", "consumedBy": ["frontend/app/components/sections/Spacer.tsx"], "unused": false}
+    ]},
+    {"name": "imageRow", "title": "Image Row", "file": "studio/src/schemaTypes/objects/imageRow.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "images", "title": "Images", "type": "array", "of": ["image (hotspot, fields: alt string)"], "validation": "Rule.min(1).max(6)", "consumedBy": ["frontend/app/components/sections/ImageRow.tsx (width 400)"], "unused": false}
+    ]},
+    {"name": "featureCards", "title": "Feature Cards", "file": "studio/src/schemaTypes/objects/featureCards.ts", "identicalToHound3": true, "notes": "USED live: 4 instances (one per service page), all with 4 features, no stickers/cta/trustLine", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/FeatureCards.tsx"], "unused": false},
+      {"name": "subheading", "title": "Subheading", "type": "text", "consumedBy": ["FeatureCards.tsx"], "unused": false},
+      {"name": "stickerLeft", "title": "Left Sticker", "type": "image", "notes": "field: alt", "consumedBy": ["FeatureCards.tsx (width 160)"], "unused": false, "notes2": "unset live"},
+      {"name": "stickerRight", "title": "Right Sticker", "type": "image", "notes": "field: alt", "consumedBy": ["FeatureCards.tsx (width 160)"], "unused": false, "notes2": "unset live"},
+      {"name": "features", "title": "Features", "type": "array", "of": ["inline object {icon: string (Iconify name), title: string required, description: text}"], "consumedBy": ["FeatureCards.tsx (Iconify @iconify/react — external api.iconify.design dependency)"], "unused": false},
+      {"name": "cta", "title": "CTA Button", "type": "button", "consumedBy": ["FeatureCards.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "trustLine", "title": "Trust Line", "type": "string", "consumedBy": ["FeatureCards.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "darkMode", "title": "Dark Mode", "type": "boolean", "initialValue": true, "consumedBy": [], "unused": true, "notes": "Typed in component props but never destructured/rendered — DEAD FIELD (set true on all 4 live instances, inert)"}
+    ]},
+    {"name": "serviceTabs", "title": "Service Tabs", "file": "studio/src/schemaTypes/objects/serviceTabs.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3, where it was the homepage services block — HAFH uses expandingCardsRow instead)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/ServiceTabs.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["ServiceTabs.tsx"], "unused": false},
+      {"name": "tabs", "title": "Service Tabs", "type": "array", "of": ["reference"], "to": ["service"], "consumedBy": ["ServiceTabs.tsx (dereferenced in GROQ)"], "unused": false}
+    ]},
+    {"name": "statsBar", "title": "Stats Bar", "file": "studio/src/schemaTypes/objects/statsBar.ts", "identicalToHound3": true, "notes": "USED live: 2 instances (homepage, about), 4 stats each, showLogo true", "fields": [
+      {"name": "stats", "title": "Stats", "type": "array", "of": ["inline object {value: string required, label: string required}"], "consumedBy": ["frontend/app/components/sections/StatsBar.tsx"], "unused": false},
+      {"name": "showLogo", "title": "Show Logo", "type": "boolean", "initialValue": true, "consumedBy": ["StatsBar.tsx"], "unused": false}
+    ]},
+    {"name": "webcamPreview", "title": "Webcam Preview", "file": "studio/src/schemaTypes/objects/webcamPreview.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/WebcamPreview.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["WebcamPreview.tsx"], "unused": false},
+      {"name": "previewImage", "title": "Preview Image", "type": "image", "hotspot": true, "consumedBy": ["WebcamPreview.tsx (width 600)"], "unused": false},
+      {"name": "passwordProtected", "title": "Password Protected", "type": "boolean", "initialValue": true, "consumedBy": ["WebcamPreview.tsx"], "unused": false},
+      {"name": "webcamUrl", "title": "Webcam URL", "type": "url", "consumedBy": [], "unused": true, "notes": "Typed in props but never destructured/rendered — DEAD FIELD"}
+    ]},
+    {"name": "testimonials", "title": "Testimonials", "file": "studio/src/schemaTypes/objects/testimonials.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (homepage), 6 review refs", "fields": [
+      {"name": "icon", "title": "Icon", "type": "image", "notes": "field: alt", "consumedBy": ["frontend/app/components/sections/Testimonials.tsx (width 120)"], "unused": false, "notes2": "unset live"},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["Testimonials.tsx"], "unused": false},
+      {"name": "reviews", "title": "Reviews", "type": "array", "of": ["reference"], "to": ["testimonial"], "consumedBy": ["Testimonials.tsx (dereferenced in GROQ)"], "unused": false},
+      {"name": "googleRating", "title": "Google Rating", "type": "string", "consumedBy": ["Testimonials.tsx"], "unused": false, "notes": "set live"},
+      {"name": "googleReviewCount", "title": "Google Review Count", "type": "number", "consumedBy": [], "unused": true, "notes": "Typed in props but never destructured/rendered — DEAD FIELD (set in live data, inert)"}
+    ]},
+    {"name": "ctaBanner", "title": "CTA Banner", "file": "studio/src/schemaTypes/objects/ctaBanner.ts", "identicalToHound3": false, "notes": "SCHEMA DRIFT vs hound-3: adds `alignment` field (ctaBanner.ts:79-92). USED live: 10 instances (every page except contact + every service). Component drift: overlay bg-forest/20 → bg-black/50; left-alignment layout support.", "fields": [
+      {"name": "icon", "title": "Icon", "type": "image", "notes": "field: alt", "consumedBy": ["frontend/app/components/sections/CtaBanner.tsx (width 200)"], "unused": false, "notes2": "unset on all 10 live instances"},
+      {"name": "stickerImage", "title": "Sticker Image", "type": "image", "notes": "field: alt", "consumedBy": ["CtaBanner.tsx (width 120)"], "unused": false, "notes2": "unset live"},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["CtaBanner.tsx"], "unused": false},
+      {"name": "backgroundImage", "title": "Background Image", "type": "image", "hotspot": true, "notes": "field: alt", "consumedBy": ["CtaBanner.tsx (width 1200, eager when index<=1)"], "unused": false, "notes2": "set on 6 of 10 live instances"},
+      {"name": "sideImage", "title": "Side Image", "type": "image", "hotspot": true, "notes": "field: alt; presence switches to 2-col layout", "consumedBy": ["CtaBanner.tsx (width 700)"], "unused": false, "notes2": "unset on all 10 live instances — full-width layout everywhere"},
+      {"name": "cta", "title": "CTA Button", "type": "button", "consumedBy": ["CtaBanner.tsx"], "unused": false, "notes": "set on all 10"},
+      {"name": "alignment", "title": "Content Alignment", "type": "string", "initialValue": "center", "notes": "NEW FIELD vs hound-3. options center|left radio; only affects full-width (no side image) layout", "consumedBy": ["CtaBanner.tsx (isLeft branch)"], "unused": false, "notes2": "explicitly set on 1 of 10 live instances ('center'); others rely on component default"},
+      {"name": "showRating", "title": "Show Rating", "type": "boolean", "initialValue": true, "consumedBy": ["CtaBanner.tsx"], "unused": false, "notes": "false on 9 of 10 live instances"},
+      {"name": "ratingText", "title": "Rating Text", "type": "string", "consumedBy": ["CtaBanner.tsx"], "unused": false, "notes": "set on 1 of 10"}
+    ]},
+    {"name": "splitContent", "title": "Split Content", "file": "studio/src/schemaTypes/objects/splitContent.ts", "identicalToHound3": true, "notes": "USED live: 2 instances (homepage 'About Us' blurb, about page)", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/SplitContent.tsx"], "unused": false},
+      {"name": "body", "title": "Body", "type": "blockContent", "consumedBy": ["SplitContent.tsx via BARE <PortableText> (no components map — link marks would render as plain text; live bodies contain no links)"], "unused": false},
+      {"name": "link", "title": "Link", "type": "object", "of": ["inline {label: string, link: link}"], "consumedBy": ["SplitContent.tsx via Button"], "unused": false, "notes": "unset on both live instances (About CTA was deliberately removed 2026-04-21)"},
+      {"name": "badge", "title": "Badge Image", "type": "image", "notes": "field: alt", "consumedBy": ["SplitContent.tsx (width 80)"], "unused": false, "notes2": "unset live"},
+      {"name": "image", "title": "Image", "type": "image", "hotspot": true, "notes": "field: alt", "consumedBy": ["SplitContent.tsx (width 600)"], "unused": false},
+      {"name": "stickerImage", "title": "Sticker Image", "type": "image", "notes": "field: alt", "consumedBy": ["SplitContent.tsx (width 200)"], "unused": false, "notes2": "unset live"},
+      {"name": "imagePosition", "title": "Image Position", "type": "string", "initialValue": "right", "notes": "left|right radio", "consumedBy": ["SplitContent.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "sand", "notes": "cream|sand|forest radio. Live values: forest (homepage), cream (about)", "consumedBy": ["SplitContent.tsx"], "unused": false}
+    ]},
+    {"name": "faqAccordion", "title": "FAQ Accordion", "file": "studio/src/schemaTypes/objects/faqAccordion.ts", "identicalToHound3": true, "notes": "USED live: 3 instances (daycare 3 faqs, boarding 3, new-clients 4). All 10 answers are single 'normal' blocks, no marks, no links.", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/FaqAccordion.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["FaqAccordion.tsx"], "unused": false},
+      {"name": "faqs", "title": "FAQs", "type": "array", "of": ["faq: inline object {question: string required, answer: blockContent}"], "consumedBy": ["FaqAccordion.tsx — answer via BARE <PortableText> + toPlainText for FAQPage JSON-LD"], "unused": false}
+    ]},
+    {"name": "pricingTable", "title": "Pricing Table", "file": "studio/src/schemaTypes/objects/pricingTable.ts", "identicalToHound3": true, "notes": "USED live: 3 instances (daycare 1 cat/5 tiers, boarding 3 cats/7 tiers, grooming 1 cat/4 tiers) — DRIFT vs hound-3 where this block was unused. No tier CTAs used; all tiers have features arrays.", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/PricingTable.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["PricingTable.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["PricingTable.tsx"], "unused": false, "notes": "grooming instance carries the pricing disclaimer + mobile-grooming note (client-managed copy)"},
+      {"name": "categories", "title": "Categories", "type": "array", "of": ["pricingCategory: {categoryName: string required, tiers: array of pricingTier {name: string required, price: string, description: text, features: array of string, highlighted: boolean (init false), cta: button}}"], "consumedBy": ["PricingTable.tsx"], "unused": false}
+    ]},
+    {"name": "teamGrid", "title": "Team Grid", "file": "studio/src/schemaTypes/objects/teamGrid.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (grooming page — Sheryl Wagner, bio + certifications string, NO image) — was unused in hound-3", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/TeamGrid.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["TeamGrid.tsx"], "unused": false},
+      {"name": "members", "title": "Team Members", "type": "array", "of": ["teamMember: {name: string required, role: string, bio: text, certifications: string (single comma-separated string, NOT an array), image: image hotspot}"], "consumedBy": ["TeamGrid.tsx (width 400)"], "unused": false}
+    ]},
+    {"name": "galleryGrid", "title": "Gallery Grid", "file": "studio/src/schemaTypes/objects/galleryGrid.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3 where used 4x — HAFH's gallery page uses galleryPage)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/GalleryGrid.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["GalleryGrid.tsx"], "unused": false},
+      {"name": "images", "title": "Images", "type": "array", "of": ["image (hotspot, fields: alt string, caption string)"], "consumedBy": ["GalleryGrid.tsx (width 600 grid; 1600 lightbox via sanityImageUrlWithDimensions)"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 3, "notes": "2|3|4", "consumedBy": ["GalleryGrid.tsx"], "unused": false},
+      {"name": "displayStyle", "title": "Display Style", "type": "string", "initialValue": "grid", "notes": "grid|circles radio", "consumedBy": ["GalleryGrid.tsx"], "unused": false},
+      {"name": "enableLightbox", "title": "Enable Lightbox", "type": "boolean", "initialValue": true, "consumedBy": ["GalleryGrid.tsx (yet-another-react-lightbox)"], "unused": false},
+      {"name": "accentImage", "title": "Accent Image", "type": "image", "notes": "field: alt", "consumedBy": ["GalleryGrid.tsx (width 200)"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["GalleryGrid.tsx"], "unused": false}
+    ]},
+    {"name": "contactForm", "title": "Contact Form", "file": "studio/src/schemaTypes/objects/contactForm.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (contact page: 5 fields, map, 3 nextSteps, PT description). Component drift vs hound-3: hardcoded SMS/MMS consent paragraph added below the form (ContactForm.tsx:183-190).", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/ContactForm.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["ContactForm.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "blockContent", "consumedBy": ["ContactForm.tsx via BARE <PortableText>"], "unused": false, "notes": "set live"},
+      {"name": "formFields", "title": "Form Fields", "type": "array", "of": ["formField: {fieldName: string required, label: string required, type: string (text|email|tel|textarea|select, init text), required: boolean (init false), options: array of string (hidden unless type==select)}"], "consumedBy": ["ContactForm.tsx → POST /api/contact (nodemailer)"], "unused": false},
+      {"name": "submitButtonText", "title": "Submit Button Text", "type": "string", "initialValue": "Send Message", "consumedBy": ["ContactForm.tsx"], "unused": false},
+      {"name": "successMessage", "title": "Success Message", "type": "string", "initialValue": "Thank you! We'll be in touch soon.", "consumedBy": ["ContactForm.tsx"], "unused": false},
+      {"name": "showMap", "title": "Show Map", "type": "boolean", "initialValue": false, "consumedBy": ["ContactForm.tsx"], "unused": false, "notes": "true live"},
+      {"name": "mapEmbedUrl", "title": "Map Embed URL", "type": "url", "hidden": "({parent}) => !parent?.showMap", "consumedBy": ["ContactForm.tsx"], "unused": false, "notes": "set live"},
+      {"name": "nextSteps", "title": "Next Steps", "type": "array", "of": ["nextStep: {title: string required, description: text}"], "consumedBy": ["ContactForm.tsx"], "unused": false},
+      {"name": "image", "title": "Sidebar Image", "type": "image", "hotspot": true, "notes": "field: alt", "consumedBy": ["ContactForm.tsx (width 700)"], "unused": false, "notes2": "unset live"},
+      {"name": "address", "title": "Address", "type": "text", "consumedBy": ["ContactForm.tsx"], "unused": false, "notes": "Duplicates settings.contactInfo.address — per-block copy, both set live"},
+      {"name": "phone", "title": "Phone", "type": "string", "consumedBy": ["ContactForm.tsx (tel: link)"], "unused": false, "notes": "Duplicates settings.contactInfo.phone"},
+      {"name": "email", "title": "Email", "type": "string", "consumedBy": ["ContactForm.tsx (mailto:)"], "unused": false, "notes": "Duplicates settings.contactInfo.email (both updated to hafhfacility@gmail.com in Round 4)"}
+    ]},
+    {"name": "heroSplit", "title": "Hero Split", "file": "studio/src/schemaTypes/objects/heroSplit.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3 where it fronted every service page)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/HeroSplit.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["HeroSplit.tsx"], "unused": false},
+      {"name": "body", "title": "Body", "type": "text", "consumedBy": ["HeroSplit.tsx"], "unused": false},
+      {"name": "primaryCta", "title": "Primary CTA", "type": "button", "consumedBy": ["HeroSplit.tsx"], "unused": false},
+      {"name": "secondaryCta", "title": "Secondary CTA", "type": "button", "consumedBy": ["HeroSplit.tsx"], "unused": false},
+      {"name": "image", "title": "Image", "type": "image", "hotspot": true, "required": true, "validation": "Rule.required()", "notes": "field: alt", "consumedBy": ["HeroSplit.tsx (width 600)"], "unused": false},
+      {"name": "stickerImage", "title": "Sticker Image", "type": "image", "notes": "field: alt", "consumedBy": ["HeroSplit.tsx (width 200)"], "unused": false},
+      {"name": "imagePosition", "title": "Image Position", "type": "string", "initialValue": "right", "notes": "left|right radio", "consumedBy": ["HeroSplit.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["HeroSplit.tsx"], "unused": false}
+    ]},
+    {"name": "heroBanner", "title": "Hero Banner", "file": "studio/src/schemaTypes/objects/heroBanner.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/HeroBanner.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["HeroBanner.tsx"], "unused": false},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["HeroBanner.tsx"], "unused": false},
+      {"name": "primaryCta", "title": "Primary CTA", "type": "button", "consumedBy": ["HeroBanner.tsx"], "unused": false},
+      {"name": "backgroundImage", "title": "Background Image", "type": "image", "hotspot": true, "consumedBy": ["HeroBanner.tsx (width 1400)"], "unused": false},
+      {"name": "overlayOpacity", "title": "Overlay Opacity", "type": "string", "initialValue": "medium", "notes": "light|medium|heavy radio", "consumedBy": ["HeroBanner.tsx"], "unused": false},
+      {"name": "minHeight", "title": "Minimum Height", "type": "string", "initialValue": "standard", "notes": "standard|tall|fullscreen radio", "consumedBy": ["HeroBanner.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio; used when no bg image", "consumedBy": ["HeroBanner.tsx"], "unused": false}
+    ]},
+    {"name": "heroMinimal", "title": "Hero Minimal", "file": "studio/src/schemaTypes/objects/heroMinimal.ts", "identicalToHound3": true, "notes": "USED live: 3 instances (webcams, about, gallery), each with eyebrow+heading+subtext only", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/HeroMinimal.tsx"], "unused": false},
+      {"name": "rating", "title": "Rating", "type": "string", "consumedBy": ["HeroMinimal.tsx (ticker mode)"], "unused": false, "notes": "unset live"},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["HeroMinimal.tsx"], "unused": false},
+      {"name": "headingAccent", "title": "Heading Accent", "type": "string", "consumedBy": ["HeroMinimal.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["HeroMinimal.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["HeroMinimal.tsx"], "unused": false, "notes2": "unset live"}
+    ]},
+    {"name": "serviceCards", "title": "Service Cards", "file": "studio/src/schemaTypes/objects/serviceCards.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/ServiceCards.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["ServiceCards.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["ServiceCards.tsx"], "unused": false},
+      {"name": "cards", "title": "Cards", "type": "array", "of": ["inline {image: image hotspot, title: string required, description: text, cta: button}"], "consumedBy": ["ServiceCards.tsx (width 400)"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 3, "notes": "2|3|4", "consumedBy": ["ServiceCards.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["ServiceCards.tsx"], "unused": false}
+    ]},
+    {"name": "featureList", "title": "Feature List", "file": "studio/src/schemaTypes/objects/featureList.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/FeatureList.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["FeatureList.tsx"], "unused": false},
+      {"name": "features", "title": "Features", "type": "array", "of": ["inline {title: string required, body: blockContent, image: image hotspot, cta: button}"], "consumedBy": ["FeatureList.tsx — body via BARE <PortableText>; image width 600"], "unused": false},
+      {"name": "showNumbers", "title": "Show Numbers", "type": "boolean", "initialValue": true, "consumedBy": ["FeatureList.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["FeatureList.tsx"], "unused": false}
+    ]},
+    {"name": "processSteps", "title": "Process Steps", "file": "studio/src/schemaTypes/objects/processSteps.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (new-clients, 4 Goose onboarding steps + CTA)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/ProcessSteps.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["ProcessSteps.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["ProcessSteps.tsx"], "unused": false},
+      {"name": "steps", "title": "Steps", "type": "array", "of": ["step: {title: string required, badge: string, description: text, icon: string (Iconify)}"], "validation": "Rule.min(2).max(6)", "consumedBy": ["ProcessSteps.tsx"], "unused": false},
+      {"name": "cta", "title": "CTA Button", "type": "button", "consumedBy": ["ProcessSteps.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["ProcessSteps.tsx"], "unused": false}
+    ]},
+    {"name": "contentColumns", "title": "Content Columns", "file": "studio/src/schemaTypes/objects/contentColumns.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/ContentColumns.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["ContentColumns.tsx"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "array", "of": ["inline {image: image hotspot, heading: string, body: blockContent, cta: button}"], "validation": "Rule.min(2).max(3)", "consumedBy": ["ContentColumns.tsx — body via BARE <PortableText>; image width 500"], "unused": false},
+      {"name": "layout", "title": "Layout", "type": "number", "initialValue": 2, "notes": "2|3", "consumedBy": ["ContentColumns.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["ContentColumns.tsx"], "unused": false}
+    ]},
+    {"name": "iconGrid", "title": "Icon Grid", "file": "studio/src/schemaTypes/objects/iconGrid.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3 where used 2x)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/IconGrid.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["IconGrid.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["IconGrid.tsx"], "unused": false},
+      {"name": "items", "title": "Items", "type": "array", "of": ["inline {icon: string (Iconify), title: string required, description: text}"], "consumedBy": ["IconGrid.tsx"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 3, "notes": "2|3|4", "consumedBy": ["IconGrid.tsx"], "unused": false},
+      {"name": "accentImage", "title": "Accent Image", "type": "image", "notes": "field: alt", "consumedBy": ["IconGrid.tsx (width 200)"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["IconGrid.tsx"], "unused": false}
+    ]},
+    {"name": "videoSection", "title": "Video Section", "file": "studio/src/schemaTypes/objects/videoSection.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/VideoSection.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["VideoSection.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["VideoSection.tsx"], "unused": false},
+      {"name": "videoUrl", "title": "Video URL", "type": "url", "required": true, "validation": "Rule.required()", "notes": "YouTube or Vimeo", "consumedBy": ["VideoSection.tsx"], "unused": false},
+      {"name": "thumbnail", "title": "Thumbnail", "type": "image", "hotspot": true, "consumedBy": ["VideoSection.tsx (width 960)"], "unused": false},
+      {"name": "layout", "title": "Layout", "type": "string", "initialValue": "full", "notes": "full|split radio", "consumedBy": ["VideoSection.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["VideoSection.tsx"], "unused": false}
+    ]},
+    {"name": "fullWidthMedia", "title": "Full Width Media", "file": "studio/src/schemaTypes/objects/fullWidthMedia.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["frontend/app/components/sections/FullWidthMedia.tsx"], "unused": false},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["FullWidthMedia.tsx"], "unused": false},
+      {"name": "cta", "title": "CTA Button", "type": "button", "consumedBy": ["FullWidthMedia.tsx"], "unused": false},
+      {"name": "image", "title": "Image", "type": "image", "hotspot": true, "required": true, "validation": "Rule.required()", "consumedBy": ["FullWidthMedia.tsx (width 1400)"], "unused": false},
+      {"name": "textAlignment", "title": "Text Alignment", "type": "string", "initialValue": "left", "notes": "left|center|right radio", "consumedBy": ["FullWidthMedia.tsx"], "unused": false},
+      {"name": "overlayOpacity", "title": "Overlay Opacity", "type": "string", "initialValue": "medium", "notes": "light|medium|heavy radio", "consumedBy": ["FullWidthMedia.tsx"], "unused": false}
+    ]},
+    {"name": "ctaStrip", "title": "CTA Strip", "file": "studio/src/schemaTypes/objects/ctaStrip.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3 where used 6x)", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/CtaStrip.tsx"], "unused": false},
+      {"name": "subtext", "title": "Subtext", "type": "string", "consumedBy": ["CtaStrip.tsx"], "unused": false},
+      {"name": "cta", "title": "CTA Button", "type": "button", "required": true, "validation": "Rule.required()", "consumedBy": ["CtaStrip.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "forest", "notes": "cream|sand|forest|terracotta radio", "consumedBy": ["CtaStrip.tsx"], "unused": false}
+    ]},
+    {"name": "logoBar", "title": "Logo Bar", "file": "studio/src/schemaTypes/objects/logoBar.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["frontend/app/components/sections/LogoBar.tsx"], "unused": false},
+      {"name": "logos", "title": "Logos", "type": "array", "of": ["inline {image: image required, alt: string required, url: url}"], "consumedBy": ["LogoBar.tsx (width 160)"], "unused": false},
+      {"name": "displayMode", "title": "Display Mode", "type": "string", "initialValue": "grid", "notes": "grid|marquee radio", "consumedBy": ["LogoBar.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|white radio", "consumedBy": ["LogoBar.tsx"], "unused": false}
+    ]},
+    {"name": "pricingMatrix", "title": "Pricing Matrix", "file": "studio/src/schemaTypes/objects/pricingMatrix.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset as a standalone block (matrix structure reused inline inside pricingPageTabs, where boarding + grooming tabs use it)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/PricingMatrix.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["PricingMatrix.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["PricingMatrix.tsx"], "unused": false},
+      {"name": "tables", "title": "Tables", "type": "array", "of": ["matrixTable: {tableName: string required, tableDescription: string, columnHeaders: array of string, rows: array of matrixRow {rowLabel: string required, cells: array of matrixCell {value: string, note: string}}}"], "consumedBy": ["PricingMatrix.tsx"], "unused": false},
+      {"name": "footnotes", "title": "Footnotes", "type": "array", "of": ["string"], "consumedBy": ["PricingMatrix.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["PricingMatrix.tsx"], "unused": false}
+    ]},
+    {"name": "pricingList", "title": "Pricing List", "file": "studio/src/schemaTypes/objects/pricingList.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (pricing page 'Small Animal Pricing', 1 item) — was unused in hound-3", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/PricingList.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["PricingList.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["PricingList.tsx"], "unused": false},
+      {"name": "items", "title": "Items", "type": "array", "of": ["pricingListItem: {service: string required, price: string, note: string}"], "consumedBy": ["PricingList.tsx"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 1, "notes": "1|2 radio", "consumedBy": ["PricingList.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["PricingList.tsx"], "unused": false}
+    ]},
+    {"name": "policyNotes", "title": "Policy Notes", "file": "studio/src/schemaTypes/objects/policyNotes.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/PolicyNotes.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["PolicyNotes.tsx"], "unused": false},
+      {"name": "categories", "title": "Categories", "type": "array", "of": ["policyCategory: {categoryName: string required, policies: array of string}"], "consumedBy": ["PolicyNotes.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "sand", "notes": "cream|sand|forest radio", "consumedBy": ["PolicyNotes.tsx"], "unused": false}
+    ]},
+    {"name": "featureGrid", "title": "Feature Grid", "file": "studio/src/schemaTypes/objects/featureGrid.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["frontend/app/components/sections/FeatureGrid.tsx"], "unused": false},
+      {"name": "cta", "title": "CTA Button", "type": "button", "consumedBy": ["FeatureGrid.tsx"], "unused": false},
+      {"name": "items", "title": "Items", "type": "array", "of": ["inline {image: image hotspot, icon: string (Iconify fallback), title: string required, description: text}"], "consumedBy": ["FeatureGrid.tsx (width 128, height 128)"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 3, "notes": "3|4 radio", "consumedBy": ["FeatureGrid.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest|black radio", "consumedBy": ["FeatureGrid.tsx"], "unused": false}
+    ]},
+    {"name": "pricingCalculator", "title": "Pricing Calculator", "file": "studio/src/schemaTypes/objects/pricingCalculator.ts", "identicalToHound3": true, "notes": "USED live: 3 instances (daycare, boarding, grooming service pages), all displayMode 'single'. Calculator PRICES are NOT in Sanity — hardcoded in frontend/app/data/pricingData.ts (285 lines, HAFH-specific rates incl. exit bath $49/$59/$69/$89, boardingAdditionalDogRate 39).", "fields": [
+      {"name": "displayMode", "title": "Display Mode", "type": "string", "initialValue": "single", "notes": "single|tabbed radio", "consumedBy": ["frontend/app/components/sections/PricingCalculator.tsx"], "unused": false},
+      {"name": "calculatorType", "title": "Calculator Type", "type": "string", "hidden": "({parent}) => parent?.displayMode === 'tabbed'", "validation": "custom: required for single mode", "notes": "daycare|boarding|grooming radio", "consumedBy": ["PricingCalculator.tsx"], "unused": false},
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "initialValue": "Pricing Calculator", "consumedBy": ["PricingCalculator.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["PricingCalculator.tsx"], "unused": false},
+      {"name": "subheading", "title": "Subheading", "type": "text", "consumedBy": ["PricingCalculator.tsx"], "unused": false},
+      {"name": "ctaText", "title": "CTA Button Text", "type": "string", "initialValue": "Book Now", "consumedBy": ["PricingCalculator.tsx"], "unused": false},
+      {"name": "ctaLink", "title": "CTA Link", "type": "link", "consumedBy": ["PricingCalculator.tsx"], "unused": false, "notes": "live values: booking.goose.pet URLs (Goose booking platform, NOT the Gingr app named in project docs)"},
+      {"name": "taxNote", "title": "Tax Note", "type": "string", "initialValue": "Prices shown before applicable tax", "consumedBy": ["PricingCalculator.tsx"], "unused": false}
+    ]},
+    {"name": "whatsIncluded", "title": "What's Included", "file": "studio/src/schemaTypes/objects/whatsIncluded.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3 where used 4x)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/WhatsIncluded.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["WhatsIncluded.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["WhatsIncluded.tsx"], "unused": false},
+      {"name": "items", "title": "Items", "type": "array", "of": ["inline {icon: string (Iconify), title: string required, description: text}"], "consumedBy": ["WhatsIncluded.tsx"], "unused": false},
+      {"name": "layout", "title": "Layout", "type": "string", "initialValue": "card", "notes": "card|inline radio", "consumedBy": ["WhatsIncluded.tsx"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 3, "notes": "2|3|4 radio", "consumedBy": ["WhatsIncluded.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["WhatsIncluded.tsx"], "unused": false},
+      {"name": "iconColor", "title": "Icon Color Scheme", "type": "string", "initialValue": "terracotta", "notes": "terracotta|forest|muted radio", "consumedBy": ["WhatsIncluded.tsx"], "unused": false}
+    ]},
+    {"name": "requirementsList", "title": "Requirements List", "file": "studio/src/schemaTypes/objects/requirementsList.ts", "identicalToHound3": true, "notes": "USED live: 3 instances (boarding, cats, new-clients), 4 items each, all with image, no link", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/RequirementsList.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["RequirementsList.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["RequirementsList.tsx"], "unused": false},
+      {"name": "items", "title": "Checklist Items", "type": "array", "of": ["item: {text: string}"], "consumedBy": ["RequirementsList.tsx"], "unused": false},
+      {"name": "link", "title": "Link", "type": "object", "of": ["inline {label: string, link: link}"], "consumedBy": ["RequirementsList.tsx"], "unused": false, "notes": "unset on all 3 live instances"},
+      {"name": "image", "title": "Image", "type": "image", "hotspot": true, "notes": "field: alt", "consumedBy": ["RequirementsList.tsx (width 600)"], "unused": false},
+      {"name": "imagePosition", "title": "Image Position", "type": "string", "initialValue": "right", "notes": "left|right radio", "consumedBy": ["RequirementsList.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["RequirementsList.tsx"], "unused": false}
+    ]},
+    {"name": "webcamGrid", "title": "Webcam Grid", "file": "studio/src/schemaTypes/objects/webcamGrid.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (webcams page) — but ZERO webcam documents exist, so the grid renders empty. GROQ injects sibling query: all enabled webcam docs ordered by group/sortOrder. Gated by /api/webcam-auth (env password + operating hours + WEBCAM_AUTH_SECRET HMAC).", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "initialValue": "Live Webcams", "consumedBy": ["frontend/app/components/sections/WebcamGrid.tsx"], "unused": false},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["WebcamGrid.tsx"], "unused": false},
+      {"name": "trustMessage", "title": "Trust Message", "type": "text", "consumedBy": ["WebcamGrid.tsx"], "unused": false},
+      {"name": "showGroupHeaders", "title": "Show Group Headers", "type": "boolean", "initialValue": true, "consumedBy": ["WebcamGrid.tsx"], "unused": false}
+    ]},
+    {"name": "galleryCarousel", "title": "Gallery Carousel", "file": "studio/src/schemaTypes/objects/galleryCarousel.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset (DRIFT vs hound-3 where used 2x)", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/GalleryCarousel.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["GalleryCarousel.tsx"], "unused": false},
+      {"name": "images", "title": "Images", "type": "array", "of": ["image (hotspot, fields: alt string, caption string)"], "consumedBy": ["GalleryCarousel.tsx (width 500; 1600 lightbox)"], "unused": false},
+      {"name": "enableLightbox", "title": "Enable Lightbox", "type": "boolean", "initialValue": true, "consumedBy": ["GalleryCarousel.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand|forest radio", "consumedBy": ["GalleryCarousel.tsx"], "unused": false}
+    ]},
+    {"name": "galleryShowcase", "title": "Gallery Showcase", "file": "studio/src/schemaTypes/objects/galleryShowcase.ts", "identicalToHound3": true, "notes": "UNUSED in live dataset", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/GalleryShowcase.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["GalleryShowcase.tsx"], "unused": false},
+      {"name": "subheading", "title": "Subheading", "type": "text", "consumedBy": ["GalleryShowcase.tsx"], "unused": false},
+      {"name": "images", "title": "Images", "type": "array", "of": ["image (hotspot, fields: alt string, caption string)"], "consumedBy": ["GalleryShowcase.tsx (widths 1200/400; 1600 lightbox)"], "unused": false, "notes": "caption defined but NOT rendered by GalleryShowcase.tsx — dead subfield"},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["GalleryShowcase.tsx"], "unused": false}
+    ]},
+    {"name": "galleryPage", "title": "Gallery Page", "file": "studio/src/schemaTypes/objects/galleryPage.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (gallery page, 12 images all with alt, layout grid) — page-only block (not in service.pageBuilder)", "fields": [
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["frontend/app/components/sections/GalleryPage.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "subtext", "title": "Subtext", "type": "text", "consumedBy": ["GalleryPage.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "images", "title": "Images", "type": "array", "of": ["image (hotspot, fields: alt string, caption string)"], "consumedBy": ["GalleryPage.tsx (widths 500/1000; 1600 lightbox)"], "unused": false},
+      {"name": "layout", "title": "Layout", "type": "string", "initialValue": "grid", "notes": "grid|single radio", "consumedBy": ["GalleryPage.tsx"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "cream", "notes": "cream|sand radio", "consumedBy": ["GalleryPage.tsx"], "unused": false}
+    ]},
+    {"name": "valuePillars", "title": "Value Pillars", "file": "studio/src/schemaTypes/objects/valuePillars.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (about page, 3 pillars, columns 3 — was 4 until the 24/7 pillar was removed 2026-04-21) — was unused in hound-3", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow Text", "type": "string", "consumedBy": ["frontend/app/components/sections/ValuePillars.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "consumedBy": ["ValuePillars.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["ValuePillars.tsx"], "unused": false},
+      {"name": "pillars", "title": "Pillars", "type": "array", "of": ["inline {metric: string required, title: string required, description: text}"], "consumedBy": ["ValuePillars.tsx"], "unused": false},
+      {"name": "columns", "title": "Columns", "type": "number", "initialValue": 4, "notes": "2|3|4 radio", "consumedBy": ["ValuePillars.tsx"], "unused": false},
+      {"name": "accentImage", "title": "Accent Image", "type": "image", "notes": "field: alt", "consumedBy": ["ValuePillars.tsx (width 200)"], "unused": false},
+      {"name": "backgroundColor", "title": "Background Color", "type": "string", "initialValue": "sand", "notes": "cream|sand|forest radio", "consumedBy": ["ValuePillars.tsx"], "unused": false}
+    ]},
+    {"name": "pricingPageTabs", "title": "Pricing Page Tabs", "file": "studio/src/schemaTypes/objects/pricingPageTabs.ts", "identicalToHound3": true, "notes": "USED live: 1 instance (pricing page: daycare=table, boarding=matrix, grooming=matrix, all with calculators). Deepest nesting in the schema (5 levels). Duplicates pricingTable tier structure and pricingMatrix table structure inline with reused _type names (pricingCategory, pricingTier, matrixTable, matrixRow, matrixCell). Page-only block (not in service.pageBuilder).", "fields": [
+      {"name": "eyebrow", "title": "Eyebrow", "type": "string", "consumedBy": ["frontend/app/components/sections/PricingPageTabs.tsx"], "unused": false},
+      {"name": "heading", "title": "Heading", "type": "string", "required": true, "validation": "Rule.required()", "consumedBy": ["PricingPageTabs.tsx"], "unused": false},
+      {"name": "description", "title": "Description", "type": "text", "consumedBy": ["PricingPageTabs.tsx"], "unused": false},
+      {"name": "defaultTab", "title": "Default Tab", "type": "string", "initialValue": "daycare", "notes": "daycare|boarding|grooming radio; /pricing#boarding deep links select tabs", "consumedBy": ["PricingPageTabs.tsx"], "unused": false},
+      {"name": "services", "title": "Service Tabs", "type": "array", "of": ["inline {serviceKey: string required (daycare|boarding|grooming), pricingDisplay: string (table|matrix, init table), tableData: object (hidden unless table) {categories: array of pricingCategory {categoryName, tiers: array of pricingTier {name, price, description: string, features: array of string, highlighted: boolean}}, description: text}, matrixData: object (hidden unless matrix) {description: text, tables: array of matrixTable {tableName, tableDescription, columnHeaders: array of string, rows: array of matrixRow {rowLabel, cells: array of matrixCell {value, note}}}, footnotes: array of string}, showCalculator: boolean (init true)}"], "consumedBy": ["PricingPageTabs.tsx", "frontend/app/components/pricing/PricingTierCards.tsx", "frontend/app/components/pricing/PricingMatrixDisplay.tsx"], "unused": false},
+      {"name": "ctaText", "title": "Calculator CTA Text", "type": "string", "initialValue": "Book Now", "consumedBy": ["PricingPageTabs.tsx"], "unused": false},
+      {"name": "ctaLink", "title": "Calculator CTA Link", "type": "link", "consumedBy": ["PricingPageTabs.tsx"], "unused": false},
+      {"name": "taxNote", "title": "Tax Note", "type": "string", "initialValue": "Prices shown before applicable tax and credit card surcharge", "consumedBy": ["PricingPageTabs.tsx"], "unused": false}
+    ]}
+  ],
+  "portableTextConfigs": [
+    {
+      "location": "blockContent (shared type: infoSection.content, splitContent.body, faqAccordion.faqs[].answer, featureList.features[].body, contentColumns.columns[].body, contactForm.description) — file studio/src/schemaTypes/objects/blockContent.tsx, byte-identical to hound-3",
+      "styles": ["SANITY DEFAULTS — not restricted in schema (normal, h1–h6, blockquote)"],
+      "lists": ["SANITY DEFAULTS (bullet, number)"],
+      "decorators": ["SANITY DEFAULTS (strong, em, code, underline, strike-through)"],
+      "annotations": [{"name": "link", "fields": {"linkType": "string radio href|page, initialValue 'href'", "href": "url, hidden unless linkType href/null, custom validation required-when-href", "page": "reference to [page] ONLY (note: standalone link object also allows service), hidden unless linkType page, custom validation required-when-page", "openInNewTab": "boolean, initialValue false"}}],
+      "customBlocks": [{"type": "image", "options": {"hotspot": true}, "fields": "NONE — no alt/caption fields on schema, but CustomPortableText renderer reads value.alt (always undefined)"}],
+      "rendererFile": "SPLIT: frontend/app/components/PortableText.tsx (CustomPortableText) used only by InfoSection.tsx and Cta.tsx; the other 5 sites (SplitContent.tsx, FaqAccordion.tsx, FeatureList.tsx, ContentColumns.tsx, ContactForm.tsx) use BARE <PortableText> from @portabletext/react with NO components map",
+      "customComponents": ["CustomPortableText: types.image → SanityImage width 672 cover rounded; block.h1/h2 → anchor-link headings using _key as fragment id; marks.link → ResolvedLink/linkResolver", "Bare renderers: default serializers only — custom link annotation and image blocks are NOT handled (links would render as plain text)"],
+      "liveDataShape": "Benign on this site today: across all live PT content there are ZERO link annotations and ZERO inline images. Styles used: normal, h3 (infoSection), h4 (splitContent). Marks used: strong only. (Verified by GROQ over all page/service docs 2026-07-10.)"
+    },
+    {
+      "location": "blockContentTextOnly (used by callToAction.body — block type unused in live data) — file studio/src/schemaTypes/objects/blockContentTextOnly.tsx, byte-identical to hound-3",
+      "styles": ["SANITY DEFAULTS — bare {type:'block'}"],
+      "lists": ["SANITY DEFAULTS"],
+      "decorators": ["SANITY DEFAULTS"],
+      "annotations": ["SANITY DEFAULT link annotation ({href}) — NOT the custom {linkType,href,page} shape used in blockContent"],
+      "customBlocks": [],
+      "rendererFile": "frontend/app/components/Cta.tsx via frontend/app/components/PortableText.tsx",
+      "customComponents": ["marks.link → ResolvedLink; linkResolver treats missing linkType with href as linkType='href'"],
+      "liveDataShape": "No live instances (callToAction unused)"
+    },
+    {
+      "location": "settings.description (inline block array, studio/src/schemaTypes/singletons/settings.tsx)",
+      "styles": ["[] (explicitly empty — plain paragraphs only)"],
+      "lists": ["[] (explicitly empty)"],
+      "decorators": ["[] (explicitly empty)"],
+      "annotations": [{"name": "link", "fields": "same custom link shape as blockContent (linkType/href/page→[page]/openInNewTab)"}],
+      "customBlocks": [],
+      "rendererFile": "frontend/app/layout.tsx (generateMetadata)",
+      "customComponents": ["Never rendered as rich text — only flattened via toPlainText() for the meta description"],
+      "liveDataShape": "NOT POPULATED in live data → site-wide meta description is the empty string (layout.tsx:117)"
+    }
+  ],
+  "queries": [
+    {"file": "frontend/sanity/lib/queries.ts:17-55", "usedBy": "frontend/app/layout.tsx (generateMetadata + RootLayout)", "types": ["settings", "page|service (via link deref)"], "fields": ["all settings fields via ..., navItems (link deref, children link deref), ctaButton, footerColumns, contactInfo, footerTagline, footerText, footerTextLink, footerBottomLinks, logo, yearEstablished, socialLinks, faviconUrl (favicon.asset->url), ga4MeasurementId, gtmContainerId, googleSiteVerification, ctmScriptUrl (explicit — DRIFT: hound-3 relies on the ... spread for this field), localBusiness"], "groq": "settingsQuery — *[_type == \"settings\"][0]{..., navItems[]{..., link {..., _type == \"link\" => {\"page\": page->slug.current, \"pageType\": page->_type}}, children[]{..., link {...same}}}, ctaButton {..., link {...same}}, footerColumns[]{..., links[]{..., link {...same}}}, contactInfo, footerTagline, footerText, footerTextLink, footerBottomLinks[]{..., link {...same}}, logo, yearEstablished, socialLinks, \"faviconUrl\": favicon.asset->url, ga4MeasurementId, gtmContainerId, googleSiteVerification, ctmScriptUrl, localBusiness}"},
+    {"file": "frontend/sanity/lib/queries.ts:290-299", "usedBy": "frontend/app/[slug]/page.tsx", "types": ["page + all 44 block types + service/testimonial/webcam via deref/subquery"], "fields": ["_id, _type, name, slug, seo, pageBuilder (full expansion — pageBuilderExpansion fragment, queries.ts:64-288)"], "groq": "getPageQuery — *[_type == 'page' && slug.current == $slug][0]{_id, _type, name, slug, seo, \"pageBuilder\": pageBuilder[]{..., <per-type conditional expansions: buttons get link deref via buttonFields; PT fields (infoSection.content, faqAccordion.faqs[].answer, contactForm.description, featureList.features[].body, contentColumns.columns[].body) get markDefs link deref; serviceTabs.tabs[]->{_id,title,slug,sticker{asset,alt},shortDescription,tabImage{asset,crop,hotspot,alt},tabCta{...}}; testimonials.reviews[]->{_id,quote,authorName,authorLabel,rating}; heroMarquee primaryCta/secondaryCta deref (NEW vs hound-3, queries.ts:167-171); expandingCardsRow cards[].link deref (NEW, queries.ts:182-188); webcamGrid gets sibling subquery \"webcams\": *[_type == \"webcam\" && enabled == true] | order(group asc, sortOrder asc){_id,name,cameraId,group,sortOrder}>}}"},
+    {"file": "frontend/sanity/lib/queries.ts:301-310", "usedBy": "frontend/app/page.tsx (homepage)", "types": ["page + blocks"], "fields": ["same as getPageQuery, slug hardcoded 'homepage'"], "groq": "homepageQuery — *[_type == 'page' && slug.current == 'homepage'][0]{_id, _type, name, slug, seo, <pageBuilderExpansion>}"},
+    {"file": "frontend/sanity/lib/queries.ts:312-319", "usedBy": "frontend/app/sitemap.ts", "types": ["page", "service"], "fields": ["slug.current, _type, _updatedAt, seo.noIndex"], "groq": "sitemapData — *[_type in [\"page\", \"service\"] && defined(slug.current)] | order(_type asc) {\"slug\": slug.current, _type, _updatedAt, \"noIndex\": seo.noIndex}"},
+    {"file": "frontend/sanity/lib/queries.ts:321-324", "usedBy": "frontend/app/[slug]/page.tsx generateStaticParams", "types": ["page"], "fields": ["slug.current"], "groq": "pagesSlugs — *[_type == \"page\" && defined(slug.current)]{\"slug\": slug.current}"},
+    {"file": "frontend/sanity/lib/queries.ts:326-337", "usedBy": "frontend/app/services/[slug]/page.tsx", "types": ["service + blocks"], "fields": ["_id, _type, title, slug, heading, shortDescription, seo, pageBuilder expansion"], "groq": "getServiceQuery — *[_type == 'service' && slug.current == $slug][0]{_id, _type, title, slug, heading, shortDescription, seo, <pageBuilderExpansion>}"},
+    {"file": "frontend/sanity/lib/queries.ts:339-342", "usedBy": "frontend/app/services/[slug]/page.tsx generateStaticParams", "types": ["service"], "fields": ["slug.current"], "groq": "serviceSlugs — *[_type == \"service\" && defined(slug.current)]{\"slug\": slug.current}"},
+    {"file": "frontend/sanity/lib/queries.ts:344-348", "usedBy": "frontend/app/layout.tsx (Services nav dropdown injection — INERT on this site: nav label is 'Services and Pricing', injection matches 'Services' exactly; query still runs every request)", "types": ["service"], "fields": ["_id, title, slug.current"], "groq": "servicesNavQuery — *[_type == \"service\" && defined(slug.current)] | order(title asc) {_id, title, \"slug\": slug.current}"}
+  ],
+  "fetchConfiguration": {
+    "client": "frontend/sanity/lib/client.ts: createClient({useCdn: true, token: SANITY_API_READ_TOKEN (server-only import, throws if missing), stega: {studioUrl}})",
+    "live": "frontend/sanity/lib/live.ts: defineLive({client, serverToken, browserToken}) — ALL page fetches go through sanityFetch (Live Content API, tag-based auto-revalidation); <SanityLive onError={handleError}/> in layout.tsx:238",
+    "staticParams": "generateStaticParams uses perspective:'published', stega:false; metadata fetches use stega:false",
+    "revalidateRoutes": "NOT FOUND — no /api/revalidate webhook route; revalidation is entirely via next-sanity Live",
+    "draftMode": "frontend/app/api/draft-mode/enable/route.ts via defineEnableDraftMode; disable via server action frontend/app/actions.ts; DraftModeToast + VisualEditing in layout when enabled"
+  },
+  "imageTransforms": [
+    {"pattern": "sanity-image <SanityImage baseUrl=`https://cdn.sanity.io/images/${projectId}/${dataset}/` id={_ref} width={N} crop hotspot mode=cover|contain> — library auto-generates srcset + auto=format. Widths used across components: 24, 28, 42, 80, 120, 128(+height 128), 150, 160, 200, 400, 500, 600, 672, 700, 704, 880, 960, 1000, 1200, 1400", "files": ["frontend/app/components/SanityImage.tsx (wrapper)", "frontend/app/components/PortableText.tsx (672)", "frontend/app/components/Cta.tsx (704)", "frontend/app/components/Header.tsx / Footer.tsx (logo)", "all frontend/app/components/sections/*.tsx incl. HeroMarquee (880/400) and ExpandingCardsRow (1200)"]},
+    {"pattern": "@sanity/image-url builder.image(ref).width(1200).height(627).fit('crop').url() — OG images", "files": ["frontend/sanity/lib/utils.ts:19-28 resolveOpenGraphImage"]},
+    {"pattern": "@sanity/image-url builder.image(ref).width(1600).auto('format').url() + natural dimensions parsed from _ref regex /-(\\d+)x(\\d+)-/ — lightbox slides (yet-another-react-lightbox)", "files": ["frontend/sanity/lib/image.ts:16-28", "frontend/app/components/sections/GalleryGrid.tsx", "GalleryCarousel.tsx", "GalleryPage.tsx", "GalleryShowcase.tsx"]},
+    {"pattern": "raw asset URL via GROQ favicon.asset->url (no transforms) — the only asset dereference in queries", "files": ["frontend/sanity/lib/queries.ts:49", "frontend/app/layout.tsx:121-126 (favicon unset live; frontend/app/icon.svg is the actual favicon)"]},
+    {"pattern": "BUG (LIVE on this site): raw asset._ref string emitted as Organization JSON-LD logo — settings.logo IS set here (image-7cce0a50...-289x174-png) so the malformed value ships on every page", "files": ["frontend/app/layout.tsx:184-186 (also latent variant at 84-89, gated behind unset ogImage)"]}
+  ],
+  "settingsSingleton": {
+    "typeName": "settings",
+    "documentId": "EXPECTED 'siteSettings' (studio/src/structure/index.ts:27 pins S.document().documentId('siteSettings')) but the ONLY live settings document is at UUID 0f056e49-7b45-4c84-84e6-f7ddf3abb654. scripts/migrate-settings-id.js exists at repo root to move it and HAS NOT BEEN RUN. Consequences: Studio 'Site Settings' entry opens an empty new doc; presentation tool mainDocuments '/' filter (_id == 'siteSettings') matches nothing. Frontend unaffected (queries by _type).",
+    "file": "studio/src/schemaTypes/singletons/settings.tsx (differs from hound-3 only in initialValue 'Home Away From Home', footerText description, ctmScriptUrl field position/description)",
+    "fields": [
+      {"name": "title", "title": "Title", "type": "string", "required": true, "validation": "rule.required()", "initialValue": "Home Away From Home", "consumedBy": ["frontend/app/layout.tsx (title template, Organization/WebSite JSON-LD)"], "unused": false, "notes": "Live: 'Home Away From Home'"},
+      {"name": "tagline", "title": "Tagline", "type": "string", "consumedBy": [], "unused": true, "notes": "DEAD — set in live data but never queried into any component (footer uses footerTagline)"},
+      {"name": "description", "title": "Description", "type": "array (block, styles/lists/decorators empty, custom link annotation)", "consumedBy": ["frontend/app/layout.tsx meta description via toPlainText"], "unused": false, "notes": "NOT SET live → default meta description is ''"},
+      {"name": "logo", "title": "Logo", "type": "image", "notes": "field: alt", "consumedBy": ["frontend/app/components/Header.tsx", "Footer.tsx (160)", "layout.tsx Organization JSON-LD (as raw _ref — live bug)"], "unused": false, "notes2": "SET live (dog+cat silhouette wordmark, 289x174 png, uploaded Round 2)"},
+      {"name": "navItems", "title": "Navigation Items", "type": "array", "of": ["navItem: {label: string required, link: link (hidden when children non-empty), children: array of {label: string, link: link}}"], "consumedBy": ["frontend/app/layout.tsx:148-160 ('Services' label injection — inert here)", "frontend/app/components/Header.tsx"], "unused": false, "notes": "Live: 3 items — 'Services and Pricing' (4 CMS-authored children → the 4 services), 'Gallery', 'New Clients'. Dropdown is CMS-managed, NOT injected."},
+      {"name": "ctaButton", "title": "Header CTA Button", "type": "button", "consumedBy": ["Header.tsx"], "unused": false, "notes": "Live: 'Contact Us' → page ref to contact page (clean single-branch link)"},
+      {"name": "footerSticker", "title": "Footer Sticker", "type": "image", "notes": "field: alt", "consumedBy": ["Footer.tsx (80)"], "unused": false, "notes2": "unset live"},
+      {"name": "footerTagline", "title": "Footer Tagline", "type": "text", "consumedBy": ["Footer.tsx via layout"], "unused": false, "notes": "set live (Fargo–Moorhead service-area line)"},
+      {"name": "footerColumns", "title": "Footer Columns", "type": "array", "of": ["inline {title: string, links: array of {label: string, link: link}}"], "consumedBy": ["Footer.tsx"], "unused": false, "notes": "Live: 2 columns — Services (4 page-ref links), Information (Gallery/New Clients/Contact; About + Pricing links removed in client rounds)"},
+      {"name": "contactInfo", "title": "Contact Information", "type": "object {address: text, phone: string, email: string}", "consumedBy": ["Footer.tsx"], "unused": false, "notes": "Live: 5390 51st Ave S Suite A / 701-532-1618 / hafhfacility@gmail.com"},
+      {"name": "footerText", "title": "Footer Copyright Text", "type": "string", "consumedBy": ["Footer.tsx"], "unused": false, "notes": "Live: '© 2026 Home Away From Home. All rights reserved.'"},
+      {"name": "footerTextLink", "title": "Footer Copyright Link", "type": "object {label: string, href: url}", "consumedBy": ["Footer.tsx"], "unused": false, "notes": "Live: Embark Pet Services → embarkpetservices.com"},
+      {"name": "footerBottomLinks", "title": "Footer Bottom Links", "type": "array", "of": ["inline {label: string, link: link}"], "consumedBy": ["Footer.tsx"], "unused": false, "notes": "unset live"},
+      {"name": "yearEstablished", "title": "Year Established", "type": "number", "consumedBy": [], "unused": true, "notes": "DEAD — queried in settingsQuery but never rendered; SET live (unlike hound-3)"},
+      {"name": "socialLinks", "title": "Social Links", "type": "object {facebook: url, instagram: url, google: url}", "consumedBy": ["Footer.tsx", "layout.tsx JSON-LD sameAs"], "unused": false, "notes": "Live: EMPTY OBJECT {} — defined but all three urls absent"},
+      {"name": "ogImage", "title": "Open Graph Image", "type": "image", "hotspot": true, "notes": "aiAssist imageDescriptionField alt; fields: alt (custom required-if-asset validation), metadataBase (url)", "consumedBy": ["layout.tsx resolveOpenGraphImage + metadataBase + JSON-LD urls"], "unused": false, "notes2": "unset live → no default OG image, metadataBase undefined, JSON-LD url undefined"},
+      {"name": "favicon", "title": "Favicon", "type": "image", "consumedBy": ["layout.tsx icons via faviconUrl deref"], "unused": false, "notes": "unset live; frontend/app/icon.svg is the actual favicon"},
+      {"name": "ga4MeasurementId", "title": "GA4 Measurement ID", "type": "string", "validation": "Rule.warning().custom regex ^G-[A-Z0-9]+$", "consumedBy": ["layout.tsx (gtag fallback when no GTM)"], "unused": false, "notes": "unset live (GTM path active instead)"},
+      {"name": "gtmContainerId", "title": "GTM Container ID", "type": "string", "validation": "Rule.warning().custom regex ^GTM-[A-Z0-9]+$", "consumedBy": ["layout.tsx @next/third-parties GoogleTagManager (rendered in <body>, drift vs hound-3 which renders it in <head>) + noscript iframe"], "unused": false, "notes": "Live value: GTM-P7N66QD2"},
+      {"name": "ctmScriptUrl", "title": "CallTrackingMetrics Script URL", "type": "string", "consumedBy": ["layout.tsx:209 <Script async afterInteractive>"], "unused": false, "notes": "Live value: //598475.tctm.co/t.js"},
+      {"name": "googleSiteVerification", "title": "Google Site Verification", "type": "string", "consumedBy": ["layout.tsx metadata verification.google"], "unused": false, "notes": "unset live"},
+      {"name": "localBusiness", "title": "Local Business (Structured Data)", "type": "object", "of": ["businessName: string; businessType: string (init 'LocalBusiness'); address: object {street, city, state, zip, country (init 'US')}; phone: string; geoCoordinates: object {latitude: number, longitude: number}; businessHours: array of {days: string, open: string, close: string}; priceRange: string"], "consumedBy": ["layout.tsx buildLocalBusinessJsonLd"], "unused": false, "notes": "FULLY POPULATED live (unlike hound-3): businessType 'Kennel', address, phone, geo 46.8425/-96.8295, 3 businessHours rows, priceRange '$$' → LocalBusiness JSON-LD emitted on every page"}
+    ],
+    "hardcodedValuesThatBelongHere": [
+      {"value_description": "Phone number 701-532-1618 (tel link + display) in the 4+ dogs contact notice", "file": "frontend/app/components/pricing/CalculatorInputs.tsx:194-195"},
+      {"value_description": "Production domain https://homeawayfargo.com for sitemap URL in robots", "file": "frontend/app/robots.ts:9"},
+      {"value_description": "ALL calculator pricing (daycare packages, boarding rooms + $39 additional-dog rate, cat pricing, grooming/exit-bath rates) — duplicated with Sanity pricingTable/pricingPageTabs display content; client price corrections have required paired code+CMS edits (Rounds 2 & 4)", "file": "frontend/app/data/pricingData.ts (285 lines)"},
+      {"value_description": "Site name 'Home Away From Home' fallbacks and email branding ('Home Away From Home Website' sender), TextLogo wordmark 'Home Away / From Home', webcam password prompt copy", "file": "frontend/app/layout.tsx:99, frontend/app/api/contact/route.ts:55-62, frontend/app/components/TextLogo.tsx:9-16, frontend/app/components/sections/WebcamGrid.tsx:127"},
+      {"value_description": "SMS/MMS consent disclosure paragraph (hardcoded JSX below the contact form)", "file": "frontend/app/components/sections/ContactForm.tsx:183-190"},
+      {"value_description": "Grooming 'starting at' disclaimer 'Final pricing determined by behavior, coat density, coat condition, and grooming time.' (duplicated with the CMS grooming pricingTable.description)", "file": "frontend/app/components/pricing/GroomingCalculator.tsx:78-81"},
+      {"value_description": "Cross-site alt-text leakage: 'Boxers Bed & Biscuits' and 'Boxers facility' fallbacks", "file": "frontend/app/components/sections/HeroMarquee.tsx:92 and marquee image alt"},
+      {"value_description": "Contact-form recipient/SMTP config in env (SMTP_HOST/PORT/USER/PASS/FROM, CONTACT_FORM_TO_EMAIL)", "file": "frontend/app/api/contact/route.ts"},
+      {"value_description": "Webcam password + operating hours in env (WEBCAM_PASSWORD, WEBCAM_OPEN_HOUR, WEBCAM_CLOSE_HOUR), HMAC secret env WEBCAM_AUTH_SECRET (fallback 'hafh-webcam'), timezone America/Chicago", "file": "frontend/app/api/webcam-auth/route.ts"},
+      {"value_description": "IPCamLive player URL template g1.ipcamlive.com", "file": "frontend/app/components/sections/WebcamEmbed.tsx:24"},
+      {"value_description": "'Services' nav-label magic string used to inject dropdown children (INERT — live label is 'Services and Pricing')", "file": "frontend/app/layout.tsx:149"}
+    ]
+  },
+  "seoModel": {
+    "description": "Shared `seo` object (metaTitle, metaDescription, ogImage, noIndex) on page + service. Site defaults live in settings (title, description PT [unset], ogImage+metadataBase [unset], googleSiteVerification [unset]). JSON-LD: LocalBusiness (EMITTED — localBusiness populated) + Organization (with raw-_ref logo bug) + WebSite in layout.tsx from settings; FAQPage emitted per faqAccordion block (3 live). Canonicals hardcoded per route ('/', '/[slug]', '/services/[slug]'). Sitemap from sitemapData query (noIndex excluded, /services prefix); robots.ts static with hardcoded homeawayfargo.com. DRIFT vs hound-3: every live page and service HAS seo populated (metaTitle + metaDescription) — and every metaTitle already ends in '| Home Away From Home', which the layout title template '%s | Home Away From Home' duplicates.",
+    "fallbackChain": [
+      "title: page.seo.metaTitle → page.name (service.title) → template '%s | settings.title' → settings.title",
+      "description: seo.metaDescription → (service only: heading → shortDescription) → toPlainText(settings.description)",
+      "ogImage: seo.ogImage → settings.ogImage (1200x627 fit crop) — both unset everywhere → no OG images site-wide",
+      "metadataBase: settings.ogImage.metadataBase field — unset",
+      "robots: seo.noIndex → index:false,follow:true; also excluded from sitemap — unset everywhere"
+    ]
+  },
+  "subSite": null,
+  "dataset_snapshot": {
+    "skipped": false,
+    "totalDocs": 60,
+    "documentCounts": {"page": 7, "service": 4, "testimonial": 6, "webcam": 0, "settings": 1, "sanity.imageAsset": 28, "sanity.fileAsset": 0},
+    "draftCounts": {"page": 0, "service": 0, "testimonial": 0, "webcam": 0, "settings": 0},
+    "pages": ["homepage", "about", "pricing", "webcams", "contact", "new-clients", "gallery"],
+    "services": ["daycare", "boarding", "grooming", "cats (4th service — drift vs hound-3's 3)"],
+    "blockTypesUsedInLiveData": ["hero", "heroMarquee", "heroMinimal", "infoSection", "featureCards", "expandingCardsRow", "splitContent", "statsBar", "testimonials", "ctaBanner", "faqAccordion", "pricingTable", "teamGrid", "contactForm", "processSteps", "requirementsList", "webcamGrid", "galleryPage", "valuePillars", "pricingList", "pricingCalculator", "pricingPageTabs", "spacer"],
+    "blockTypesNeverUsedInLiveData": ["callToAction", "imageRow", "serviceTabs", "webcamPreview", "galleryGrid", "heroSplit", "heroBanner", "serviceCards", "featureList", "contentColumns", "iconGrid", "videoSection", "fullWidthMedia", "ctaStrip", "logoBar", "pricingMatrix", "policyNotes", "featureGrid", "whatsIncluded", "galleryCarousel", "galleryShowcase"],
+    "orphanedTypes": [],
+    "schemaDataMismatches": [
+      "settings singleton lives at UUID 0f056e49-7b45-4c84-84e6-f7ddf3abb654 instead of the 'siteSettings' ID the Studio structure and presentation tool expect — scripts/migrate-settings-id.js written but not run",
+      "settings doc lacks: description, favicon, ogImage, footerBottomLinks, footerSticker, ga4MeasurementId, googleSiteVerification (all schema-defined, code-consumed); socialLinks is a present-but-empty object {}",
+      "zero webcam documents exist while the /webcams page carries a live webcamGrid block (renders an empty grid behind the password gate)",
+      "service.sticker/tabImage/tabCta unset on all 4 services (their only consumer, serviceTabs, is unused live)",
+      "one internal link stored as external-style href: daycare hero secondaryCta {linkType:'href', href:'/pricing#boarding'} — bypasses the page-reference model (also relies on fragment deep-linking into pricingPageTabs)",
+      "unlike hound-3, NO dual-value/stale link objects found — every live link has exactly one populated branch matching its linkType",
+      "system/tooling docs present: sanity.previewUrlSecret, system.schema/group/retention — do not migrate"
+    ]
+  },
+  "riskFlags": [
+    {"severity": "high", "flag": "Settings singleton identity mismatch: the only settings doc is at a UUID, but studio structure (documentId 'siteSettings') and both presentation-tool configs (mainDocuments '/' filter _id == 'siteSettings') expect 'siteSettings'. Editors opening Studio 'Site Settings' get an EMPTY document; saving it would create a second settings doc and *[_type=='settings'][0] ordering would decide which one the site renders. scripts/migrate-settings-id.js exists, unrun. Migration must target the UUID doc and should fix or sidestep this identity.", "evidence": "dataset _id 0f056e49-7b45-4c84-84e6-f7ddf3abb654; studio/src/structure/index.ts:27; scripts/migrate-settings-id.js"},
+    {"severity": "high", "flag": "Nav 'Services' injection is inert: layout.tsx replaces dropdown children only when a nav item's label is exactly 'Services', but the live label is 'Services and Pricing' (renamed in client Round 2). The dropdown now comes from CMS-authored children. servicesNavQuery still runs on every request for nothing. The adapter must reproduce the CMS-children path, not the injection; a future rename back to 'Services' would silently change behavior.", "evidence": "frontend/app/layout.tsx:148-160 vs settings.navItems[0].label in dataset"},
+    {"severity": "high", "flag": "Pricing exists in two unconnected sources: hardcoded frontend/app/data/pricingData.ts (drives all calculators) and CMS pricingTable/pricingPageTabs content (drives displayed tables). Already bitten twice on this site: boarding $39 additional-dog rate (Round 2) and exit-bath $49/$59/$69/$89 (Round 4) each required paired code + CMS edits.", "evidence": "frontend/app/data/pricingData.ts, context/current-milestone.md history, studio/src/schemaTypes/objects/pricingPageTabs.ts"},
+    {"severity": "high", "flag": "Deep coupling to Sanity visual-editing runtime: defineLive/sanityFetch on every fetch, stega + stegaClean() in 27 component files, useOptimistic reconciliation in PageBuilder, dataAttr overlays in BlockRenderer, presentation tool in two configs. Same surface as hound-3 plus ExpandingCardsRow.", "evidence": "frontend/sanity/lib/live.ts, frontend/app/components/PageBuilder.tsx, BlockRenderer.tsx, grep stegaClean → 27 files"},
+    {"severity": "medium", "flag": "Doubled title suffix on every page: seo.metaTitle values already end in '| Home Away From Home' AND feed the layout title template '%s | Home Away From Home' → rendered titles like 'Pricing | Home Away From Home | Home Away From Home'. Fix data or template at migration.", "evidence": "frontend/app/[slug]/page.tsx:34 + frontend/app/layout.tsx:113-116 + live seo values"},
+    {"severity": "medium", "flag": "Organization JSON-LD ships a raw asset._ref as its logo URL on every page — LIVE here (settings.logo is set), unlike hound-3 where it was latent. Companion latent bug: LocalBusiness image only set when ogImage exists but reads logo._ref (layout.tsx:84-89).", "evidence": "frontend/app/layout.tsx:184-186, 84-89; dataset logoRef image-7cce0a50...-289x174-png"},
+    {"severity": "medium", "flag": "Site-wide SEO defaults are hollow: settings.description, ogImage, favicon, googleSiteVerification all unset → empty default meta description, no OG image anywhere (no page-level ogImage either), favicon from app/icon.svg only.", "evidence": "dataset settings fieldsPresent; frontend/app/layout.tsx:117-131"},
+    {"severity": "medium", "flag": "PT link annotations would silently not render in 5 of 7 render sites (bare <PortableText> without components map: SplitContent, FaqAccordion, FeatureList, ContentColumns, ContactForm). Currently benign — live PT contains zero links and zero inline images — but any editor adding a link today gets plain text. Unify the renderer in embark-os.", "evidence": "frontend/app/components/sections/SplitContent.tsx, FaqAccordion.tsx, FeatureList.tsx, ContentColumns.tsx, ContactForm.tsx vs frontend/app/components/PortableText.tsx"},
+    {"severity": "medium", "flag": "Cross-site content leakage in code: HeroMarquee.tsx alt fallbacks 'Boxers Bed & Biscuits' / 'Boxers facility' (backported from the Boxers build; fires only when CMS alt/logo unset — heroLogo is unset live, but the marquee images all have alts so nothing leaks user-visibly today). Root package.json is still named 'hound-3'. Violates the repo's own no-sister-site-references rule.", "evidence": "frontend/app/components/sections/HeroMarquee.tsx:92,~262; package.json:2"},
+    {"severity": "medium", "flag": "Image pipeline to reproduce exactly: sanity-image srcset/auto-format at 20 distinct widths incl. crop+hotspot; 1200x627 fit=crop OG; 1600w lightbox with natural dimensions parsed from the asset _ref filename pattern /-(\\d+)x(\\d+)-/ — breaks if new CMS asset IDs don't encode dimensions.", "evidence": "frontend/sanity/lib/image.ts:22-27, frontend/app/components/SanityImage.tsx"},
+    {"severity": "medium", "flag": "Build pipeline depends on Sanity typegen: predev/prebuild run `sanity schema extract --enforce-required-fields` + `sanity typegen generate`; component prop types derive from GROQ result types (sanity.types.ts, ExtractPageBuilderType). Embark-os needs an equivalent type story for 44 block shapes.", "evidence": "frontend/package.json scripts, frontend/sanity/lib/types.ts"},
+    {"severity": "medium", "flag": "Two divergent PT link-annotation shapes + a third standalone link shape flow through one resolver (blockContent {linkType,href,page→page-only, init 'href'}; blockContentTextOnly default {href}; link object {linkType,href,page→page|service,queryString}, no init). linkResolver backfills linkType='href' (utils.ts:35-37). Normalize to one shape on migration.", "evidence": "studio/src/schemaTypes/objects/blockContent.tsx, blockContentTextOnly.tsx, link.ts, frontend/sanity/lib/utils.ts:31-56"},
+    {"severity": "low", "flag": "Webcams page is live at /webcams (heroMinimal + webcamGrid + ctaBanner, seo populated, in sitemap) with ZERO webcam docs — password gate leads to an empty grid. Decide: seed webcams, or noIndex/remove before or during migration.", "evidence": "dataset webcam count 0; page 2889e1dd-981e-4719-8d3e-b28bdecd33e6"},
+    {"severity": "low", "flag": "Studio insert-menu thumbnails: only 2 of 44 block thumbnails exist (callToAction, infoSection) — 42 broken preview images in the page-builder grid view. Cosmetic, Studio-only.", "evidence": "studio/static/page-builder-thumbnails/ vs page.ts:82-90"},
+    {"severity": "low", "flag": "studio/sanity.config.ts still carries hound-3/template leftovers: 'post' route + locations for a type that doesn't exist; frontend/sanity.config.ts was cleaned up (has service routes) — the two Studio configs have drifted from each other.", "evidence": "studio/sanity.config.ts:38,66-79,101-118 vs frontend/sanity.config.ts:41-96"},
+    {"severity": "low", "flag": "blockContent inline image member has no alt field but renderer reads value.alt — inline PT images can never have alt text as schema'd. (No inline PT images in live data.)", "evidence": "studio/src/schemaTypes/objects/blockContent.tsx:71-77 vs frontend/app/components/PortableText.tsx"},
+    {"severity": "low", "flag": "Dead fields to drop, not migrate: featureCards.darkMode, webcamPreview.webcamUrl, testimonials.googleReviewCount, settings.tagline, settings.yearEstablished, galleryShowcase.images[].caption, service.sticker/tabImage/tabCta (dead-in-practice here), service.heading (fallback never fires); 21 of 44 block types have zero live usage.", "evidence": "field-level unused flags + dataset_snapshot.blockTypesNeverUsedInLiveData"},
+    {"severity": "low", "flag": "Misc: internal deep link stored as href '/pricing#boarding' (fragment routing into pricingPageTabs tabs); Spacer sizes sm and md render identically (both h-16); booking platform in live data is Goose (booking.goose.pet) while project docs say Gingr; the three-theme system described in context/ docs does not exist in code (single palette in globals.css, no ThemeToggle) — docs are stale, not the code.", "evidence": "dataset hero secondaryCta; frontend/app/components/sections/Spacer.tsx:1-6; frontend/app/globals.css:14-18"}
+  ]
+}

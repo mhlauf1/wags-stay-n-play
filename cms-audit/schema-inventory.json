@@ -1,0 +1,4309 @@
+{
+  "repo": "wags-stay-n-play",
+  "site": "Wags Stay N' Play",
+  "auditDate": "2026-07-10",
+  "model": "gpt-5.4",
+  "cloneLineage": "Hound Around → Home Away From Home → Kingdom Canine → Wags Stay N Play",
+  "sanity": {
+    "projectId": "3h90m8qu",
+    "dataset": "production",
+    "apiVersion": "2025-09-25",
+    "studioEmbedded": true,
+    "studioEmbeddedNotes": "Standalone studio/ plus embedded frontend/app/studio/[[...tool]] share studio/src/schemaTypes. Evidence: frontend/sanity.config.ts; studio/sanity.config.ts; studio/src/schemaTypes/index.ts.",
+    "dependencies": {
+      "sanity": "^5.1.0",
+      "next-sanity": "^12.0.5",
+      "@sanity/client": "^7.13.2 (transitive; stega import from @sanity/client/stega)",
+      "@sanity/image-url": "^1.2.0",
+      "@sanity/vision": "^5.13.0",
+      "@sanity/assist": "^5.0.3",
+      "@sanity/uuid": "^3.0.2",
+      "sanity-image": "^1.0.0",
+      "sanity-plugin-asset-source-unsplash": "^7.0.4",
+      "@next/third-parties": "^16.1.1 (GoogleTagManager in layout)",
+      "@portabletext/react": "NOT A DIRECT DEPENDENCY — imported in 5 components (FaqAccordion, SplitContent, FeatureList, ContentColumns, ContactForm) but resolved transitively via next-sanity"
+    },
+    "plugins": [
+      "presentationTool",
+      "structureTool (custom structure)",
+      "unsplashImageAsset",
+      "assist",
+      "visionTool"
+    ],
+    "envVars": [
+      "NEXT_PUBLIC_SANITY_PROJECT_ID",
+      "NEXT_PUBLIC_SANITY_DATASET",
+      "NEXT_PUBLIC_SANITY_API_VERSION",
+      "NEXT_PUBLIC_SANITY_STUDIO_URL",
+      "SANITY_API_READ_TOKEN",
+      "SANITY_STUDIO_PROJECT_ID",
+      "SANITY_STUDIO_DATASET",
+      "SANITY_STUDIO_PREVIEW_URL",
+      "SANITY_STUDIO_STUDIO_HOST",
+      "SMTP_HOST",
+      "SMTP_PORT",
+      "SMTP_USER",
+      "SMTP_PASS",
+      "SMTP_FROM",
+      "CONTACT_FORM_TO_EMAIL"
+    ]
+  },
+  "framework": {
+    "next": "16.1.1",
+    "router": "app",
+    "react": "19.2.3",
+    "tailwind": "4.x (@tailwindcss/postcss; no tailwind.config.ts — hound-3's leftover v3 config was deleted here)"
+  },
+  "documentTypes": [
+    {
+      "name": "page",
+      "title": "Page",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/page.ts",
+      "fields": [
+        {
+          "name": "name",
+          "title": "Name",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/[slug]/page.tsx (generateMetadata title fallback)",
+            "studio locations resolver"
+          ],
+          "unused": false
+        },
+        {
+          "name": "slug",
+          "title": "Slug",
+          "type": "slug",
+          "required": true,
+          "validation": "Rule.required()",
+          "notes": "source: 'name', maxLength: 96, no custom slugify",
+          "consumedBy": [
+            "frontend/app/[slug]/page.tsx",
+            "frontend/app/sitemap.ts",
+            "frontend/sanity/lib/utils.ts linkResolver"
+          ],
+          "unused": false
+        },
+        {
+          "name": "seo",
+          "title": "SEO & Metadata",
+          "type": "seo",
+          "required": false,
+          "consumedBy": [
+            "frontend/app/[slug]/page.tsx generateMetadata",
+            "frontend/app/page.tsx generateMetadata",
+            "frontend/app/sitemap.ts (noIndex)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/documents/page.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "pageBuilder",
+          "title": "Page builder",
+          "type": "array",
+          "of": [
+            "callToAction",
+            "infoSection",
+            "hero",
+            "imageRow",
+            "featureCards",
+            "serviceTabs",
+            "statsBar",
+            "webcamPreview",
+            "testimonials",
+            "ctaBanner",
+            "splitContent",
+            "faqAccordion",
+            "pricingTable",
+            "teamGrid",
+            "galleryGrid",
+            "contactForm",
+            "heroSplit",
+            "heroBanner",
+            "heroMarquee",
+            "heroMinimal",
+            "serviceCards",
+            "expandingCardsRow",
+            "featureList",
+            "processSteps",
+            "contentColumns",
+            "iconGrid",
+            "videoSection",
+            "fullWidthMedia",
+            "ctaStrip",
+            "logoBar",
+            "pricingMatrix",
+            "pricingList",
+            "policyNotes",
+            "featureGrid",
+            "pricingCalculator",
+            "whatsIncluded",
+            "requirementsList",
+            "webcamGrid",
+            "galleryCarousel",
+            "galleryShowcase",
+            "galleryPage",
+            "valuePillars",
+            "pricingPageTabs",
+            "spacer"
+          ],
+          "required": false,
+          "consumedBy": [
+            "frontend/app/components/PageBuilder.tsx",
+            "frontend/app/components/BlockRenderer.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/documents/page.ts and production snapshot; parent-specific note intentionally not carried forward. Wags adds photoMarquee member; mechanical diff: studio/src/schemaTypes/documents/page.ts vs ../kingdom-canine equivalent."
+        }
+      ]
+    },
+    {
+      "name": "service",
+      "title": "Service",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/service.ts",
+      "preview": "select: {title: 'title', media: 'tabImage'}",
+      "fields": [
+        {
+          "name": "title",
+          "title": "Title",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/services/[slug]/page.tsx",
+            "frontend/app/layout.tsx (services nav injection — INERT on this site, see riskFlags)",
+            "frontend/app/components/sections/ServiceTabs.tsx (block unused live)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "slug",
+          "title": "Slug",
+          "type": "slug",
+          "required": false,
+          "notes": "source: 'title', maxLength: 96",
+          "consumedBy": [
+            "frontend/app/services/[slug]/page.tsx",
+            "frontend/app/sitemap.ts",
+            "frontend/app/layout.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "sticker",
+          "title": "Sticker Image",
+          "type": "image",
+          "hotspot": false,
+          "notes": "image field: alt (string)",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceTabs.tsx"
+          ],
+          "unused": true,
+          "notesUnused": "Current Kingdom evidence: see studio/src/schemaTypes/documents/service.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "shortDescription",
+          "title": "Short Description",
+          "type": "text",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceTabs.tsx (block unused live)",
+            "frontend/app/services/[slug]/page.tsx (meta description fallback)"
+          ],
+          "unused": false,
+          "notes": "Set on all 4 services; only reachable consumer is the metadata fallback, which never fires because seo.metaDescription is set everywhere"
+        },
+        {
+          "name": "tabImage",
+          "title": "Tab Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "image field: alt (string)",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceTabs.tsx",
+            "studio preview media"
+          ],
+          "unused": true,
+          "notesUnused": "Current Kingdom evidence: see studio/src/schemaTypes/documents/service.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "tabCta",
+          "title": "Tab CTA",
+          "type": "button",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceTabs.tsx"
+          ],
+          "unused": true,
+          "notesUnused": "Current Kingdom evidence: see studio/src/schemaTypes/documents/service.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "heading",
+          "title": "Page Heading",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/services/[slug]/page.tsx (meta description fallback only)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/documents/service.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "seo",
+          "title": "SEO & Metadata",
+          "type": "seo",
+          "consumedBy": [
+            "frontend/app/services/[slug]/page.tsx generateMetadata"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/documents/service.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "pageBuilder",
+          "title": "Page builder",
+          "type": "array",
+          "of": [
+            "same 42 types as page.pageBuilder EXCEPT galleryPage and pricingPageTabs"
+          ],
+          "consumedBy": [
+            "frontend/app/components/PageBuilder.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/documents/service.ts and production snapshot; parent-specific note intentionally not carried forward. Wags adds photoMarquee member; mechanical diff: studio/src/schemaTypes/documents/service.ts vs ../kingdom-canine equivalent."
+        }
+      ]
+    },
+    {
+      "name": "testimonial",
+      "title": "Testimonial",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/documents/testimonial.ts",
+      "preview": "select: {title: 'authorName', subtitle: 'quote'}",
+      "fields": [
+        {
+          "name": "quote",
+          "title": "Quote",
+          "type": "text",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/components/sections/Testimonials.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "authorName",
+          "title": "Author Name",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/components/sections/Testimonials.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "authorLabel",
+          "title": "Author Label",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/Testimonials.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "rating",
+          "title": "Rating",
+          "type": "number",
+          "validation": "Rule.min(1).max(5)",
+          "initialValue": 5,
+          "consumedBy": [
+            "frontend/app/components/sections/Testimonials.tsx"
+          ],
+          "unused": false
+        }
+      ]
+    }
+  ],
+  "objectTypes": [
+    {
+      "name": "seo",
+      "title": "SEO & Metadata",
+      "file": "studio/src/schemaTypes/objects/seo.ts",
+      "notes": "options collapsible/collapsed",
+      "fields": [
+        {
+          "name": "metaTitle",
+          "title": "Meta Title",
+          "type": "string",
+          "validation": "Rule.warning().max(70)",
+          "consumedBy": [
+            "frontend/app/page.tsx",
+            "frontend/app/[slug]/page.tsx",
+            "frontend/app/services/[slug]/page.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/seo.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "metaDescription",
+          "title": "Meta Description",
+          "type": "text",
+          "validation": "Rule.warning().max(160)",
+          "consumedBy": [
+            "same 3 generateMetadata fns"
+          ],
+          "unused": false
+        },
+        {
+          "name": "ogImage",
+          "title": "Social Share Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "image field: alt (string)",
+          "consumedBy": [
+            "same 3 generateMetadata fns via resolveOpenGraphImage"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/seo.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "noIndex",
+          "title": "Hide from Search Engines",
+          "type": "boolean",
+          "initialValue": false,
+          "consumedBy": [
+            "3 generateMetadata fns (robots)",
+            "frontend/app/sitemap.ts (exclusion)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/seo.ts and production snapshot; parent-specific note intentionally not carried forward."
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "button",
+      "title": "(no title)",
+      "file": "studio/src/schemaTypes/objects/button.ts",
+      "fields": [
+        {
+          "name": "buttonText",
+          "title": "Button Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/ui/Button.tsx via section components"
+          ],
+          "unused": false
+        },
+        {
+          "name": "link",
+          "title": "Button Link",
+          "type": "link",
+          "consumedBy": [
+            "frontend/app/components/ui/Button.tsx",
+            "frontend/app/components/ResolvedLink.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "link",
+      "title": "Link",
+      "file": "studio/src/schemaTypes/objects/link.ts",
+      "fields": [
+        {
+          "name": "linkType",
+          "title": "Link Type",
+          "type": "string",
+          "notes": "options: href|page, radio. NO initialValue (unlike blockContent annotation which defaults 'href')",
+          "consumedBy": [
+            "frontend/sanity/lib/utils.ts linkResolver"
+          ],
+          "unused": false
+        },
+        {
+          "name": "href",
+          "title": "URL",
+          "type": "url",
+          "hidden": "({parent}) => parent?.linkType !== 'href'",
+          "validation": "custom: 'URL is required when Link Type is URL' when linkType==='href' && !value",
+          "consumedBy": [
+            "linkResolver"
+          ],
+          "unused": false
+        },
+        {
+          "name": "page",
+          "title": "Page",
+          "type": "reference",
+          "to": [
+            "page",
+            "service"
+          ],
+          "hidden": "({parent}) => parent?.linkType !== 'page'",
+          "validation": "custom: 'Page reference is required when Link Type is Page' when linkType==='page' && !value",
+          "consumedBy": [
+            "linkResolver (dereferenced to slug + pageType in GROQ)"
+          ],
+          "unused": false,
+          "notes": "Dereference adds /services/ prefix when pageType==='service'"
+        },
+        {
+          "name": "queryString",
+          "title": "Query String",
+          "type": "string",
+          "hidden": "({parent}) => parent?.linkType !== 'page'",
+          "consumedBy": [
+            "linkResolver (appends ?qs)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/link.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "openInNewTab",
+          "title": "Open in new tab",
+          "type": "boolean",
+          "initialValue": false,
+          "consumedBy": [
+            "ResolvedLink.tsx",
+            "Button.tsx (target/rel)"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "blockContent",
+      "title": "Block Content",
+      "file": "studio/src/schemaTypes/objects/blockContent.tsx",
+      "fields": [],
+      "notes": "type: array — see portableTextConfigs[0]",
+      "identicalToParent": true
+    },
+    {
+      "name": "blockContentTextOnly",
+      "title": "Block Content (Simple - Text Only)",
+      "file": "studio/src/schemaTypes/objects/blockContentTextOnly.tsx",
+      "fields": [],
+      "notes": "type: array — see portableTextConfigs[1]",
+      "identicalToParent": true
+    },
+    {
+      "name": "callToAction",
+      "title": "Call to Action",
+      "file": "studio/src/schemaTypes/objects/callToAction.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/callToAction.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/Cta.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "Cta.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "body",
+          "title": "(none)",
+          "type": "blockContentTextOnly",
+          "consumedBy": [
+            "Cta.tsx via CustomPortableText"
+          ],
+          "unused": false
+        },
+        {
+          "name": "button",
+          "title": "(none)",
+          "type": "button",
+          "consumedBy": [
+            "Cta.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "image",
+          "title": "(none)",
+          "type": "image",
+          "hotspot": true,
+          "consumedBy": [
+            "Cta.tsx (alt hardcoded 'Demo image')"
+          ],
+          "unused": false
+        },
+        {
+          "name": "theme",
+          "title": "Theme",
+          "type": "string",
+          "initialValue": "light",
+          "notes": "options light|dark radio",
+          "consumedBy": [
+            "Cta.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "contentAlignment",
+          "title": "Content Order",
+          "type": "string",
+          "initialValue": "textFirst",
+          "hidden": "({parent}) => !Boolean(parent?.image?.asset)",
+          "notes": "options textFirst|imageFirst radio",
+          "consumedBy": [
+            "Cta.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "infoSection",
+      "title": "Info Section",
+      "file": "studio/src/schemaTypes/objects/infoSection.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/infoSection.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/InfoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subheading",
+          "title": "Subheading",
+          "type": "string",
+          "consumedBy": [
+            "InfoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "content",
+          "title": "Content",
+          "type": "blockContent",
+          "consumedBy": [
+            "InfoSection.tsx via CustomPortableText (components map — links/images DO render here)"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "hero",
+      "title": "Hero",
+      "file": "studio/src/schemaTypes/objects/hero.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/hero.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/Hero.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "text",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "primaryCta",
+          "title": "Primary CTA",
+          "type": "button",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "secondaryCta",
+          "title": "Secondary CTA",
+          "type": "button",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "reviewRating",
+          "title": "Review Star Rating",
+          "type": "number",
+          "validation": "Rule.min(1).max(5)",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/hero.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "reviewText",
+          "title": "Review Text",
+          "type": "string",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/hero.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "trustLine",
+          "title": "Trust Line",
+          "type": "string",
+          "consumedBy": [
+            "Hero.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/hero.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "heroImage",
+          "title": "Hero Image",
+          "type": "image",
+          "hotspot": true,
+          "consumedBy": [
+            "Hero.tsx (width 960)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/hero.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "carouselImages",
+          "title": "Carousel Images",
+          "type": "array",
+          "of": [
+            "image hotspot with alt string"
+          ],
+          "consumedBy": [
+            "frontend/app/components/sections/Hero.tsx"
+          ],
+          "unused": false,
+          "notes": "Kingdom addition vs parent; populated on homepage."
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "heroMarquee",
+      "title": "Hero Marquee",
+      "file": "studio/src/schemaTypes/objects/heroMarquee.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/heroMarquee.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "headingAccent",
+          "title": "Heading Accent",
+          "type": "string",
+          "notes": "second line in brand color",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMarquee.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "text",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "primaryCta",
+          "title": "Primary CTA",
+          "type": "button",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "secondaryCta",
+          "title": "Secondary CTA",
+          "type": "button",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "reviewRating",
+          "title": "Review Star Rating",
+          "type": "number",
+          "validation": "Rule.min(1).max(5)",
+          "consumedBy": [
+            "HeroMarquee.tsx (star row)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "reviewText",
+          "title": "Review Text",
+          "type": "string",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "trustLine",
+          "title": "Trust Line",
+          "type": "string",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "bubbleText",
+          "title": "Bubble Text",
+          "type": "string",
+          "notes": "text split across top/bottom arcs of a decorative SVG circle badge",
+          "consumedBy": [
+            "HeroMarquee.tsx"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMarquee.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "heroLogo",
+          "title": "Hero Logo",
+          "type": "image",
+          "notes": "field: alt (string)",
+          "consumedBy": [
+            "HeroMarquee.tsx (width 400; alt fallback 'Boxers Bed & Biscuits')"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMarquee.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "marqueeImages",
+          "title": "Marquee Images",
+          "type": "array",
+          "of": [
+            "image (hotspot, fields: alt string)"
+          ],
+          "consumedBy": [
+            "HeroMarquee.tsx (width 880, duplicated array, CSS marquee animation 120s)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMarquee.ts and production snapshot; parent-specific note intentionally not carried forward."
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "expandingCardsRow",
+      "title": "Expanding Cards Row",
+      "file": "studio/src/schemaTypes/objects/expandingCardsRow.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/expandingCardsRow.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ExpandingCardsRow.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "ExpandingCardsRow.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subheading",
+          "title": "Subheading",
+          "type": "text",
+          "consumedBy": [
+            "ExpandingCardsRow.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cards",
+          "title": "Cards",
+          "type": "array",
+          "validation": "Rule.min(2).max(4)",
+          "of": [
+            "inline object {image: image hotspot REQUIRED (Rule.required(), NO alt field — component uses card.title as alt), title: string required, subtext: text, link: button (title 'Learn More Link')}"
+          ],
+          "consumedBy": [
+            "ExpandingCardsRow.tsx (width 1200)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "ExpandingCardsRow.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "spacer",
+      "title": "Spacer",
+      "file": "studio/src/schemaTypes/objects/spacer.ts",
+      "notes": "16 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/spacer.ts.",
+      "fields": [
+        {
+          "name": "size",
+          "title": "Size",
+          "type": "string",
+          "initialValue": "md",
+          "notes": "sm|md|lg|xl radio. Component quirk: sm and md both map to h-16 (Spacer.tsx:1-6)",
+          "consumedBy": [
+            "frontend/app/components/sections/Spacer.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "imageRow",
+      "title": "Image Row",
+      "file": "studio/src/schemaTypes/objects/imageRow.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/imageRow.ts.",
+      "fields": [
+        {
+          "name": "images",
+          "title": "Images",
+          "type": "array",
+          "of": [
+            "image (hotspot, fields: alt string)"
+          ],
+          "validation": "Rule.min(1).max(6)",
+          "consumedBy": [
+            "frontend/app/components/sections/ImageRow.tsx (width 400)"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "featureCards",
+      "title": "Feature Cards",
+      "file": "studio/src/schemaTypes/objects/featureCards.ts",
+      "notes": "4 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/featureCards.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/components/sections/FeatureCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subheading",
+          "title": "Subheading",
+          "type": "text",
+          "consumedBy": [
+            "FeatureCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "stickerLeft",
+          "title": "Left Sticker",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "FeatureCards.tsx (width 160)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/featureCards.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "stickerRight",
+          "title": "Right Sticker",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "FeatureCards.tsx (width 160)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/featureCards.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "features",
+          "title": "Features",
+          "type": "array",
+          "of": [
+            "inline object {icon: string (Iconify name), title: string required, description: text}"
+          ],
+          "consumedBy": [
+            "FeatureCards.tsx (Iconify @iconify/react — external api.iconify.design dependency)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cta",
+          "title": "CTA Button",
+          "type": "button",
+          "consumedBy": [
+            "FeatureCards.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/featureCards.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "trustLine",
+          "title": "Trust Line",
+          "type": "string",
+          "consumedBy": [
+            "FeatureCards.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/featureCards.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "darkMode",
+          "title": "Dark Mode",
+          "type": "boolean",
+          "initialValue": true,
+          "consumedBy": [],
+          "unused": true,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/featureCards.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 4,
+          "consumedBy": [
+            "frontend/app/components/sections/FeatureCards.tsx"
+          ],
+          "unused": false,
+          "notes": "Kingdom addition vs parent; options 3|4."
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "serviceTabs",
+      "title": "Service Tabs",
+      "file": "studio/src/schemaTypes/objects/serviceTabs.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/serviceTabs.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "ServiceTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "tabs",
+          "title": "Service Tabs",
+          "type": "array",
+          "of": [
+            "reference"
+          ],
+          "to": [
+            "service"
+          ],
+          "consumedBy": [
+            "ServiceTabs.tsx (dereferenced in GROQ)"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "statsBar",
+      "title": "Stats Bar",
+      "file": "studio/src/schemaTypes/objects/statsBar.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/statsBar.ts.",
+      "fields": [
+        {
+          "name": "stats",
+          "title": "Stats",
+          "type": "array",
+          "of": [
+            "inline object {value: string required, label: string required}"
+          ],
+          "consumedBy": [
+            "frontend/app/components/sections/StatsBar.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "showLogo",
+          "title": "Show Logo",
+          "type": "boolean",
+          "initialValue": true,
+          "consumedBy": [
+            "StatsBar.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "testimonials",
+      "title": "Testimonials",
+      "file": "studio/src/schemaTypes/objects/testimonials.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/testimonials.ts.",
+      "fields": [
+        {
+          "name": "icon",
+          "title": "Icon",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "frontend/app/components/sections/Testimonials.tsx (width 120)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/testimonials.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "Testimonials.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "reviews",
+          "title": "Reviews",
+          "type": "array",
+          "of": [
+            "reference"
+          ],
+          "to": [
+            "testimonial"
+          ],
+          "consumedBy": [
+            "Testimonials.tsx (dereferenced in GROQ)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "googleRating",
+          "title": "Google Rating",
+          "type": "string",
+          "consumedBy": [
+            "Testimonials.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/testimonials.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "googleReviewCount",
+          "title": "Google Review Count",
+          "type": "number",
+          "consumedBy": [],
+          "unused": true,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/testimonials.ts and production snapshot; parent-specific note intentionally not carried forward."
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "ctaBanner",
+      "title": "CTA Banner",
+      "file": "studio/src/schemaTypes/objects/ctaBanner.ts",
+      "notes": "5 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/ctaBanner.ts.",
+      "fields": [
+        {
+          "name": "icon",
+          "title": "Icon",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "frontend/app/components/sections/CtaBanner.tsx (width 200)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "stickerImage",
+          "title": "Sticker Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "CtaBanner.tsx (width 120)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "CtaBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundImage",
+          "title": "Background Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "field: alt",
+          "consumedBy": [
+            "CtaBanner.tsx (width 1200, eager when index<=1)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "sideImage",
+          "title": "Side Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "field: alt; presence switches to 2-col layout",
+          "consumedBy": [
+            "CtaBanner.tsx (width 700)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "cta",
+          "title": "CTA Button",
+          "type": "button",
+          "consumedBy": [
+            "CtaBanner.tsx"
+          ],
+          "unused": false,
+          "notes": "set on all 10"
+        },
+        {
+          "name": "alignment",
+          "title": "Content Alignment",
+          "type": "string",
+          "initialValue": "center",
+          "consumedBy": [
+            "CtaBanner.tsx (isLeft branch)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward.",
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "showRating",
+          "title": "Show Rating",
+          "type": "boolean",
+          "initialValue": true,
+          "consumedBy": [
+            "CtaBanner.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/ctaBanner.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "string",
+          "required": false,
+          "validation": "",
+          "consumedBy": [
+            "frontend/app/components/sections/CtaBanner.tsx"
+          ],
+          "unused": false,
+          "notes": "Wags variant; mechanically added vs Kingdom."
+        },
+        {
+          "name": "ratingText",
+          "title": "Rating Text",
+          "type": "string",
+          "consumedBy": [
+            "CtaBanner.tsx"
+          ],
+          "unused": false,
+          "notes": "set on 1 of 10"
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "splitContent",
+      "title": "Split Content",
+      "file": "studio/src/schemaTypes/objects/splitContent.ts",
+      "notes": "5 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/splitContent.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/components/sections/SplitContent.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "body",
+          "title": "Body",
+          "type": "blockContent",
+          "consumedBy": [
+            "SplitContent.tsx via BARE <PortableText> (no components map — link marks would render as plain text; live bodies contain no links)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "link",
+          "title": "Link",
+          "type": "object",
+          "of": [
+            "inline {label: string, link: link}"
+          ],
+          "consumedBy": [
+            "SplitContent.tsx via Button"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/splitContent.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "badge",
+          "title": "Badge Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "SplitContent.tsx (width 80)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/splitContent.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "image",
+          "title": "Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "field: alt",
+          "consumedBy": [
+            "SplitContent.tsx (width 600)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "stickerImage",
+          "title": "Sticker Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "SplitContent.tsx (width 200)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/splitContent.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "imagePosition",
+          "title": "Image Position",
+          "type": "string",
+          "initialValue": "right",
+          "notes": "left|right radio",
+          "consumedBy": [
+            "SplitContent.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "sand",
+          "consumedBy": [
+            "SplitContent.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/splitContent.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "hours",
+          "title": "Hours",
+          "type": "array",
+          "of": [
+            "hoursEntry: {label: string required, value: string required}"
+          ],
+          "consumedBy": [
+            "frontend/app/components/sections/SplitContent.tsx"
+          ],
+          "unused": false,
+          "notes": "Kingdom addition vs parent; populated on homepage."
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "faqAccordion",
+      "title": "FAQ Accordion",
+      "file": "studio/src/schemaTypes/objects/faqAccordion.ts",
+      "notes": "4 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/faqAccordion.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/FaqAccordion.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "FaqAccordion.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "faqs",
+          "title": "FAQs",
+          "type": "array",
+          "of": [
+            "faq: inline object {question: string required, answer: blockContent}"
+          ],
+          "consumedBy": [
+            "FaqAccordion.tsx — answer via BARE <PortableText> + toPlainText for FAQPage JSON-LD"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "pricingTable",
+      "title": "Pricing Table",
+      "file": "studio/src/schemaTypes/objects/pricingTable.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/pricingTable.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/PricingTable.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "PricingTable.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "PricingTable.tsx"
+          ],
+          "unused": false,
+          "notes": "grooming instance carries the pricing disclaimer + mobile-grooming note (client-managed copy)"
+        },
+        {
+          "name": "categories",
+          "title": "Categories",
+          "type": "array",
+          "of": [
+            "pricingCategory: {categoryName: string required, tiers: array of pricingTier {name: string required, price: string, description: text, features: array of string, highlighted: boolean (init false), cta: button}}"
+          ],
+          "consumedBy": [
+            "PricingTable.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "teamGrid",
+      "title": "Team Grid",
+      "file": "studio/src/schemaTypes/objects/teamGrid.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/teamGrid.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/TeamGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "TeamGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Desktop Columns",
+          "type": "number",
+          "required": false,
+          "validation": "",
+          "initialValue": 3,
+          "consumedBy": [
+            "frontend/app/components/sections/TeamGrid.tsx"
+          ],
+          "unused": true,
+          "notes": "Wags variant; options [2,3,4]; no live teamGrid block."
+        },
+        {
+          "name": "members",
+          "title": "Team Members",
+          "type": "array",
+          "of": [
+            "teamMember: {name: string required, role: string, bio: text, certifications: string (single comma-separated string, NOT an array), image: image hotspot}"
+          ],
+          "consumedBy": [
+            "TeamGrid.tsx (width 400)"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "galleryGrid",
+      "title": "Gallery Grid",
+      "file": "studio/src/schemaTypes/objects/galleryGrid.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/galleryGrid.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/GalleryGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "GalleryGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "images",
+          "title": "Images",
+          "type": "array",
+          "of": [
+            "image (hotspot, fields: alt string, caption string)"
+          ],
+          "consumedBy": [
+            "GalleryGrid.tsx (width 600 grid; 1600 lightbox via sanityImageUrlWithDimensions)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 3,
+          "notes": "2|3|4",
+          "consumedBy": [
+            "GalleryGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "displayStyle",
+          "title": "Display Style",
+          "type": "string",
+          "initialValue": "grid",
+          "notes": "grid|circles radio",
+          "consumedBy": [
+            "GalleryGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "enableLightbox",
+          "title": "Enable Lightbox",
+          "type": "boolean",
+          "initialValue": true,
+          "consumedBy": [
+            "GalleryGrid.tsx (yet-another-react-lightbox)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "accentImage",
+          "title": "Accent Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "GalleryGrid.tsx (width 200)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "GalleryGrid.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "contactForm",
+      "title": "Contact Form",
+      "file": "studio/src/schemaTypes/objects/contactForm.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/contactForm.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ContactForm.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "blockContent",
+          "consumedBy": [
+            "ContactForm.tsx via BARE <PortableText>"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/contactForm.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "formFields",
+          "title": "Form Fields",
+          "type": "array",
+          "of": [
+            "formField: {fieldName: string required, label: string required, type: string (text|email|tel|textarea|select, init text), required: boolean (init false), options: array of string (hidden unless type==select)}"
+          ],
+          "consumedBy": [
+            "ContactForm.tsx → POST /api/contact (nodemailer)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "submitButtonText",
+          "title": "Submit Button Text",
+          "type": "string",
+          "initialValue": "Send Message",
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "successMessage",
+          "title": "Success Message",
+          "type": "string",
+          "initialValue": "Thank you! We'll be in touch soon.",
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "showMap",
+          "title": "Show Map",
+          "type": "boolean",
+          "initialValue": false,
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/contactForm.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "mapEmbedUrl",
+          "title": "Map Embed URL",
+          "type": "url",
+          "hidden": "({parent}) => !parent?.showMap",
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/contactForm.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "nextSteps",
+          "title": "Next Steps",
+          "type": "array",
+          "of": [
+            "nextStep: {title: string required, description: text}"
+          ],
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "image",
+          "title": "Sidebar Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "field: alt",
+          "consumedBy": [
+            "ContactForm.tsx (width 700)"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/contactForm.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "address",
+          "title": "Address",
+          "type": "text",
+          "consumedBy": [
+            "ContactForm.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/contactForm.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "phone",
+          "title": "Phone",
+          "type": "string",
+          "consumedBy": [
+            "ContactForm.tsx (tel: link)"
+          ],
+          "unused": false,
+          "notes": "Duplicates settings.contactInfo.phone"
+        },
+        {
+          "name": "email",
+          "title": "Email",
+          "type": "string",
+          "consumedBy": [
+            "ContactForm.tsx (mailto:)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/contactForm.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "hours",
+          "title": "Hours of Operation",
+          "type": "array",
+          "of": [
+            "hoursEntry: {label: string required, value: string required}"
+          ],
+          "consumedBy": [
+            "frontend/app/components/sections/ContactForm.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "heroSplit",
+      "title": "Hero Split",
+      "file": "studio/src/schemaTypes/objects/heroSplit.ts",
+      "notes": "2 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/heroSplit.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/HeroSplit.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "HeroSplit.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "body",
+          "title": "Body",
+          "type": "text",
+          "consumedBy": [
+            "HeroSplit.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "primaryCta",
+          "title": "Primary CTA",
+          "type": "button",
+          "consumedBy": [
+            "HeroSplit.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "secondaryCta",
+          "title": "Secondary CTA",
+          "type": "button",
+          "consumedBy": [
+            "HeroSplit.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "image",
+          "title": "Image",
+          "type": "image",
+          "hotspot": true,
+          "required": true,
+          "validation": "Rule.required()",
+          "notes": "field: alt",
+          "consumedBy": [
+            "HeroSplit.tsx (width 600)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "stickerImage",
+          "title": "Sticker Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "HeroSplit.tsx (width 200)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "imagePosition",
+          "title": "Image Position",
+          "type": "string",
+          "initialValue": "right",
+          "notes": "left|right radio",
+          "consumedBy": [
+            "HeroSplit.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "HeroSplit.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "heroBanner",
+      "title": "Hero Banner",
+      "file": "studio/src/schemaTypes/objects/heroBanner.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/heroBanner.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/HeroBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "HeroBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "text",
+          "consumedBy": [
+            "HeroBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "primaryCta",
+          "title": "Primary CTA",
+          "type": "button",
+          "consumedBy": [
+            "HeroBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundImage",
+          "title": "Background Image",
+          "type": "image",
+          "hotspot": true,
+          "consumedBy": [
+            "HeroBanner.tsx (width 1400)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "overlayOpacity",
+          "title": "Overlay Opacity",
+          "type": "string",
+          "initialValue": "medium",
+          "notes": "light|medium|heavy radio",
+          "consumedBy": [
+            "HeroBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "minHeight",
+          "title": "Minimum Height",
+          "type": "string",
+          "initialValue": "standard",
+          "notes": "standard|tall|fullscreen radio",
+          "consumedBy": [
+            "HeroBanner.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio; used when no bg image",
+          "consumedBy": [
+            "HeroBanner.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "heroMinimal",
+      "title": "Hero Minimal",
+      "file": "studio/src/schemaTypes/objects/heroMinimal.ts",
+      "notes": "2 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/heroMinimal.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/HeroMinimal.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "rating",
+          "title": "Rating",
+          "type": "string",
+          "consumedBy": [
+            "HeroMinimal.tsx (ticker mode)"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMinimal.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "HeroMinimal.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "headingAccent",
+          "title": "Heading Accent",
+          "type": "string",
+          "consumedBy": [
+            "HeroMinimal.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMinimal.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "text",
+          "consumedBy": [
+            "HeroMinimal.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "HeroMinimal.tsx"
+          ],
+          "unused": false,
+          "notes2": "Current Kingdom evidence: see studio/src/schemaTypes/objects/heroMinimal.ts and production snapshot; parent-specific note intentionally not carried forward."
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "serviceCards",
+      "title": "Service Cards",
+      "file": "studio/src/schemaTypes/objects/serviceCards.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/serviceCards.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "ServiceCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "ServiceCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cards",
+          "title": "Cards",
+          "type": "array",
+          "of": [
+            "inline {image: image hotspot, title: string required, description: text, cta: button}"
+          ],
+          "consumedBy": [
+            "ServiceCards.tsx (width 400)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 3,
+          "notes": "2|3|4",
+          "consumedBy": [
+            "ServiceCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "ServiceCards.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "variant",
+          "title": "Card Style",
+          "type": "string",
+          "initialValue": "white",
+          "consumedBy": [
+            "frontend/app/components/sections/ServiceCards.tsx"
+          ],
+          "unused": false,
+          "notes": "Kingdom addition vs parent; white|imageOverlay; homepage uses imageOverlay."
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "featureList",
+      "title": "Feature List",
+      "file": "studio/src/schemaTypes/objects/featureList.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/featureList.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/FeatureList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "FeatureList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "features",
+          "title": "Features",
+          "type": "array",
+          "of": [
+            "inline {title: string required, body: blockContent, image: image hotspot, cta: button}"
+          ],
+          "consumedBy": [
+            "FeatureList.tsx — body via BARE <PortableText>; image width 600"
+          ],
+          "unused": false
+        },
+        {
+          "name": "showNumbers",
+          "title": "Show Numbers",
+          "type": "boolean",
+          "initialValue": true,
+          "consumedBy": [
+            "FeatureList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "FeatureList.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "processSteps",
+      "title": "Process Steps",
+      "file": "studio/src/schemaTypes/objects/processSteps.ts",
+      "notes": "4 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/processSteps.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ProcessSteps.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "ProcessSteps.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "ProcessSteps.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "steps",
+          "title": "Steps",
+          "type": "array",
+          "of": [
+            "step: {title: string required, badge: string, description: text, icon: string (Iconify)}"
+          ],
+          "validation": "Rule.min(2).max(6)",
+          "consumedBy": [
+            "ProcessSteps.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cta",
+          "title": "CTA Button",
+          "type": "button",
+          "consumedBy": [
+            "ProcessSteps.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "ProcessSteps.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "contentColumns",
+      "title": "Content Columns",
+      "file": "studio/src/schemaTypes/objects/contentColumns.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/contentColumns.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ContentColumns.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "ContentColumns.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "array",
+          "of": [
+            "inline {image: image hotspot, heading: string, body: blockContent, cta: button}"
+          ],
+          "validation": "Rule.min(2).max(3)",
+          "consumedBy": [
+            "ContentColumns.tsx — body via BARE <PortableText>; image width 500"
+          ],
+          "unused": false
+        },
+        {
+          "name": "layout",
+          "title": "Layout",
+          "type": "number",
+          "initialValue": 2,
+          "notes": "2|3",
+          "consumedBy": [
+            "ContentColumns.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "ContentColumns.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "iconGrid",
+      "title": "Icon Grid",
+      "file": "studio/src/schemaTypes/objects/iconGrid.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/iconGrid.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/IconGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "IconGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "IconGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "items",
+          "title": "Items",
+          "type": "array",
+          "of": [
+            "inline {icon: string (Iconify), title: string required, description: text}"
+          ],
+          "consumedBy": [
+            "IconGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 3,
+          "notes": "2|3|4",
+          "consumedBy": [
+            "IconGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "accentImage",
+          "title": "Accent Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "IconGrid.tsx (width 200)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "IconGrid.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "videoSection",
+      "title": "Video Section",
+      "file": "studio/src/schemaTypes/objects/videoSection.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/videoSection.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/VideoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "VideoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "VideoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "videoUrl",
+          "title": "Video URL",
+          "type": "url",
+          "required": true,
+          "validation": "Rule.required()",
+          "notes": "YouTube or Vimeo",
+          "consumedBy": [
+            "VideoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "thumbnail",
+          "title": "Thumbnail",
+          "type": "image",
+          "hotspot": true,
+          "consumedBy": [
+            "VideoSection.tsx (width 960)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "layout",
+          "title": "Layout",
+          "type": "string",
+          "initialValue": "full",
+          "notes": "full|split radio",
+          "consumedBy": [
+            "VideoSection.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "primaryCta",
+          "title": "Primary CTA",
+          "type": "button",
+          "required": false,
+          "validation": "",
+          "consumedBy": [
+            "frontend/app/components/sections/VideoSection.tsx"
+          ],
+          "unused": true,
+          "notes": "Wags variant; no live videoSection block."
+        },
+        {
+          "name": "secondaryCta",
+          "title": "Secondary CTA",
+          "type": "button",
+          "required": false,
+          "validation": "",
+          "consumedBy": [
+            "frontend/app/components/sections/VideoSection.tsx"
+          ],
+          "unused": true,
+          "notes": "Wags variant; no live videoSection block."
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "VideoSection.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "fullWidthMedia",
+      "title": "Full Width Media",
+      "file": "studio/src/schemaTypes/objects/fullWidthMedia.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/fullWidthMedia.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/FullWidthMedia.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "text",
+          "consumedBy": [
+            "FullWidthMedia.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cta",
+          "title": "CTA Button",
+          "type": "button",
+          "consumedBy": [
+            "FullWidthMedia.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "image",
+          "title": "Image",
+          "type": "image",
+          "hotspot": true,
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "FullWidthMedia.tsx (width 1400)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "textAlignment",
+          "title": "Text Alignment",
+          "type": "string",
+          "initialValue": "left",
+          "notes": "left|center|right radio",
+          "consumedBy": [
+            "FullWidthMedia.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "overlayOpacity",
+          "title": "Overlay Opacity",
+          "type": "string",
+          "initialValue": "medium",
+          "notes": "light|medium|heavy radio",
+          "consumedBy": [
+            "FullWidthMedia.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "ctaStrip",
+      "title": "CTA Strip",
+      "file": "studio/src/schemaTypes/objects/ctaStrip.ts",
+      "notes": "5 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/ctaStrip.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/components/sections/CtaStrip.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "string",
+          "consumedBy": [
+            "CtaStrip.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cta",
+          "title": "CTA Button",
+          "type": "button",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "CtaStrip.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "forest",
+          "notes": "cream|sand|forest|terracotta radio",
+          "consumedBy": [
+            "CtaStrip.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "logoBar",
+      "title": "Logo Bar",
+      "file": "studio/src/schemaTypes/objects/logoBar.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/logoBar.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/LogoBar.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "logos",
+          "title": "Logos",
+          "type": "array",
+          "of": [
+            "inline {image: image required, alt: string required, url: url}"
+          ],
+          "consumedBy": [
+            "LogoBar.tsx (width 160)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "displayMode",
+          "title": "Display Mode",
+          "type": "string",
+          "initialValue": "grid",
+          "notes": "grid|marquee radio",
+          "consumedBy": [
+            "LogoBar.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|white radio",
+          "consumedBy": [
+            "LogoBar.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "pricingMatrix",
+      "title": "Pricing Matrix",
+      "file": "studio/src/schemaTypes/objects/pricingMatrix.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/pricingMatrix.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/PricingMatrix.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "PricingMatrix.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "PricingMatrix.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "tables",
+          "title": "Tables",
+          "type": "array",
+          "of": [
+            "matrixTable: {tableName: string required, tableDescription: string, columnHeaders: array of string, rows: array of matrixRow {rowLabel: string required, cells: array of matrixCell {value: string, note: string}}}"
+          ],
+          "consumedBy": [
+            "PricingMatrix.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "footnotes",
+          "title": "Footnotes",
+          "type": "array",
+          "of": [
+            "string"
+          ],
+          "consumedBy": [
+            "PricingMatrix.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "PricingMatrix.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "pricingList",
+      "title": "Pricing List",
+      "file": "studio/src/schemaTypes/objects/pricingList.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/pricingList.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/PricingList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "PricingList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "PricingList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "items",
+          "title": "Items",
+          "type": "array",
+          "of": [
+            "pricingListItem: {service: string required, price: string, note: string}"
+          ],
+          "consumedBy": [
+            "PricingList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 1,
+          "notes": "1|2 radio",
+          "consumedBy": [
+            "PricingList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "PricingList.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "policyNotes",
+      "title": "Policy Notes",
+      "file": "studio/src/schemaTypes/objects/policyNotes.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/policyNotes.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/PolicyNotes.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "PolicyNotes.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "categories",
+          "title": "Categories",
+          "type": "array",
+          "of": [
+            "policyCategory: {categoryName: string required, policies: array of string}"
+          ],
+          "consumedBy": [
+            "PolicyNotes.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "sand",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "PolicyNotes.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "featureGrid",
+      "title": "Feature Grid",
+      "file": "studio/src/schemaTypes/objects/featureGrid.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/featureGrid.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "frontend/app/components/sections/FeatureGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "cta",
+          "title": "CTA Button",
+          "type": "button",
+          "consumedBy": [
+            "FeatureGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "items",
+          "title": "Items",
+          "type": "array",
+          "of": [
+            "inline {image: image hotspot, icon: string (Iconify fallback), title: string required, description: text}"
+          ],
+          "consumedBy": [
+            "FeatureGrid.tsx (width 128, height 128)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 3,
+          "notes": "3|4 radio",
+          "consumedBy": [
+            "FeatureGrid.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest|black radio",
+          "consumedBy": [
+            "FeatureGrid.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "pricingCalculator",
+      "title": "Pricing Calculator",
+      "file": "studio/src/schemaTypes/objects/pricingCalculator.ts",
+      "notes": "2 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/pricingCalculator.ts.",
+      "fields": [
+        {
+          "name": "displayMode",
+          "title": "Display Mode",
+          "type": "string",
+          "initialValue": "single",
+          "notes": "single|tabbed radio",
+          "consumedBy": [
+            "frontend/app/components/sections/PricingCalculator.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "calculatorType",
+          "title": "Calculator Type",
+          "type": "string",
+          "hidden": "({parent}) => parent?.displayMode === 'tabbed'",
+          "validation": "custom: required for single mode",
+          "notes": "daycare|boarding|grooming radio",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "initialValue": "Pricing Calculator",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subheading",
+          "title": "Subheading",
+          "type": "text",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "ctaText",
+          "title": "CTA Button Text",
+          "type": "string",
+          "initialValue": "Book Now",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "ctaLink",
+          "title": "CTA Link",
+          "type": "link",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/pricingCalculator.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "taxNote",
+          "title": "Tax Note",
+          "type": "string",
+          "initialValue": "Prices shown before applicable tax",
+          "consumedBy": [
+            "PricingCalculator.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "whatsIncluded",
+      "title": "What's Included",
+      "file": "studio/src/schemaTypes/objects/whatsIncluded.ts",
+      "notes": "2 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/whatsIncluded.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "items",
+          "title": "Items",
+          "type": "array",
+          "of": [
+            "inline {icon: string (Iconify), title: string required, description: text}"
+          ],
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "layout",
+          "title": "Layout",
+          "type": "string",
+          "initialValue": "card",
+          "notes": "card|inline radio",
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 3,
+          "notes": "2|3|4 radio",
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "iconColor",
+          "title": "Icon Color Scheme",
+          "type": "string",
+          "initialValue": "terracotta",
+          "notes": "terracotta|forest|muted radio",
+          "consumedBy": [
+            "WhatsIncluded.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "requirementsList",
+      "title": "Requirements List",
+      "file": "studio/src/schemaTypes/objects/requirementsList.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/requirementsList.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/RequirementsList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "RequirementsList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "RequirementsList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "items",
+          "title": "Checklist Items",
+          "type": "array",
+          "of": [
+            "item: {text: string}"
+          ],
+          "consumedBy": [
+            "RequirementsList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "link",
+          "title": "Link",
+          "type": "object",
+          "of": [
+            "inline {label: string, link: link}"
+          ],
+          "consumedBy": [
+            "RequirementsList.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/requirementsList.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "image",
+          "title": "Image",
+          "type": "image",
+          "hotspot": true,
+          "notes": "field: alt",
+          "consumedBy": [
+            "RequirementsList.tsx (width 600)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "imagePosition",
+          "title": "Image Position",
+          "type": "string",
+          "initialValue": "right",
+          "notes": "left|right radio",
+          "consumedBy": [
+            "RequirementsList.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "RequirementsList.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "galleryCarousel",
+      "title": "Gallery Carousel",
+      "file": "studio/src/schemaTypes/objects/galleryCarousel.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/galleryCarousel.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/GalleryCarousel.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "GalleryCarousel.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "images",
+          "title": "Images",
+          "type": "array",
+          "of": [
+            "image (hotspot, fields: alt string, caption string)"
+          ],
+          "consumedBy": [
+            "GalleryCarousel.tsx (width 500; 1600 lightbox)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "enableLightbox",
+          "title": "Enable Lightbox",
+          "type": "boolean",
+          "initialValue": true,
+          "consumedBy": [
+            "GalleryCarousel.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "GalleryCarousel.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "galleryShowcase",
+      "title": "Gallery Showcase",
+      "file": "studio/src/schemaTypes/objects/galleryShowcase.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/galleryShowcase.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/GalleryShowcase.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "GalleryShowcase.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "subheading",
+          "title": "Subheading",
+          "type": "text",
+          "consumedBy": [
+            "GalleryShowcase.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "images",
+          "title": "Images",
+          "type": "array",
+          "of": [
+            "image (hotspot, fields: alt string, caption string)"
+          ],
+          "consumedBy": [
+            "GalleryShowcase.tsx (widths 1200/400; 1600 lightbox)"
+          ],
+          "unused": false,
+          "notes": "caption defined but NOT rendered by GalleryShowcase.tsx — dead subfield"
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "GalleryShowcase.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "galleryPage",
+      "title": "Gallery Page",
+      "file": "studio/src/schemaTypes/objects/galleryPage.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/galleryPage.ts.",
+      "fields": [
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/GalleryPage.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/galleryPage.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "subtext",
+          "title": "Subtext",
+          "type": "text",
+          "consumedBy": [
+            "GalleryPage.tsx"
+          ],
+          "unused": false,
+          "notes": "Current Kingdom evidence: see studio/src/schemaTypes/objects/galleryPage.ts and production snapshot; parent-specific note intentionally not carried forward."
+        },
+        {
+          "name": "images",
+          "title": "Images",
+          "type": "array",
+          "of": [
+            "image (hotspot, fields: alt string, caption string)"
+          ],
+          "consumedBy": [
+            "GalleryPage.tsx (widths 500/1000; 1600 lightbox)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "layout",
+          "title": "Layout",
+          "type": "string",
+          "initialValue": "grid",
+          "notes": "grid|single radio",
+          "consumedBy": [
+            "GalleryPage.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "cream",
+          "notes": "cream|sand radio",
+          "consumedBy": [
+            "GalleryPage.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "images[].span",
+          "title": "Column Span",
+          "type": "number",
+          "initialValue": 1,
+          "consumedBy": [
+            "frontend/app/components/sections/GalleryPage.tsx"
+          ],
+          "unused": false,
+          "notes": "Kingdom addition vs parent; options 1|2."
+        }
+      ],
+      "identicalToParent": false
+    },
+    {
+      "name": "valuePillars",
+      "title": "Value Pillars",
+      "file": "studio/src/schemaTypes/objects/valuePillars.ts",
+      "notes": "0 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/valuePillars.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow Text",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/ValuePillars.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "consumedBy": [
+            "ValuePillars.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "ValuePillars.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "pillars",
+          "title": "Pillars",
+          "type": "array",
+          "of": [
+            "inline {metric: string required, title: string required, description: text}"
+          ],
+          "consumedBy": [
+            "ValuePillars.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "columns",
+          "title": "Columns",
+          "type": "number",
+          "initialValue": 4,
+          "notes": "2|3|4 radio",
+          "consumedBy": [
+            "ValuePillars.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "accentImage",
+          "title": "Accent Image",
+          "type": "image",
+          "notes": "field: alt",
+          "consumedBy": [
+            "ValuePillars.tsx (width 200)"
+          ],
+          "unused": false
+        },
+        {
+          "name": "backgroundColor",
+          "title": "Background Color",
+          "type": "string",
+          "initialValue": "sand",
+          "notes": "cream|sand|forest radio",
+          "consumedBy": [
+            "ValuePillars.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "pricingPageTabs",
+      "title": "Pricing Page Tabs",
+      "file": "studio/src/schemaTypes/objects/pricingPageTabs.ts",
+      "notes": "1 live production pageBuilder instance(s) in Kingdom Canine dataset; source: studio/src/schemaTypes/objects/pricingPageTabs.ts.",
+      "fields": [
+        {
+          "name": "eyebrow",
+          "title": "Eyebrow",
+          "type": "string",
+          "consumedBy": [
+            "frontend/app/components/sections/PricingPageTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "heading",
+          "title": "Heading",
+          "type": "string",
+          "required": true,
+          "validation": "Rule.required()",
+          "consumedBy": [
+            "PricingPageTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "description",
+          "title": "Description",
+          "type": "text",
+          "consumedBy": [
+            "PricingPageTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "defaultTab",
+          "title": "Default Tab",
+          "type": "string",
+          "initialValue": "daycare",
+          "notes": "daycare|boarding|grooming radio; /pricing#boarding deep links select tabs",
+          "consumedBy": [
+            "PricingPageTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "services",
+          "title": "Service Tabs",
+          "type": "array",
+          "of": [
+            "inline {serviceKey: string required (daycare|boarding|grooming), pricingDisplay: string (table|matrix, init table), tableData: object (hidden unless table) {categories: array of pricingCategory {categoryName, tiers: array of pricingTier {name, price, description: string, features: array of string, highlighted: boolean}}, description: text}, matrixData: object (hidden unless matrix) {description: text, tables: array of matrixTable {tableName, tableDescription, columnHeaders: array of string, rows: array of matrixRow {rowLabel, cells: array of matrixCell {value, note}}}, footnotes: array of string}, showCalculator: boolean (init true)}"
+          ],
+          "consumedBy": [
+            "PricingPageTabs.tsx",
+            "frontend/app/components/pricing/PricingTierCards.tsx",
+            "frontend/app/components/pricing/PricingMatrixDisplay.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "ctaText",
+          "title": "Calculator CTA Text",
+          "type": "string",
+          "initialValue": "Book Now",
+          "consumedBy": [
+            "PricingPageTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "ctaLink",
+          "title": "Calculator CTA Link",
+          "type": "link",
+          "consumedBy": [
+            "PricingPageTabs.tsx"
+          ],
+          "unused": false
+        },
+        {
+          "name": "taxNote",
+          "title": "Tax Note",
+          "type": "string",
+          "initialValue": "Prices shown before applicable tax and credit card surcharge",
+          "consumedBy": [
+            "PricingPageTabs.tsx"
+          ],
+          "unused": false
+        }
+      ],
+      "identicalToParent": true
+    },
+    {
+      "name": "photoMarquee",
+      "title": "Photo Marquee",
+      "singleton": false,
+      "file": "studio/src/schemaTypes/objects/photoMarquee.ts",
+      "fields": [
+        {
+          "name": "marqueeImages",
+          "title": "Marquee Images",
+          "type": "array",
+          "of": [
+            "image {hotspot:true; alt:string}"
+          ],
+          "required": false,
+          "validation": "Rule.min(3)",
+          "hotspot": true,
+          "consumedBy": [
+            "frontend/app/components/sections/PhotoMarquee.tsx"
+          ],
+          "unused": true,
+          "notes": "Added vs Kingdom by mechanical diff; registered for page/service but zero live uses."
+        }
+      ]
+    }
+  ],
+  "portableTextConfigs": [
+    {
+      "location": "blockContent shared type: infoSection.content, splitContent.body, faqAccordion.faqs[].answer, featureList.features[].body, contentColumns.columns[].body, contactForm.description — studio/src/schemaTypes/objects/blockContent.tsx",
+      "styles": [
+        "SANITY DEFAULTS — not restricted in schema (normal, h1–h6, blockquote)"
+      ],
+      "lists": [
+        "SANITY DEFAULTS (bullet, number)"
+      ],
+      "decorators": [
+        "SANITY DEFAULTS (strong, em, code, underline, strike-through)"
+      ],
+      "annotations": [
+        {
+          "name": "link",
+          "fields": {
+            "linkType": "string radio href|page, initialValue 'href'",
+            "href": "url, hidden unless linkType href/null, custom validation required-when-href",
+            "page": "reference to [page] ONLY (note: standalone link object also allows service), hidden unless linkType page, custom validation required-when-page",
+            "openInNewTab": "boolean, initialValue false"
+          }
+        }
+      ],
+      "customBlocks": [
+        {
+          "type": "image",
+          "options": {
+            "hotspot": true
+          },
+          "fields": "NONE — no alt/caption fields on schema, but CustomPortableText renderer reads value.alt (always undefined)"
+        }
+      ],
+      "rendererFile": "SPLIT: frontend/app/components/PortableText.tsx (CustomPortableText) used only by InfoSection.tsx and Cta.tsx; the other 5 sites (SplitContent.tsx, FaqAccordion.tsx, FeatureList.tsx, ContentColumns.tsx, ContactForm.tsx) use BARE <PortableText> from @portabletext/react with NO components map",
+      "customComponents": [
+        "CustomPortableText: types.image → SanityImage width 672 cover rounded; block.h1/h2 → anchor-link headings using _key as fragment id; marks.link → ResolvedLink/linkResolver",
+        "Bare renderers: default serializers only — custom link annotation and image blocks are NOT handled (links would render as plain text)"
+      ],
+      "liveDataShape": "Wags live PT exists in splitContent and faqAccordion/contactForm structures. Five section renderers use bare @portabletext/react without the custom link components map; evidence: frontend/app/components/sections/{SplitContent,FaqAccordion,FeatureList,ContentColumns,ContactForm}.tsx."
+    },
+    {
+      "location": "blockContentTextOnly (used by callToAction.body — block type unused in live data) — file studio/src/schemaTypes/objects/blockContentTextOnly.tsx, byte-identical to hound-3",
+      "styles": [
+        "SANITY DEFAULTS — bare {type:'block'}"
+      ],
+      "lists": [
+        "SANITY DEFAULTS"
+      ],
+      "decorators": [
+        "SANITY DEFAULTS"
+      ],
+      "annotations": [
+        "SANITY DEFAULT link annotation ({href}) — NOT the custom {linkType,href,page} shape used in blockContent"
+      ],
+      "customBlocks": [],
+      "rendererFile": "frontend/app/components/Cta.tsx via frontend/app/components/PortableText.tsx",
+      "customComponents": [
+        "marks.link → ResolvedLink; linkResolver treats missing linkType with href as linkType='href'"
+      ],
+      "liveDataShape": "No live instances (callToAction unused)"
+    },
+    {
+      "location": "settings.description (inline block array, studio/src/schemaTypes/singletons/settings.tsx)",
+      "styles": [
+        "[] (explicitly empty — plain paragraphs only)"
+      ],
+      "lists": [
+        "[] (explicitly empty)"
+      ],
+      "decorators": [
+        "[] (explicitly empty)"
+      ],
+      "annotations": [
+        {
+          "name": "link",
+          "fields": "same custom link shape as blockContent (linkType/href/page→[page]/openInNewTab)"
+        }
+      ],
+      "customBlocks": [],
+      "rendererFile": "frontend/app/layout.tsx (generateMetadata)",
+      "customComponents": [
+        "Never rendered as rich text — only flattened via toPlainText() for the meta description"
+      ],
+      "liveDataShape": "NOT POPULATED in live data → site-wide meta description is the empty string (layout.tsx:117)"
+    }
+  ],
+  "queries": [
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/layout.tsx (generateMetadata + RootLayout)",
+      "types": [
+        "settings",
+        "page|service (via link deref)"
+      ],
+      "fields": [
+        "all settings fields via ..., navItems (link deref, children link deref), ctaButton, footerColumns, contactInfo, footerTagline, footerText, footerTextLink, footerBottomLinks, logo, yearEstablished, socialLinks, faviconUrl (favicon.asset->url), ga4MeasurementId, gtmContainerId, googleSiteVerification, posUrls), localBusiness, ctmScriptUrl"
+      ],
+      "groq": "*[_type == \"settings\"][0]{\n  ...,\n  navItems[]{\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n,\n    children[]{\n      ...,\n      \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n    }\n  },\n  ctaButton {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  },\n  footerColumns[]{\n    ...,\n    links[]{\n      ...,\n      \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n    }\n  },\n  contactInfo,\n  footerTagline,\n  footerText,\n  footerTextLink,\n  footerBottomLinks[]{\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  },\n  logo,\n  yearEstablished,\n  socialLinks,\n  posUrls,\n  \"faviconUrl\": favicon.asset->url,\n  ga4MeasurementId,\n  gtmContainerId,\n  ctmScriptUrl,\n  googleSiteVerification,\n  localBusiness\n}",
+      "name": "settingsQuery"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/[slug]/page.tsx",
+      "types": [
+        "page + all 44 block types + service/testimonial/webcam via deref/subquery"
+      ],
+      "fields": [
+        "_id, _type, name, slug, seo, pageBuilder (full expansion — pageBuilderExpansion fragment, queries.ts:64-288)"
+      ],
+      "groq": "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    seo,\n    \n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      ...,\n      button \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"hero\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"featureCards\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"serviceTabs\" => {\n      ...,\n      tabs[]->{\n        _id,\n        title,\n        slug,\n        sticker{asset, alt},\n        shortDescription,\n        tabImage{asset, crop, hotspot, alt},\n        tabCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"testimonials\" => {\n      ...,\n      reviews[]->{\n        _id,\n        quote,\n        authorName,\n        authorLabel,\n        rating\n      }\n    },\n    _type == \"ctaBanner\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"splitContent\" => {\n      ...,\n      link {\n        ...,\n        link {\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"faqAccordion\" => {\n      ...,\n      faqs[]{\n        ...,\n        answer[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        }\n      }\n    },\n    _type == \"pricingTable\" => {\n      ...,\n      categories[]{\n        ...,\n        tiers[]{\n          ...,\n          cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n        }\n      }\n    },\n    _type == \"contactForm\" => {\n      ...,\n      description[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"heroSplit\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroBanner\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroMarquee\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroMinimal\" => {\n      ...\n    },\n    _type == \"serviceCards\" => {\n      ...,\n      cards[]{\n        ...,\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"expandingCardsRow\" => {\n      ...,\n      cards[]{\n        ...,\n        link \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"featureList\" => {\n      ...,\n      features[]{\n        ...,\n        body[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        },\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"processSteps\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"contentColumns\" => {\n      ...,\n      columns[]{\n        ...,\n        body[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        },\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"fullWidthMedia\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"ctaStrip\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"pricingMatrix\" => {\n      ...\n    },\n    _type == \"pricingList\" => {\n      ...\n    },\n    _type == \"policyNotes\" => {\n      ...\n    },\n    _type == \"featureGrid\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"pricingCalculator\" => {\n      ...,\n      ctaLink {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n    },\n    _type == \"whatsIncluded\" => {\n      ...\n    },\n    _type == \"requirementsList\" => {\n      ...,\n      link {\n        ...,\n        link {\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"galleryGrid\" => {\n      ...\n    },\n    _type == \"galleryCarousel\" => {\n      ...\n    },\n    _type == \"galleryShowcase\" => {\n      ...\n    },\n    _type == \"teamGrid\" => { ... },\n    _type == \"valuePillars\" => { ... },\n    _type == \"galleryPage\" => {\n      ...\n    },\n    _type == \"photoMarquee\" => { ... },\n    _type == \"videoSection\" => { ..., primaryCta {...}, secondaryCta {...} },\n    _type == \"pricingPageTabs\" => {\n      ...,\n      ctaLink {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n    },\n  }\n,\n  }\n",
+      "name": "getPageQuery"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/page.tsx (homepage)",
+      "types": [
+        "page + blocks"
+      ],
+      "fields": [
+        "same as getPageQuery, slug hardcoded 'homepage'"
+      ],
+      "groq": "\n  *[_type == 'page' && slug.current == 'homepage'][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    seo,\n    \n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      ...,\n      button \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"hero\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"featureCards\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"serviceTabs\" => {\n      ...,\n      tabs[]->{\n        _id,\n        title,\n        slug,\n        sticker{asset, alt},\n        shortDescription,\n        tabImage{asset, crop, hotspot, alt},\n        tabCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"testimonials\" => {\n      ...,\n      reviews[]->{\n        _id,\n        quote,\n        authorName,\n        authorLabel,\n        rating\n      }\n    },\n    _type == \"ctaBanner\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"splitContent\" => {\n      ...,\n      link {\n        ...,\n        link {\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"faqAccordion\" => {\n      ...,\n      faqs[]{\n        ...,\n        answer[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        }\n      }\n    },\n    _type == \"pricingTable\" => {\n      ...,\n      categories[]{\n        ...,\n        tiers[]{\n          ...,\n          cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n        }\n      }\n    },\n    _type == \"contactForm\" => {\n      ...,\n      description[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"heroSplit\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroBanner\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroMarquee\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroMinimal\" => {\n      ...\n    },\n    _type == \"serviceCards\" => {\n      ...,\n      cards[]{\n        ...,\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"expandingCardsRow\" => {\n      ...,\n      cards[]{\n        ...,\n        link \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"featureList\" => {\n      ...,\n      features[]{\n        ...,\n        body[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        },\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"processSteps\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"contentColumns\" => {\n      ...,\n      columns[]{\n        ...,\n        body[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        },\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"fullWidthMedia\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"ctaStrip\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"pricingMatrix\" => {\n      ...\n    },\n    _type == \"pricingList\" => {\n      ...\n    },\n    _type == \"policyNotes\" => {\n      ...\n    },\n    _type == \"featureGrid\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"pricingCalculator\" => {\n      ...,\n      ctaLink {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n    },\n    _type == \"whatsIncluded\" => {\n      ...\n    },\n    _type == \"requirementsList\" => {\n      ...,\n      link {\n        ...,\n        link {\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"galleryGrid\" => {\n      ...\n    },\n    _type == \"galleryCarousel\" => {\n      ...\n    },\n    _type == \"galleryShowcase\" => {\n      ...\n    },\n    _type == \"teamGrid\" => { ... },\n    _type == \"valuePillars\" => { ... },\n    _type == \"galleryPage\" => {\n      ...\n    },\n    _type == \"photoMarquee\" => { ... },\n    _type == \"videoSection\" => { ..., primaryCta {...}, secondaryCta {...} },\n    _type == \"pricingPageTabs\" => {\n      ...,\n      ctaLink {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n    },\n  }\n,\n  }\n",
+      "name": "homepageQuery"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/sitemap.ts",
+      "types": [
+        "page",
+        "service"
+      ],
+      "fields": [
+        "slug.current, _type, _updatedAt, seo.noIndex"
+      ],
+      "groq": "\n  *[_type in [\"page\", \"service\"] && defined(slug.current)] | order(_type asc) {\n    \"slug\": slug.current,\n    _type,\n    _updatedAt,\n    \"noIndex\": seo.noIndex,\n  }\n",
+      "name": "sitemapData"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/[slug]/page.tsx generateStaticParams",
+      "types": [
+        "page"
+      ],
+      "fields": [
+        "slug.current"
+      ],
+      "groq": "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n",
+      "name": "pagesSlugs"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/services/[slug]/page.tsx",
+      "types": [
+        "service + blocks"
+      ],
+      "fields": [
+        "_id, _type, title, slug, heading, shortDescription, seo, pageBuilder expansion"
+      ],
+      "groq": "\n  *[_type == 'service' && slug.current == $slug][0]{\n    _id,\n    _type,\n    title,\n    slug,\n    heading,\n    shortDescription,\n    seo,\n    \n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      ...,\n      button \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"hero\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"featureCards\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"serviceTabs\" => {\n      ...,\n      tabs[]->{\n        _id,\n        title,\n        slug,\n        sticker{asset, alt},\n        shortDescription,\n        tabImage{asset, crop, hotspot, alt},\n        tabCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"testimonials\" => {\n      ...,\n      reviews[]->{\n        _id,\n        quote,\n        authorName,\n        authorLabel,\n        rating\n      }\n    },\n    _type == \"ctaBanner\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"splitContent\" => {\n      ...,\n      link {\n        ...,\n        link {\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"faqAccordion\" => {\n      ...,\n      faqs[]{\n        ...,\n        answer[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        }\n      }\n    },\n    _type == \"pricingTable\" => {\n      ...,\n      categories[]{\n        ...,\n        tiers[]{\n          ...,\n          cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n        }\n      }\n    },\n    _type == \"contactForm\" => {\n      ...,\n      description[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"heroSplit\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroBanner\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroMarquee\" => {\n      ...,\n      primaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n,\n      secondaryCta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"heroMinimal\" => {\n      ...\n    },\n    _type == \"serviceCards\" => {\n      ...,\n      cards[]{\n        ...,\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"expandingCardsRow\" => {\n      ...,\n      cards[]{\n        ...,\n        link \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"featureList\" => {\n      ...,\n      features[]{\n        ...,\n        body[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        },\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"processSteps\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"contentColumns\" => {\n      ...,\n      columns[]{\n        ...,\n        body[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n          }\n        },\n        cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n      }\n    },\n    _type == \"fullWidthMedia\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"ctaStrip\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"pricingMatrix\" => {\n      ...\n    },\n    _type == \"pricingList\" => {\n      ...\n    },\n    _type == \"policyNotes\" => {\n      ...\n    },\n    _type == \"featureGrid\" => {\n      ...,\n      cta \n  {\n    ...,\n    \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n\n  }\n\n    },\n    _type == \"pricingCalculator\" => {\n      ...,\n      ctaLink {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n    },\n    _type == \"whatsIncluded\" => {\n      ...\n    },\n    _type == \"requirementsList\" => {\n      ...,\n      link {\n        ...,\n        link {\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n        }\n      }\n    },\n    _type == \"galleryGrid\" => {\n      ...\n    },\n    _type == \"galleryCarousel\" => {\n      ...\n    },\n    _type == \"galleryShowcase\" => {\n      ...\n    },\n    _type == \"teamGrid\" => { ... },\n    _type == \"valuePillars\" => { ... },\n    _type == \"galleryPage\" => {\n      ...\n    },\n    _type == \"photoMarquee\" => { ... },\n    _type == \"videoSection\" => { ..., primaryCta {...}, secondaryCta {...} },\n    _type == \"pricingPageTabs\" => {\n      ...,\n      ctaLink {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"pageType\": page->_type\n  }\n\n      }\n    },\n  }\n,\n  }\n",
+      "name": "getServiceQuery"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/services/[slug]/page.tsx generateStaticParams",
+      "types": [
+        "service"
+      ],
+      "fields": [
+        "slug.current"
+      ],
+      "groq": "\n  *[_type == \"service\" && defined(slug.current)]\n  {\"slug\": slug.current}\n",
+      "name": "serviceSlugs"
+    },
+    {
+      "file": "frontend/sanity/lib/queries.ts",
+      "usedBy": "frontend/app/layout.tsx (live Services dropdown injection; dataset nav label is exactly Services)",
+      "types": [
+        "service"
+      ],
+      "fields": [
+        "_id, title, slug.current"
+      ],
+      "groq": "\n  *[_type == \"service\" && defined(slug.current)] | order(title asc) {\n    _id, title, \"slug\": slug.current\n  }\n",
+      "name": "servicesNavQuery"
+    }
+  ],
+  "fetchConfiguration": {
+    "client": "createClient: useCdn true, token SANITY_API_READ_TOKEN, stega studioUrl. Evidence: frontend/sanity/lib/client.ts.",
+    "live": "defineLive with serverToken and browserToken; all page/layout/sitemap reads use sanityFetch. Evidence: frontend/sanity/lib/live.ts.",
+    "staticParams": "generateStaticParams uses perspective:'published', stega:false; metadata fetches use stega:false",
+    "revalidateRoutes": "NOT FOUND — no /api/revalidate webhook route; revalidation is entirely via next-sanity Live",
+    "draftMode": "frontend/app/api/draft-mode/enable/route.ts via defineEnableDraftMode; disable via server action frontend/app/actions.ts; DraftModeToast + VisualEditing in layout when enabled"
+  },
+  "imageTransforms": [
+    {
+      "pattern": "sanity-image <SanityImage baseUrl=`https://cdn.sanity.io/images/${projectId}/${dataset}/` id={_ref} width={N} crop hotspot mode=cover|contain> — library auto-generates srcset + auto=format. Widths used across components: 24, 28, 42, 80, 120, 128(+height 128), 150, 160, 200, 400, 500, 600, 672, 700, 704, 880, 960, 1000, 1200, 1400",
+      "files": [
+        "frontend/app/components/SanityImage.tsx (wrapper)",
+        "frontend/app/components/PortableText.tsx (672)",
+        "frontend/app/components/Cta.tsx (704)",
+        "frontend/app/components/Header.tsx / Footer.tsx (logo)",
+        "all frontend/app/components/sections/*.tsx incl. HeroMarquee (880/400) and ExpandingCardsRow (1200)"
+      ]
+    },
+    {
+      "pattern": "@sanity/image-url builder.image(ref).width(1200).height(627).fit('crop').url() — OG images",
+      "files": [
+        "frontend/sanity/lib/utils.ts:19-28 resolveOpenGraphImage"
+      ]
+    },
+    {
+      "pattern": "@sanity/image-url builder.image(ref).width(1600).auto('format').url() + natural dimensions parsed from _ref regex /-(\\d+)x(\\d+)-/ — lightbox slides (yet-another-react-lightbox)",
+      "files": [
+        "frontend/sanity/lib/image.ts:16-28",
+        "frontend/app/components/sections/GalleryGrid.tsx",
+        "GalleryCarousel.tsx",
+        "GalleryPage.tsx",
+        "GalleryShowcase.tsx"
+      ]
+    },
+    {
+      "pattern": "raw asset URL via GROQ favicon.asset->url (no transforms) — the only asset dereference in queries",
+      "files": [
+        "frontend/sanity/lib/queries.ts:49",
+        "frontend/app/layout.tsx:121-126 (favicon unset live; frontend/app/icon.svg is the actual favicon)"
+      ]
+    },
+    {
+      "pattern": "BUG (LIVE on this site): raw asset._ref string emitted as Organization JSON-LD logo — settings.logo IS set here (image-7cce0a50...-289x174-png) so the malformed value ships on every page",
+      "files": [
+        "frontend/app/layout.tsx:184-186 (also latent variant at 84-89, gated behind unset ogImage)"
+      ]
+    }
+  ],
+  "settingsSingleton": {
+    "typeName": "settings",
+    "documentId": "DUPLICATED: aa441a64-cbec-43e1-bd7b-1ac637d0a119 and siteSettings; Studio pins siteSettings; frontend settingsQuery is unordered by type.",
+    "file": "studio/src/schemaTypes/singletons/settings.tsx",
+    "fields": [
+      {
+        "name": "title",
+        "title": "Title",
+        "type": "string",
+        "required": true,
+        "validation": "rule.required()",
+        "initialValue": "Wags Stay N Play",
+        "consumedBy": [
+          "frontend/app/layout.tsx (title template, Organization/WebSite JSON-LD)"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: yes. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "tagline",
+        "title": "Tagline",
+        "type": "string",
+        "consumedBy": [],
+        "unused": true,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "description",
+        "title": "Description",
+        "type": "array (block, styles/lists/decorators empty, custom link annotation)",
+        "consumedBy": [
+          "frontend/app/layout.tsx meta description via toPlainText"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "logo",
+        "title": "Logo",
+        "type": "image",
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: yes. Evidence: read-only production snapshot.",
+        "consumedBy": [
+          "frontend/app/components/Header.tsx",
+          "Footer.tsx (160)",
+          "layout.tsx Organization JSON-LD (as raw _ref — live bug)"
+        ],
+        "unused": false
+      },
+      {
+        "name": "navItems",
+        "title": "Navigation Items",
+        "type": "array",
+        "of": [
+          "navItem: {label: string required, link: link (hidden when children non-empty), children: array of {label: string, link: link}}"
+        ],
+        "consumedBy": [
+          "frontend/app/layout.tsx:148-160 ('Services' label injection — inert here)",
+          "frontend/app/components/Header.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "ctaButton",
+        "title": "Header CTA Button",
+        "type": "button",
+        "consumedBy": [
+          "Header.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: yes. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "footerSticker",
+        "title": "Footer Sticker",
+        "type": "image",
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot.",
+        "consumedBy": [
+          "Footer.tsx (80)"
+        ],
+        "unused": false
+      },
+      {
+        "name": "footerTagline",
+        "title": "Footer Tagline",
+        "type": "text",
+        "consumedBy": [
+          "Footer.tsx via layout"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "footerColumns",
+        "title": "Footer Columns",
+        "type": "array",
+        "of": [
+          "inline {title: string, links: array of {label: string, link: link}}"
+        ],
+        "consumedBy": [
+          "Footer.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "contactInfo",
+        "title": "Contact Information",
+        "type": "object {address: text, phone: string, email: string}",
+        "consumedBy": [
+          "Footer.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "footerText",
+        "title": "Footer Copyright Text",
+        "type": "string",
+        "consumedBy": [
+          "Footer.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "footerTextLink",
+        "title": "Footer Copyright Link",
+        "type": "object {label: string, href: url}",
+        "consumedBy": [
+          "Footer.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "footerBottomLinks",
+        "title": "Footer Bottom Links",
+        "type": "array",
+        "of": [
+          "inline {label: string, link: link}"
+        ],
+        "consumedBy": [
+          "Footer.tsx"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "yearEstablished",
+        "title": "Year Established",
+        "type": "number",
+        "consumedBy": [],
+        "unused": true,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "socialLinks",
+        "title": "Social Links",
+        "type": "object {facebook: url, instagram: url, google: url}",
+        "consumedBy": [
+          "Footer.tsx",
+          "layout.tsx JSON-LD sameAs"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "ogImage",
+        "title": "Open Graph Image",
+        "type": "image",
+        "hotspot": true,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot.",
+        "consumedBy": [
+          "layout.tsx resolveOpenGraphImage + metadataBase + JSON-LD urls"
+        ],
+        "unused": false
+      },
+      {
+        "name": "favicon",
+        "title": "Favicon",
+        "type": "image",
+        "consumedBy": [
+          "layout.tsx icons via faviconUrl deref"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "ga4MeasurementId",
+        "title": "GA4 Measurement ID",
+        "type": "string",
+        "validation": "Rule.warning().custom regex ^G-[A-Z0-9]+$",
+        "consumedBy": [
+          "layout.tsx (gtag fallback when no GTM)"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "gtmContainerId",
+        "title": "GTM Container ID",
+        "type": "string",
+        "validation": "Rule.warning().custom regex ^GTM-[A-Z0-9]+$",
+        "consumedBy": [
+          "layout.tsx @next/third-parties GoogleTagManager (rendered in <body>, drift vs hound-3 which renders it in <head>) + noscript iframe"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "googleSiteVerification",
+        "title": "Google Site Verification",
+        "type": "string",
+        "consumedBy": [
+          "layout.tsx metadata verification.google"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: no; populated on siteSettings doc: no. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "localBusiness",
+        "title": "Local Business (Structured Data)",
+        "type": "object",
+        "of": [
+          "businessName: string; businessType: string (init 'LocalBusiness'); address: object {street, city, state, zip, country (init 'US')}; phone: string; geoCoordinates: object {latitude: number, longitude: number}; businessHours: array of {days: string, open: string, close: string}; priceRange: string"
+        ],
+        "consumedBy": [
+          "layout.tsx buildLocalBusinessJsonLd"
+        ],
+        "unused": false,
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: yes. Evidence: read-only production snapshot."
+      },
+      {
+        "name": "ctmScriptUrl",
+        "title": "CallTrackingMetrics Script URL",
+        "type": "string",
+        "required": false,
+        "validation": "",
+        "consumedBy": [
+          "frontend/app/layout.tsx"
+        ],
+        "unused": false,
+        "notes": "Wags-only field vs Wags; populated on UUID settings document only."
+      },
+      {
+        "name": "posUrls",
+        "type": "object",
+        "notes": "Schema-defined. Populated on primary UUID settings doc: yes; populated on siteSettings doc: no. Evidence: read-only production snapshot.",
+        "title": "POS & Booking URLs",
+        "consumedBy": [
+          "frontend/app/layout.tsx via settingsQuery and shell consumers"
+        ],
+        "unused": false
+      }
+    ],
+    "hardcodedValuesThatBelongHere": [
+      {
+        "value_description": "Production domain hardcoded for metadata, robots and sitemap.",
+        "file": "frontend/app/layout.tsx; frontend/app/robots.ts; frontend/app/sitemap.ts"
+      },
+      {
+        "value_description": "Calculator prices are code data rather than CMS settings.",
+        "file": "frontend/app/data/pricingData.ts"
+      },
+      {
+        "value_description": "Public logo fallback is hardcoded.",
+        "file": "frontend/public/images/wags-logo-no-bg.png; frontend/app/components/Header.tsx; frontend/app/components/Footer.tsx"
+      }
+    ]
+  },
+  "seoModel": {
+    "description": "Shared seo object on page/service; route metadata in frontend/app/page.tsx, [slug]/page.tsx, services/[slug]/page.tsx; root defaults from settings in frontend/app/layout.tsx.",
+    "fallbackChain": [
+      "page title: seo.metaTitle → page.name → layout template using settings.title",
+      "service title: seo.metaTitle → service.title → layout template",
+      "service description: seo.metaDescription → service.heading → service.shortDescription",
+      "page description: seo.metaDescription; root default: toPlainText(settings.description)",
+      "OG image: route seo.ogImage; root settings.ogImage; transformed by resolveOpenGraphImage",
+      "robots/sitemap: seo.noIndex"
+    ]
+  },
+  "subSite": null,
+  "dataset_snapshot": {
+    "skipped": false,
+    "totalDocs": 10,
+    "documentCounts": {
+      "page": 5,
+      "service": 3,
+      "settings": 2,
+      "testimonial": 0
+    },
+    "draftCounts": {
+      "page": 0,
+      "service": 0,
+      "settings": 0,
+      "testimonial": 0
+    },
+    "pages": [
+      "homepage",
+      "about",
+      "contact",
+      "new-clients",
+      "pricing"
+    ],
+    "services": [
+      "boarding",
+      "daycare",
+      "grooming"
+    ],
+    "blockTypesUsedInLiveData": {
+      "spacer": 18,
+      "ctaBanner": 7,
+      "heroMinimal": 5,
+      "featureCards": 4,
+      "pricingCalculator": 3,
+      "faqAccordion": 3,
+      "splitContent": 2,
+      "contactForm": 1,
+      "heroMarquee": 1,
+      "serviceCards": 1,
+      "ctaStrip": 1,
+      "statsBar": 1,
+      "processSteps": 1,
+      "valuePillars": 1,
+      "pricingPageTabs": 1
+    },
+    "blockTypesNeverUsedInLiveData": [
+      "seo",
+      "button",
+      "link",
+      "blockContent",
+      "blockContentTextOnly",
+      "callToAction",
+      "infoSection",
+      "hero",
+      "expandingCardsRow",
+      "imageRow",
+      "serviceTabs",
+      "testimonials",
+      "pricingTable",
+      "teamGrid",
+      "galleryGrid",
+      "heroSplit",
+      "heroBanner",
+      "featureList",
+      "contentColumns",
+      "iconGrid",
+      "videoSection",
+      "fullWidthMedia",
+      "logoBar",
+      "pricingMatrix",
+      "pricingList",
+      "policyNotes",
+      "featureGrid",
+      "whatsIncluded",
+      "requirementsList",
+      "galleryCarousel",
+      "galleryShowcase",
+      "galleryPage",
+      "photoMarquee"
+    ],
+    "orphanedTypes": [],
+    "schemaDataMismatches": [
+      "ctaBanner live data contains legacy ctaLink/ctaText fields absent from current ctaBanner schema in 4 of 7 blocks. Evidence: read-only dataset projection 2026-07-10."
+    ],
+    "assetCounts": {
+      "images": 13,
+      "files": 0,
+      "total": 13
+    },
+    "settingsIntegrity": {
+      "documents": [
+        {
+          "_id": "aa441a64-cbec-43e1-bd7b-1ac637d0a119",
+          "_createdAt": "2026-05-12T18:35:01Z",
+          "_updatedAt": "2026-07-09T18:51:24Z",
+          "content": "full operational settings"
+        },
+        {
+          "_id": "siteSettings",
+          "_createdAt": "2026-05-12T18:43:47Z",
+          "_updatedAt": "2026-05-12T18:44:00Z",
+          "content": "sparse competing settings with logo/title/default objects"
+        }
+      ],
+      "draftVariants": [],
+      "studioPinnedId": "siteSettings",
+      "frontendSelection": "*[_type == \"settings\"][0] unordered"
+    }
+  },
+  "riskFlags": [
+    {
+      "severity": "high",
+      "flag": "Competing settings singletons with unordered frontend selection",
+      "evidence": "Dataset has UUID and siteSettings documents with materially different content; studio/src/structure/index.ts pins siteSettings; frontend/sanity/lib/queries.ts uses *[_type == \"settings\"][0]."
+    },
+    {
+      "severity": "high",
+      "flag": "Legacy data fields outside current schema",
+      "evidence": "4/7 live ctaBanner blocks include ctaLink/ctaText absent from studio/src/schemaTypes/objects/ctaBanner.ts."
+    },
+    {
+      "severity": "medium",
+      "flag": "Portable Text custom-link renderer inconsistency",
+      "evidence": "frontend/app/components/PortableText.tsx defines marks.link; five section files render bare PortableText."
+    },
+    {
+      "severity": "medium",
+      "flag": "Visual editing/live Sanity coupling",
+      "evidence": "frontend/sanity/lib/live.ts; frontend/app/components/PageBuilder.tsx; BlockRenderer.tsx; DraftModeToast.tsx."
+    },
+    {
+      "severity": "medium",
+      "flag": "Wix/previous-owner extraction infrastructure retained",
+      "evidence": "new-context/manifest.json and new-context/scripts/*.mjs retain Wix CDN URLs and scraper tooling; context/project-overview.md documents Wix DNS inheritance."
+    },
+    {
+      "severity": "low",
+      "flag": "Portfolio names in internal documentation/schema descriptions",
+      "evidence": "AGENTS.md, CLAUDE.md, context/*.md, studio/src/schemaTypes/objects/splitContent.ts, settings.tsx. No user-facing Boxers fallback remains in frontend/app/components/sections/HeroMarquee.tsx (fallback is Wags)."
+    }
+  ],
+  "cloneParent": {
+    "determined": "kingdom-canine",
+    "confidence": "documented",
+    "evidence": [
+      "stated lineage"
+    ]
+  }
+}
