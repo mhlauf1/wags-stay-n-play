@@ -1,7 +1,7 @@
 'use client'
 
 import {useState, useEffect} from 'react'
-import {useSearchParams} from 'next/navigation'
+import {useRouter, useSearchParams} from 'next/navigation'
 import {PortableText} from '@portabletext/react'
 
 import Image from '@/app/components/SanityImage'
@@ -18,6 +18,28 @@ type ContactFormProps = {
   pageType: string
 }
 
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (callback: () => void) => void
+      execute: (siteKey: string, options: {action: string}) => Promise<string>
+    }
+  }
+}
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+
+async function getRecaptchaToken(): Promise<string | null> {
+  if (!RECAPTCHA_SITE_KEY || !window.grecaptcha) return null
+  try {
+    const grecaptcha = window.grecaptcha
+    await new Promise<void>((resolve) => grecaptcha.ready(resolve))
+    return await grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'contact_form'})
+  } catch {
+    return null
+  }
+}
+
 export default function ContactForm({block}: ContactFormProps) {
   const {
     eyebrow,
@@ -25,7 +47,6 @@ export default function ContactForm({block}: ContactFormProps) {
     description,
     formFields,
     submitButtonText,
-    successMessage,
     showMap,
     mapEmbedUrl,
     image,
@@ -39,10 +60,20 @@ export default function ContactForm({block}: ContactFormProps) {
     hours?: Array<{_key?: string; label?: string; value?: string}>
   }
 
+  const router = useRouter()
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState<Record<string, string>>({})
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    if (!RECAPTCHA_SITE_KEY || document.getElementById('recaptcha-script')) return
+    const script = document.createElement('script')
+    script.id = 'recaptcha-script'
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
+    script.async = true
+    document.head.appendChild(script)
+  }, [])
 
   useEffect(() => {
     const serviceParam = searchParams.get('service')
@@ -61,10 +92,11 @@ export default function ContactForm({block}: ContactFormProps) {
     setErrorMessage('')
 
     try {
+      const recaptchaToken = await getRecaptchaToken()
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formData),
+        body: JSON.stringify(recaptchaToken ? {...formData, recaptchaToken} : formData),
       })
 
       if (!res.ok) {
@@ -72,8 +104,7 @@ export default function ContactForm({block}: ContactFormProps) {
         throw new Error(data.error || 'Something went wrong')
       }
 
-      setStatus('success')
-      setFormData({})
+      router.push('/thank-you')
     } catch (err) {
       setStatus('error')
       setErrorMessage(err instanceof Error ? err.message : 'Something went wrong')
@@ -112,27 +143,7 @@ export default function ContactForm({block}: ContactFormProps) {
         >
           {/* Form */}
           <FadeIn immediate>
-            {status === 'success' ? (
-              <div className="bg-forest/5 rounded-lg p-8 text-center">
-                <svg
-                  className="h-12 w-12 text-forest mx-auto mb-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="font-sans text-[18px] md:text-[20px] text-forest font-medium">
-                  {successMessage || "Thank you! We'll be in touch soon."}
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
                 {formFields &&
                   formFields.map((field) => {
                     const fieldName = stegaClean(field.fieldName) || ''
@@ -191,8 +202,7 @@ export default function ContactForm({block}: ContactFormProps) {
                 <Button type="submit" variant="primary">
                   {status === 'submitting' ? 'Sending...' : submitButtonText || 'Send Message'}
                 </Button>
-              </form>
-            )}
+            </form>
           </FadeIn>
 
           {/* Next steps */}
