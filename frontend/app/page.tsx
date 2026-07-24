@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 
   const seo = page?.seo
-  if (!seo) return {}
+  if (!seo) return {alternates: {canonical: '/'}}
 
   const ogImage = resolveOpenGraphImage(seo.ogImage)
 
