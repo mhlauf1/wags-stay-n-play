@@ -1,4 +1,5 @@
 import type {Metadata} from 'next'
+import {notFound} from 'next/navigation'
 
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
@@ -43,12 +44,7 @@ export default async function Page(props: Props) {
   const [{data: page}] = await Promise.all([sanityFetch({query: getPageQuery, params})])
 
   if (!page?._id) {
-    return (
-      <div className="container py-20 text-center">
-        <h1 className="font-heading text-[36px] mb-4">Page not found</h1>
-        <p className="font-sans text-text-muted">This page doesn&apos;t exist yet.</p>
-      </div>
-    )
+    notFound()
   }
 
   return <PageBuilderPage page={page} />

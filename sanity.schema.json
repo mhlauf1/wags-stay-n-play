@@ -9303,6 +9303,13 @@
         },
         "optional": true
       },
+      "ctmScriptUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "localBusiness": {
         "type": "objectAttribute",
         "value": {

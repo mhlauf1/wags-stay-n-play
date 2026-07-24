@@ -65,20 +65,22 @@ export default function HeroMinimal({block}: HeroMinimalProps) {
               )}
             </FadeIn>
           )}
-          {heading && (
+          {(heading || headingAccent) && (
             <FadeIn delay={0.05}>
-              <h1 className="text-[48px] tracking-tight font-semibold md:text-[56px] lg:text-[72px] xl:text-[84px]  leading-[104%]">
-                {heading}
+              <h1>
+                {heading && (
+                  <span className="block text-[48px] tracking-tight font-semibold md:text-[56px] lg:text-[72px] xl:text-[84px]  leading-[104%]">
+                    {heading}
+                  </span>
+                )}
+                {headingAccent && (
+                  <span
+                    className={`block text-[48px] font-medium md:text-[56px] lg:text-[72px] xl:text-[84px] tracking-tighter  leading-[110%]  ${isDark ? 'text-terracotta-light' : 'text-terracotta'}`}
+                  >
+                    {headingAccent}
+                  </span>
+                )}
               </h1>
-            </FadeIn>
-          )}
-          {headingAccent && (
-            <FadeIn delay={0.1}>
-              <span
-                className={`text-[48px] font-medium md:text-[56px] lg:text-[72px] xl:text-[84px] tracking-tighter  leading-[110%]  ${isDark ? 'text-terracotta-light' : 'text-terracotta'}`}
-              >
-                {headingAccent}
-              </span>
             </FadeIn>
           )}
           {subtext && (
