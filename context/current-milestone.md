@@ -30,7 +30,7 @@ In Progress
 - Added ten focused tests. Recipient manipulation and unknown fields are rejected. Focused lint, type-check, and the production build pass. Repository-wide lint still reports 111 pre-existing errors outside this pilot's scope.
 - Safe local production API checks passed without sending email: non-JSON `400`, honeypot `200`, recipient manipulation `400`, missing production secret `503`, and oversized body `413`.
 - Local browser QA passed without submitting the form: partial input formats as `(218) 287`, complete input formats as `(218) 287-2000`, field requirements and length limits match the published CMS contract, the honeypot is hidden and removed from keyboard navigation, and no browser console errors were reported.
-- Local configuration presence audit: both reCAPTCHA variables are present; SMTP, primary-recipient, and explicit BCC variables are absent locally. The code-level required BCC fallback remains intact. Production Vercel values are not yet verified because this checkout has no linked Vercel project or configured Vercel CLI session.
+- Local configuration presence audit: both reCAPTCHA variables are present; SMTP, primary-recipient, and explicit BCC variables are absent locally. The code-level required BCC fallback remains intact. A separate Vercel audit confirmed the required reCAPTCHA, SMTP, primary-recipient, and explicit BCC variables for Production and Preview.
 - No deployment or live form submission is part of this branch until the diff is reviewed and approved.
 
 #### Already existed from Embark design system
