@@ -10,6 +10,7 @@
     "lint:fix": "eslint . --fix",
     "sanity:typegen": "cd ../studio && sanity schema extract --enforce-required-fields --path ../sanity.schema.json && cd ../frontend && sanity typegen generate",
     "start": "next start",
+    "test:contact": "node --experimental-strip-types --test \"app/api/contact/*.test.mts\"",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -36,7 +37,8 @@
     "sonner": "^2.0.7",
     "styled-components": "^6.3.11",
     "tailwindcss": "^4.1.17",
-    "yet-another-react-lightbox": "^3.29.1"
+    "yet-another-react-lightbox": "^3.29.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.19.25",

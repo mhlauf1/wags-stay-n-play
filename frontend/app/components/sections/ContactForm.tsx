@@ -10,6 +10,7 @@ import {FadeIn} from '@/app/components/ui/FadeIn'
 import {stegaClean} from '@sanity/client/stega'
 import Badge from '../ui/Badge'
 import type {ExtractPageBuilderType} from '@/sanity/lib/types'
+import {formatUsPhoneNumber} from '@/app/lib/formatUsPhoneNumber'
 
 type ContactFormProps = {
   block: ExtractPageBuilderType<'contactForm'>
@@ -28,6 +29,18 @@ declare global {
 }
 
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+const SUPPORTED_CONTACT_FIELD_NAMES = new Set([
+  'name',
+  'email',
+  'phone',
+  'service',
+  'petName',
+  'message',
+])
+
+function isSupportedContactFieldName(fieldName: string): boolean {
+  return SUPPORTED_CONTACT_FIELD_NAMES.has(fieldName)
+}
 
 async function getRecaptchaToken(): Promise<string | null> {
   if (!RECAPTCHA_SITE_KEY || !window.grecaptcha) return null
@@ -85,7 +98,10 @@ export default function ContactForm({block, index}: ContactFormProps) {
   }, [formFields])
 
   const handleChange = (fieldName: string, value: string) => {
-    setFormData((prev) => ({...prev, [fieldName]: value}))
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: fieldName === 'phone' ? formatUsPhoneNumber(value) : value,
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -95,10 +111,16 @@ export default function ContactForm({block, index}: ContactFormProps) {
 
     try {
       const recaptchaToken = await getRecaptchaToken()
+      const payload = Object.fromEntries(
+        Object.entries(formData).filter(
+          ([fieldName]) =>
+            fieldName === 'companyWebsite' || isSupportedContactFieldName(fieldName),
+        ),
+      )
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(recaptchaToken ? {...formData, recaptchaToken} : formData),
+        body: JSON.stringify(recaptchaToken ? {...payload, recaptchaToken} : payload),
       })
 
       if (!res.ok) {
@@ -115,7 +137,12 @@ export default function ContactForm({block, index}: ContactFormProps) {
 
   const validHours = (hours || []).filter((h) => h?.label && h?.value)
   const hasContactInfo =
-    image?.asset?._ref || address || phone || email || validHours.length > 0 || (stegaClean(showMap) && mapEmbedUrl)
+    image?.asset?._ref ||
+    address ||
+    phone ||
+    email ||
+    validHours.length > 0 ||
+    (stegaClean(showMap) && mapEmbedUrl)
 
   return (
     <section className="bg-cream pt-8">
@@ -146,64 +173,97 @@ export default function ContactForm({block, index}: ContactFormProps) {
           {/* Form */}
           <FadeIn immediate>
             <form onSubmit={handleSubmit} className="space-y-5">
-                {formFields &&
-                  formFields.map((field) => {
-                    const fieldName = stegaClean(field.fieldName) || ''
-                    const fieldType = stegaClean(field.type) || 'text'
+              <div className="absolute left-[-9999px]" aria-hidden="true">
+                <label htmlFor="company-website">Company website</label>
+                <input
+                  id="company-website"
+                  name="companyWebsite"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.companyWebsite || ''}
+                  onChange={(e) => handleChange('companyWebsite', e.target.value)}
+                />
+              </div>
+              {formFields &&
+                formFields.map((field) => {
+                  const fieldName = stegaClean(field.fieldName) || ''
+                  const fieldType = stegaClean(field.type) || 'text'
 
-                    return (
-                      <div key={field._key}>
-                        {field.label && (
-                          <label className="block font-sans text-[14px] font-medium text-forest mb-1.5">
-                            {field.label}
-                            {field.required && <span className="text-terracotta ml-1">*</span>}
-                          </label>
-                        )}
-                        {fieldType === 'textarea' ? (
-                          <textarea
-                            name={fieldName}
-                            required={field.required || false}
-                            rows={4}
-                            value={formData[fieldName] || ''}
-                            onChange={(e) => handleChange(fieldName, e.target.value)}
-                            className="w-full rounded-md border border-sand bg-white px-4 py-3 font-sans text-[16px] text-forest placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
-                          />
-                        ) : fieldType === 'select' ? (
-                          <select
-                            name={fieldName}
-                            required={field.required || false}
-                            value={formData[fieldName] || ''}
-                            onChange={(e) => handleChange(fieldName, e.target.value)}
-                            className="w-full rounded-md border border-sand bg-white px-4 py-3 font-sans text-[16px] text-forest focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
-                          >
-                            <option value="">Select an option...</option>
-                            {field.options?.map((opt, oi) => (
-                              <option key={oi} value={opt}>
-                                {opt}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            type={fieldType}
-                            name={fieldName}
-                            required={field.required || false}
-                            value={formData[fieldName] || ''}
-                            onChange={(e) => handleChange(fieldName, e.target.value)}
-                            className="w-full rounded-md border border-sand bg-white px-4 py-3 font-sans text-[16px] text-forest placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
-                          />
-                        )}
-                      </div>
-                    )
-                  })}
+                  if (!isSupportedContactFieldName(fieldName)) return null
 
-                {status === 'error' && (
-                  <p className="font-sans text-[14px] text-red-600">{errorMessage}</p>
-                )}
+                  return (
+                    <div key={field._key}>
+                      {field.label && (
+                        <label className="block font-sans text-[14px] font-medium text-forest mb-1.5">
+                          {field.label}
+                          {field.required && <span className="text-terracotta ml-1">*</span>}
+                        </label>
+                      )}
+                      {fieldType === 'textarea' ? (
+                        <textarea
+                          name={fieldName}
+                          required={field.required || false}
+                          rows={4}
+                          maxLength={5000}
+                          value={formData[fieldName] || ''}
+                          onChange={(e) => handleChange(fieldName, e.target.value)}
+                          className="w-full rounded-md border border-sand bg-white px-4 py-3 font-sans text-[16px] text-forest placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
+                        />
+                      ) : fieldType === 'select' ? (
+                        <select
+                          name={fieldName}
+                          required={field.required || false}
+                          value={formData[fieldName] || ''}
+                          onChange={(e) => handleChange(fieldName, e.target.value)}
+                          className="w-full rounded-md border border-sand bg-white px-4 py-3 font-sans text-[16px] text-forest focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
+                        >
+                          <option value="">Select an option...</option>
+                          {field.options?.map((opt, oi) => (
+                            <option key={oi} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type={fieldType}
+                          name={fieldName}
+                          required={field.required || false}
+                          maxLength={
+                            fieldName === 'message'
+                              ? 5000
+                              : fieldName === 'email'
+                                ? 254
+                                : fieldName === 'phone'
+                                  ? 14
+                                  : 100
+                          }
+                          autoComplete={
+                            fieldName === 'name'
+                              ? 'name'
+                              : fieldName === 'email'
+                                ? 'email'
+                                : fieldName === 'phone'
+                                  ? 'tel'
+                                  : 'off'
+                          }
+                          value={formData[fieldName] || ''}
+                          onChange={(e) => handleChange(fieldName, e.target.value)}
+                          className="w-full rounded-md border border-sand bg-white px-4 py-3 font-sans text-[16px] text-forest placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
+                        />
+                      )}
+                    </div>
+                  )
+                })}
 
-                <Button type="submit" variant="primary">
-                  {status === 'submitting' ? 'Sending...' : submitButtonText || 'Send Message'}
-                </Button>
+              {status === 'error' && (
+                <p className="font-sans text-[14px] text-red-600">{errorMessage}</p>
+              )}
+
+              <Button type="submit" variant="primary">
+                {status === 'submitting' ? 'Sending...' : submitButtonText || 'Send Message'}
+              </Button>
             </form>
           </FadeIn>
 
@@ -241,7 +301,7 @@ export default function ContactForm({block, index}: ContactFormProps) {
                   <div className="rounded-lg overflow-hidden">
                     <Image
                       id={image.asset._ref}
-                      alt={(image as any).alt || heading || 'Contact'}
+                      alt={image.alt || heading || 'Contact'}
                       width={700}
                       crop={image.crop}
                       hotspot={image.hotspot}
@@ -265,7 +325,9 @@ export default function ContactForm({block, index}: ContactFormProps) {
                   </div>
                 )}
 
-                <div className={`grid ${validHours.length > 0 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'} gap-6`}>
+                <div
+                  className={`grid ${validHours.length > 0 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'} gap-6`}
+                >
                   <div className="space-y-4">
                     {address && (
                       <div>
