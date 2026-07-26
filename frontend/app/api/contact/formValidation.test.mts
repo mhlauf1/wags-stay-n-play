@@ -25,6 +25,7 @@ test('formats a ten-digit US phone number progressively', () => {
   assert.equal(formatUsPhoneNumber('218'), '218')
   assert.equal(formatUsPhoneNumber('218287'), '(218) 287')
   assert.equal(formatUsPhoneNumber('2182872000'), '(218) 287-2000')
+  assert.equal(formatUsPhoneNumber('+1 (218) 287-2000'), '(218) 287-2000')
   assert.equal(formatUsPhoneNumber('(218) 287-2000 extra digits'), '(218) 287-2000')
 })
 
@@ -48,6 +49,11 @@ test('rejects invalid service choices and oversized messages', () => {
     contactFormSchema.safeParse({...validPayload, message: 'x'.repeat(5001)}).success,
     false,
   )
+})
+
+test('rejects invalid phone numbers and control characters in names', () => {
+  assert.equal(contactFormSchema.safeParse({...validPayload, phone: 'not-a-phone'}).success, false)
+  assert.equal(contactFormSchema.safeParse({...validPayload, name: 'Taylor\nBcc: test'}).success, false)
 })
 
 test('recognizes only non-empty honeypot values', () => {
@@ -76,5 +82,26 @@ test('rejects an oversized JSON body even when content-length is absent', async 
     body: JSON.stringify({message: 'x'.repeat(MAX_CONTACT_BODY_BYTES)}),
   })
 
+  assert.equal(request.headers.get('content-length'), null)
   assert.deepEqual(await readContactBody(request), {status: 'too-large'})
+})
+
+test('rejects a non-JSON request body', async () => {
+  const request = new Request('http://localhost/api/contact', {
+    method: 'POST',
+    headers: {'content-type': 'text/plain'},
+    body: 'not json',
+  })
+
+  assert.deepEqual(await readContactBody(request), {status: 'invalid'})
+})
+
+test('reads a valid JSON request body', async () => {
+  const request = new Request('http://localhost/api/contact', {
+    method: 'POST',
+    headers: {'content-type': 'application/json; charset=utf-8'},
+    body: JSON.stringify(validPayload),
+  })
+
+  assert.deepEqual(await readContactBody(request), {status: 'valid', value: validPayload})
 })

@@ -5,10 +5,22 @@ export const RECAPTCHA_ACTION = 'contact_form'
 
 const optionalShortText = z.string().trim().max(100).optional().default('')
 
+function containsControlCharacters(value: string): boolean {
+  return Array.from(value).some((character) => {
+    const codePoint = character.codePointAt(0) ?? 0
+    return codePoint <= 31 || (codePoint >= 127 && codePoint <= 159)
+  })
+}
+
 export const contactFormSchema = z
   .object({
-    name: z.string().trim().min(1).max(100),
-    email: z.string().trim().max(254).email(),
+    name: z
+      .string()
+      .trim()
+      .min(1)
+      .max(100)
+      .refine((value) => !containsControlCharacters(value), 'Enter a valid name'),
+    email: z.string().trim().max(254).pipe(z.email()),
     phone: z
       .string()
       .trim()
@@ -47,12 +59,33 @@ export async function readContactBody(request: Request): Promise<ReadContactBody
     return {status: 'too-large'}
   }
 
-  const rawBody = await request.text()
-  if (new TextEncoder().encode(rawBody).byteLength > MAX_CONTACT_BODY_BYTES) {
-    return {status: 'too-large'}
+  const reader = request.body?.getReader()
+  if (!reader) return {status: 'invalid'}
+
+  const chunks: Uint8Array[] = []
+  let receivedBytes = 0
+
+  for (;;) {
+    const {done, value} = await reader.read()
+    if (done) break
+
+    receivedBytes += value.byteLength
+    if (receivedBytes > MAX_CONTACT_BODY_BYTES) {
+      await reader.cancel()
+      return {status: 'too-large'}
+    }
+    chunks.push(value)
+  }
+
+  const bodyBytes = new Uint8Array(receivedBytes)
+  let offset = 0
+  for (const chunk of chunks) {
+    bodyBytes.set(chunk, offset)
+    offset += chunk.byteLength
   }
 
   try {
+    const rawBody = new TextDecoder('utf-8', {fatal: true}).decode(bodyBytes)
     const value: unknown = JSON.parse(rawBody)
     if (!value || typeof value !== 'object' || Array.isArray(value)) return {status: 'invalid'}
     return {status: 'valid', value}

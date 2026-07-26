@@ -59,7 +59,17 @@ async function verifyRecaptcha(token: string | undefined): Promise<RecaptchaVeri
         score?: number
         action?: string
         hostname?: string
+        'error-codes'?: string[]
       }
+
+      if (
+        attempt > 1 &&
+        data.success !== true &&
+        data['error-codes']?.includes('timeout-or-duplicate')
+      ) {
+        return {status: 'unavailable'}
+      }
+
       const verified =
         data.success === true &&
         (data.score ?? 0) >= RECAPTCHA_MIN_SCORE &&

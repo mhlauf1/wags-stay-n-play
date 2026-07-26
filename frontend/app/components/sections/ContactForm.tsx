@@ -29,6 +29,18 @@ declare global {
 }
 
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+const SUPPORTED_CONTACT_FIELD_NAMES = new Set([
+  'name',
+  'email',
+  'phone',
+  'service',
+  'petName',
+  'message',
+])
+
+function isSupportedContactFieldName(fieldName: string): boolean {
+  return SUPPORTED_CONTACT_FIELD_NAMES.has(fieldName)
+}
 
 async function getRecaptchaToken(): Promise<string | null> {
   if (!RECAPTCHA_SITE_KEY || !window.grecaptcha) return null
@@ -99,10 +111,16 @@ export default function ContactForm({block, index}: ContactFormProps) {
 
     try {
       const recaptchaToken = await getRecaptchaToken()
+      const payload = Object.fromEntries(
+        Object.entries(formData).filter(
+          ([fieldName]) =>
+            fieldName === 'companyWebsite' || isSupportedContactFieldName(fieldName),
+        ),
+      )
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(recaptchaToken ? {...formData, recaptchaToken} : formData),
+        body: JSON.stringify(recaptchaToken ? {...payload, recaptchaToken} : payload),
       })
 
       if (!res.ok) {
@@ -172,6 +190,8 @@ export default function ContactForm({block, index}: ContactFormProps) {
                   const fieldName = stegaClean(field.fieldName) || ''
                   const fieldType = stegaClean(field.type) || 'text'
 
+                  if (!isSupportedContactFieldName(fieldName)) return null
+
                   return (
                     <div key={field._key}>
                       {field.label && (
@@ -210,7 +230,15 @@ export default function ContactForm({block, index}: ContactFormProps) {
                           type={fieldType}
                           name={fieldName}
                           required={field.required || false}
-                          maxLength={fieldName === 'email' ? 254 : fieldName === 'phone' ? 14 : 100}
+                          maxLength={
+                            fieldName === 'message'
+                              ? 5000
+                              : fieldName === 'email'
+                                ? 254
+                                : fieldName === 'phone'
+                                  ? 14
+                                  : 100
+                          }
                           autoComplete={
                             fieldName === 'name'
                               ? 'name'
