@@ -26,7 +26,7 @@ In Progress
 - Preserve the fixed facility recipient and required BCC to `acockerham@impactmarketing.net`.
 - Added progressive US phone formatting for the CMS `phone` field (for example, `(218) 287-2000`) while retaining server-side validation.
 - Added a honeypot, a 32 KB JSON request limit, strict recognized-field validation, and safe field-length limits using Zod.
-- Now requires the `contact_form` reCAPTCHA action and an allowed Wags hostname, with Preview restricted to the Wags Vercel project hostname pattern; uses two three-second attempts; fails clearly when the production secret is missing; visibly flags delivery during a genuine Google verification outage.
+- Now requires the `contact_form` reCAPTCHA action and an allowed Wags hostname, with Preview restricted to the exact current Vercel deployment or branch hostname; uses two three-second attempts; fails clearly when the production secret is missing; visibly flags delivery during a genuine Google verification outage.
 - Added ten focused tests. Recipient manipulation and unknown fields are rejected. Focused lint, type-check, and the production build pass. Repository-wide lint still reports 111 pre-existing errors outside this pilot's scope.
 - Safe local production API checks passed without sending email: non-JSON `400`, honeypot `200`, recipient manipulation `400`, missing production secret `503`, and oversized body `413`.
 - Local browser QA passed without submitting the form: partial input formats as `(218) 287`, complete input formats as `(218) 287-2000`, field requirements and length limits match the published CMS contract, the honeypot is hidden and removed from keyboard navigation, and no browser console errors were reported.

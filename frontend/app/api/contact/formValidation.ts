@@ -2,8 +2,6 @@ import {z} from 'zod'
 
 export const MAX_CONTACT_BODY_BYTES = 32 * 1024
 export const RECAPTCHA_ACTION = 'contact_form'
-const WAGS_VERCEL_HOSTNAME_PATTERN =
-  /^wags-stay-n-play-frontend(?:-[a-z0-9-]+)?-mhlauf1s-projects\.vercel\.app$/
 
 const optionalShortText = z.string().trim().max(100).optional().default('')
 
@@ -102,17 +100,28 @@ export function isHoneypotFilled(value: unknown): boolean {
 
 export function isAllowedRecaptchaHostname(
   hostname: string | undefined,
-  environment: {nodeEnv?: string; vercelEnv?: string} = {
+  environment: {
+    nodeEnv?: string
+    vercelEnv?: string
+    vercelUrl?: string
+    vercelBranchUrl?: string
+  } = {
     nodeEnv: process.env.NODE_ENV,
     vercelEnv: process.env.VERCEL_ENV,
+    vercelUrl: process.env.VERCEL_URL,
+    vercelBranchUrl: process.env.VERCEL_BRANCH_URL,
   },
 ): boolean {
   if (!hostname) return false
 
   const normalizedHostname = hostname.toLowerCase()
   if (['wagsstaynplay.com', 'www.wagsstaynplay.com'].includes(normalizedHostname)) return true
-  if (environment.vercelEnv === 'preview' && WAGS_VERCEL_HOSTNAME_PATTERN.test(normalizedHostname)) {
-    return true
+  if (environment.vercelEnv === 'preview') {
+    const allowedPreviewHostnames = [environment.vercelUrl, environment.vercelBranchUrl]
+      .filter((value): value is string => Boolean(value))
+      .map((value) => value.toLowerCase())
+
+    if (allowedPreviewHostnames.includes(normalizedHostname)) return true
   }
 
   return (

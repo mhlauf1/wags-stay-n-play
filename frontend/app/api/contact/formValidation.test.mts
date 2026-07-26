@@ -71,15 +71,32 @@ test('allows only the intended production, preview, and local hostnames', () => 
       {
         nodeEnv: 'production',
         vercelEnv: 'preview',
+        vercelUrl: 'wags-stay-n-play-frontend-b3ctc5288-mhlauf1s-projects.vercel.app',
       },
     ),
     true,
   )
   assert.equal(
-    isAllowedRecaptchaHostname('unrelated-project-mhlauf1s-projects.vercel.app', {
-      nodeEnv: 'production',
-      vercelEnv: 'preview',
-    }),
+    isAllowedRecaptchaHostname(
+      'wags-stay-n-play-frontend-git-fix-narr-24c55e-mhlauf1s-projects.vercel.app',
+      {
+        nodeEnv: 'production',
+        vercelEnv: 'preview',
+        vercelBranchUrl:
+          'wags-stay-n-play-frontend-git-fix-narr-24c55e-mhlauf1s-projects.vercel.app',
+      },
+    ),
+    true,
+  )
+  assert.equal(
+    isAllowedRecaptchaHostname(
+      'wags-stay-n-play-frontend-unrelated-mhlauf1s-projects.vercel.app',
+      {
+        nodeEnv: 'production',
+        vercelEnv: 'preview',
+        vercelUrl: 'wags-stay-n-play-frontend-b3ctc5288-mhlauf1s-projects.vercel.app',
+      },
+    ),
     false,
   )
   assert.equal(isAllowedRecaptchaHostname('localhost', {nodeEnv: 'development'}), true)
