@@ -3,9 +3,11 @@
 ## Milestone 5: Polish & Launch Prep
 
 ### Status
+
 In Progress
 
 ### Goals
+
 - SEO optimization (meta tags, structured data, sitemap.xml, robots.txt)
 - Performance audit (Lighthouse 90+ all categories)
 - Accessibility audit (WCAG AA compliance)
@@ -18,7 +20,21 @@ In Progress
 
 ### What's been done
 
+#### Contact form hardening pilot (implemented; awaiting review)
+
+- Branch: `fix/contact-form-hardening`
+- Preserve the fixed facility recipient and required BCC to `acockerham@impactmarketing.net`.
+- Added progressive US phone formatting for the CMS `phone` field (for example, `(218) 287-2000`) while retaining server-side validation.
+- Added a honeypot, a 32 KB JSON request limit, strict recognized-field validation, and safe field-length limits using Zod.
+- Now requires the `contact_form` reCAPTCHA action and an allowed Wags hostname; uses two three-second attempts; fails clearly when the production secret is missing; visibly flags delivery during a genuine Google verification outage.
+- Added seven focused tests. Recipient manipulation and unknown fields are rejected. Focused lint, type-check, and the production build pass. Repository-wide lint still reports 111 pre-existing errors outside this pilot's scope.
+- Safe local production API checks passed without sending email: non-JSON `400`, honeypot `200`, recipient manipulation `400`, missing production secret `503`, and oversized body `413`.
+- Local browser QA passed without submitting the form: partial input formats as `(218) 287`, complete input formats as `(218) 287-2000`, field requirements and length limits match the published CMS contract, the honeypot is hidden and removed from keyboard navigation, and no browser console errors were reported.
+- Local configuration presence audit: both reCAPTCHA variables are present; SMTP, primary-recipient, and explicit BCC variables are absent locally. The code-level required BCC fallback remains intact. Production Vercel values are not yet verified because this checkout has no linked Vercel project or configured Vercel CLI session.
+- No deployment or live form submission is part of this branch until the diff is reviewed and approved.
+
 #### Already existed from Embark design system
+
 - Dynamic sitemap (`sitemap.ts`) — pulls from Sanity, filters noIndex, proper priority
 - Robots.txt (`robots.ts`) — allows /, disallows /studio and /api/, sitemap URL correct
 - Favicon — SVG paw icon at `app/icon.svg`
@@ -31,6 +47,7 @@ In Progress
 - Vercel Speed Insights integrated
 
 #### Added in this milestone
+
 - Skip-to-content accessibility link in layout.tsx
 - Fixed Boxers Bed & Biscuits alt text reference in HeroMarquee.tsx
 - Contact form spam protection: Google reCAPTCHA v3 (invisible). ContactForm loads the script on mount and sends a `recaptchaToken` with submissions; `/api/contact` verifies it against Google (min score 0.5) before sending email. No new npm deps. Fails open if `RECAPTCHA_SECRET_KEY` is unset or Google is unreachable, so misconfiguration never drops real leads. Env vars: `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` + `RECAPTCHA_SECRET_KEY` (documented in `.env.example`, need to be added in Vercel + reCAPTCHA admin console).
@@ -43,6 +60,7 @@ In Progress
   - **Contact form SSR restored** — ContactForm used `useSearchParams()`, which bailed the whole section out of SSR (crawlers saw no form, heading, or address). Now reads `window.location.search` in the mount effect instead
 
 ### Still needed
+
 - Lighthouse audit to identify any remaining performance/accessibility gaps
 - Cross-browser visual check
 - Vercel deployment verification
@@ -51,6 +69,7 @@ In Progress
 - Team photos for About page (blocked on client)
 
 ### Definition of Done
+
 - [ ] Lighthouse 90+ across all categories
 - [ ] No remaining KC/sister site references
 - [ ] Skip-to-content link works
