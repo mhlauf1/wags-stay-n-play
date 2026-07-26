@@ -236,7 +236,7 @@ export default function ContactForm({block, index}: ContactFormProps) {
                               : fieldName === 'email'
                                 ? 254
                                 : fieldName === 'phone'
-                                  ? 14
+                                  ? 32
                                   : 100
                           }
                           autoComplete={
