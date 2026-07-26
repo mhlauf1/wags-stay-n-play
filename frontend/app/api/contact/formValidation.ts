@@ -100,16 +100,29 @@ export function isHoneypotFilled(value: unknown): boolean {
 
 export function isAllowedRecaptchaHostname(
   hostname: string | undefined,
-  environment: {nodeEnv?: string; vercelEnv?: string} = {
+  environment: {
+    nodeEnv?: string
+    vercelEnv?: string
+    vercelUrl?: string
+    vercelBranchUrl?: string
+  } = {
     nodeEnv: process.env.NODE_ENV,
     vercelEnv: process.env.VERCEL_ENV,
+    vercelUrl: process.env.VERCEL_URL,
+    vercelBranchUrl: process.env.VERCEL_BRANCH_URL,
   },
 ): boolean {
   if (!hostname) return false
 
   const normalizedHostname = hostname.toLowerCase()
   if (['wagsstaynplay.com', 'www.wagsstaynplay.com'].includes(normalizedHostname)) return true
-  if (environment.vercelEnv === 'preview' && normalizedHostname.endsWith('.vercel.app')) return true
+  if (environment.vercelEnv === 'preview') {
+    const allowedPreviewHostnames = [environment.vercelUrl, environment.vercelBranchUrl]
+      .filter((value): value is string => Boolean(value))
+      .map((value) => value.toLowerCase())
+
+    if (allowedPreviewHostnames.includes(normalizedHostname)) return true
+  }
 
   return (
     environment.nodeEnv !== 'production' && ['localhost', '127.0.0.1'].includes(normalizedHostname)
