@@ -66,11 +66,21 @@ test('allows only the intended production, preview, and local hostnames', () => 
   assert.equal(isAllowedRecaptchaHostname('www.wagsstaynplay.com', {nodeEnv: 'production'}), true)
   assert.equal(isAllowedRecaptchaHostname('evil.example', {nodeEnv: 'production'}), false)
   assert.equal(
-    isAllowedRecaptchaHostname('wags-preview.vercel.app', {
+    isAllowedRecaptchaHostname(
+      'wags-stay-n-play-frontend-b3ctc5288-mhlauf1s-projects.vercel.app',
+      {
+        nodeEnv: 'production',
+        vercelEnv: 'preview',
+      },
+    ),
+    true,
+  )
+  assert.equal(
+    isAllowedRecaptchaHostname('unrelated-project-mhlauf1s-projects.vercel.app', {
       nodeEnv: 'production',
       vercelEnv: 'preview',
     }),
-    true,
+    false,
   )
   assert.equal(isAllowedRecaptchaHostname('localhost', {nodeEnv: 'development'}), true)
 })

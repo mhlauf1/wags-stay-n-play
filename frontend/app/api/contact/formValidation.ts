@@ -2,6 +2,8 @@ import {z} from 'zod'
 
 export const MAX_CONTACT_BODY_BYTES = 32 * 1024
 export const RECAPTCHA_ACTION = 'contact_form'
+const WAGS_VERCEL_HOSTNAME_PATTERN =
+  /^wags-stay-n-play-frontend(?:-[a-z0-9-]+)?-mhlauf1s-projects\.vercel\.app$/
 
 const optionalShortText = z.string().trim().max(100).optional().default('')
 
@@ -109,7 +111,9 @@ export function isAllowedRecaptchaHostname(
 
   const normalizedHostname = hostname.toLowerCase()
   if (['wagsstaynplay.com', 'www.wagsstaynplay.com'].includes(normalizedHostname)) return true
-  if (environment.vercelEnv === 'preview' && normalizedHostname.endsWith('.vercel.app')) return true
+  if (environment.vercelEnv === 'preview' && WAGS_VERCEL_HOSTNAME_PATTERN.test(normalizedHostname)) {
+    return true
+  }
 
   return (
     environment.nodeEnv !== 'production' && ['localhost', '127.0.0.1'].includes(normalizedHostname)
