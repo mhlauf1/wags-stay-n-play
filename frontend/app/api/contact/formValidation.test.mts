@@ -33,20 +33,28 @@ test('accepts the published Wags form contract', () => {
   assert.equal(contactFormSchema.safeParse(validPayload).success, true)
 })
 
-test('rejects unknown fields and recipient manipulation', () => {
+test('accepts editor-added string fields but rejects non-string values', () => {
   assert.equal(
-    contactFormSchema.safeParse({...validPayload, _recipientEmail: 'attacker@example.com'}).success,
+    contactFormSchema.safeParse({...validPayload, preferredDate: 'Next Tuesday'}).success,
+    true,
+  )
+  assert.equal(
+    contactFormSchema.safeParse({...validPayload, preferredDate: {nested: 'object'}}).success,
     false,
   )
 })
 
-test('rejects invalid service choices and oversized messages', () => {
+test('accepts any CMS-defined service value and rejects oversized messages', () => {
   assert.equal(
-    contactFormSchema.safeParse({...validPayload, service: 'Not a real service'}).success,
-    false,
+    contactFormSchema.safeParse({...validPayload, service: 'A New CMS Service'}).success,
+    true,
   )
   assert.equal(
     contactFormSchema.safeParse({...validPayload, message: 'x'.repeat(5001)}).success,
+    false,
+  )
+  assert.equal(
+    contactFormSchema.safeParse({...validPayload, extraField: 'x'.repeat(5001)}).success,
     false,
   )
 })

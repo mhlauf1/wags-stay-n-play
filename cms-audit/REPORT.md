@@ -1,5 +1,7 @@
 # Wags Stay N' Play — Sanity CMS Audit
 
+> **SNAPSHOT — captured July 2026.** This audit reflects the codebase and dataset at the time it was written and is NOT kept up to date. Verify any finding against the current code before acting on it.
+
 1. Wags registers 3 regular document types, 1 settings singleton, and 48 object types (`studio/src/schemaTypes/index.ts`).
 2. The machine inventory contains every registered field; no registered schema file was omitted (`cms-audit/schema-inventory.json`).
 3. Three Portable Text configurations exist (`studio/src/schemaTypes/objects/blockContent.tsx`, `blockContentTextOnly.tsx`, `singletons/settings.tsx`).

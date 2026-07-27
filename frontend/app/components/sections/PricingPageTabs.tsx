@@ -66,6 +66,7 @@ type PricingPageTabsProps = {
     taxNote?: string
   }
   index: number
+  isFirstContent?: boolean
   pageId: string
   pageType: string
 }
@@ -82,9 +83,9 @@ const serviceQueryStrings: Record<ServiceType, string> = {
   grooming: '?service=Grooming',
 }
 
-export default function PricingPageTabs({block, index}: PricingPageTabsProps) {
+export default function PricingPageTabs({block, isFirstContent}: PricingPageTabsProps) {
   const {eyebrow, heading, description, defaultTab, services, ctaText, ctaLink, taxNote} = block
-  const HeadingTag = index === 0 ? 'h1' : 'h2'
+  const HeadingTag = isFirstContent ? 'h1' : 'h2'
 
   const [activeTab, setActiveTab] = useState<ServiceType>(defaultTab || 'daycare')
 
