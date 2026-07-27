@@ -10,6 +10,21 @@ declare global {
   }
 }
 
+// CTM loads afterInteractive, so it may not exist yet when a fast SPA
+// navigation fires — retry briefly instead of silently skipping the rescan.
+const CTM_RESCAN_RETRY_MS = 250
+const CTM_RESCAN_MAX_ATTEMPTS = 12
+
+function rescanCtmWhenReady(attempt = 0) {
+  if (window.__ctm?.main?.runNow) {
+    window.__ctm.main.runNow(document.body)
+    return
+  }
+  if (attempt < CTM_RESCAN_MAX_ATTEMPTS) {
+    window.setTimeout(() => rescanCtmWhenReady(attempt + 1), CTM_RESCAN_RETRY_MS)
+  }
+}
+
 export default function TrackingRouteEvents() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -18,6 +33,8 @@ export default function TrackingRouteEvents() {
 
   useEffect(() => {
     const currentUrl = window.location.href
+
+    if (previousUrl.current === currentUrl) return
 
     if (previousUrl.current !== null) {
       window.dataLayer = window.dataLayer ?? []
@@ -29,9 +46,7 @@ export default function TrackingRouteEvents() {
         page_title: document.title,
       })
 
-      requestAnimationFrame(() => {
-        window.__ctm?.main?.runNow?.(document.body)
-      })
+      requestAnimationFrame(() => rescanCtmWhenReady())
     }
 
     previousUrl.current = currentUrl

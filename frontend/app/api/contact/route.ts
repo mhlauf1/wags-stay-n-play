@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 })
 
 const toEmail = process.env.CONTACT_FORM_TO_EMAIL || ''
-const bccEmail = process.env.CONTACT_FORM_BCC_EMAIL || 'acockerham@impactmarketing.net'
+const bccEmail = process.env.CONTACT_FORM_BCC_EMAIL || ''
 const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER || ''
 const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY || ''
 const RECAPTCHA_MIN_SCORE = 0.5
@@ -102,6 +102,9 @@ export async function POST(request: Request) {
 
     // Return the normal success response so the honeypot is not disclosed.
     if (isHoneypotFilled(untrustedBody.companyWebsite)) {
+      console.warn('Contact form honeypot triggered; submission discarded', {
+        email: typeof untrustedBody.email === 'string' ? untrustedBody.email : undefined,
+      })
       return NextResponse.json({success: true})
     }
 
@@ -144,7 +147,7 @@ export async function POST(request: Request) {
     }
 
     const lines = Object.entries(fields)
-      .filter(([, value]) => typeof value === 'string' && value.trim())
+      .filter(([key, value]) => !key.startsWith('_') && typeof value === 'string' && value.trim())
       .map(
         ([key, value]) =>
           `<p><strong>${escapeHtml(fieldLabels[key] || key)}:</strong> ${escapeHtml(value as string)}</p>`,

@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [new URL('https://cdn.sanity.io/**')],
   },
+  async redirects() {
+    return [
+      {
+        // The Sanity homepage doc lives at slug "homepage" but renders at "/"
+        source: '/homepage',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
   transpilePackages: ['studio'],
 }
 

@@ -51,6 +51,7 @@ import {PageBuilderSection} from '@/sanity/lib/types'
 
 type BlockProps = {
   index: number
+  isFirstContent?: boolean
   block: PageBuilderSection
   pageId: string
   pageType: string
@@ -117,7 +118,7 @@ const Blocks = {
   spacer: Spacer,
 } as BlocksType
 
-export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
+export default function BlockRenderer({block, index, pageId, pageType, isFirstContent}: BlockProps) {
   if (typeof Blocks[block._type] !== 'undefined') {
     const content = React.createElement(Blocks[block._type], {
       key: block._key,
@@ -125,6 +126,7 @@ export default function BlockRenderer({block, index, pageId, pageType}: BlockPro
       index: index,
       pageId: pageId,
       pageType: pageType,
+      isFirstContent: isFirstContent,
     })
     return (
       <div

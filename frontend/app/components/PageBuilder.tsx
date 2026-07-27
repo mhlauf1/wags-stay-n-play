@@ -37,13 +37,8 @@ function RenderSections({
   if (!page) {
     return null
   }
-  // Leading spacers are layout-only — don't count them toward block index so
-  // the first content block still gets index 0 (used for h1 vs h2 headings)
-  let leadingSpacers = 0
-  for (const block of pageBuilderSections) {
-    if (block._type !== 'spacer') break
-    leadingSpacers++
-  }
+  // First non-spacer block hosts the page's h1 (spacers render no content)
+  const firstContentIndex = pageBuilderSections.findIndex((block) => block._type !== 'spacer')
   return (
     <div
       data-sanity={dataAttr({
@@ -55,10 +50,11 @@ function RenderSections({
       {pageBuilderSections.map((block: PageBuilderSection, index: number) => (
         <BlockRenderer
           key={block._key}
-          index={Math.max(0, index - leadingSpacers)}
+          index={index}
           block={block}
           pageId={page._id}
           pageType={page._type}
+          isFirstContent={index === firstContentIndex}
         />
       ))}
     </div>

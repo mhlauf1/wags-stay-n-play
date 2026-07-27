@@ -1,26 +1,30 @@
 import type {Metadata} from 'next'
 
 import PageBuilder from '@/app/components/PageBuilder'
-import {homepageQuery} from '@/sanity/lib/queries'
+import {homepageQuery, settingsQuery} from '@/sanity/lib/queries'
 import {sanityFetch} from '@/sanity/lib/live'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const {data: page} = await sanityFetch({
-    query: homepageQuery,
-    stega: false,
-  })
+  const [{data: page}, {data: settings}] = await Promise.all([
+    sanityFetch({query: homepageQuery, stega: false}),
+    sanityFetch({query: settingsQuery, stega: false}),
+  ])
 
   const seo = page?.seo
-  if (!seo) return {alternates: {canonical: '/'}}
-
-  const ogImage = resolveOpenGraphImage(seo.ogImage)
+  const siteTitle = settings?.title || 'Wags Stay N Play'
+  // The root layout's title.template only applies to child segments, so the
+  // brand suffix must be appended here explicitly
+  const ogImage = resolveOpenGraphImage(seo?.ogImage) || resolveOpenGraphImage(settings?.ogImage)
 
   return {
-    ...(seo.metaTitle && {title: seo.metaTitle}),
-    ...(seo.metaDescription && {description: seo.metaDescription}),
-    ...(ogImage && {openGraph: {images: [ogImage]}}),
-    ...(seo.noIndex && {robots: {index: false, follow: true}}),
+    ...(seo?.metaTitle && {title: `${seo.metaTitle} | ${siteTitle}`}),
+    ...(seo?.metaDescription && {description: seo.metaDescription}),
+    openGraph: {
+      url: '/',
+      ...(ogImage && {images: [ogImage]}),
+    },
+    ...(seo?.noIndex && {robots: {index: false, follow: true}}),
     alternates: {canonical: '/'},
   }
 }

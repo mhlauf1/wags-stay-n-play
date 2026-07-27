@@ -31,17 +31,15 @@ export const contactFormSchema = z
       )
       .optional()
       .default(''),
-    service: z
-      .enum(['Daycare', 'Boarding', 'Grooming', 'Assessment', 'Other'])
-      .or(z.literal(''))
-      .optional()
-      .default(''),
+    // Service options and any additional fields are defined by editors in the
+    // CMS contactForm block — validate shape and length only, never a fixed list.
+    service: z.string().trim().max(200).optional().default(''),
     petName: optionalShortText,
     message: z.string().trim().min(1).max(5000),
     companyWebsite: z.string().max(200).optional().default(''),
     recaptchaToken: z.string().max(4096).optional(),
   })
-  .strict()
+  .catchall(z.string().max(5000))
 
 export type ContactFormPayload = z.infer<typeof contactFormSchema>
 
