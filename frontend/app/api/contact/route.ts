@@ -86,8 +86,40 @@ async function verifyRecaptcha(token: string | undefined): Promise<RecaptchaVeri
   return {status: 'unavailable'}
 }
 
+// Best-effort per-IP throttle. State is per server instance and resets on cold
+// start, so this is a friction layer against bursts, not a hard guarantee.
+const RATE_LIMIT_MAX_REQUESTS = 5
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const rateLimitBuckets = new Map<string, {count: number; windowStart: number}>()
+
+function isRateLimited(clientIp: string): boolean {
+  const now = Date.now()
+  const bucket = rateLimitBuckets.get(clientIp)
+
+  if (!bucket || now - bucket.windowStart >= RATE_LIMIT_WINDOW_MS) {
+    if (rateLimitBuckets.size >= 1000) {
+      for (const [ip, entry] of rateLimitBuckets) {
+        if (now - entry.windowStart >= RATE_LIMIT_WINDOW_MS) rateLimitBuckets.delete(ip)
+      }
+    }
+    rateLimitBuckets.set(clientIp, {count: 1, windowStart: now})
+    return false
+  }
+
+  bucket.count += 1
+  return bucket.count > RATE_LIMIT_MAX_REQUESTS
+}
+
 export async function POST(request: Request) {
   try {
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    if (isRateLimited(clientIp)) {
+      return NextResponse.json(
+        {error: 'Too many requests. Please wait a few minutes and try again.'},
+        {status: 429, headers: {'Retry-After': '600'}},
+      )
+    }
+
     const bodyResult = await readContactBody(request)
 
     if (bodyResult.status === 'too-large') {
