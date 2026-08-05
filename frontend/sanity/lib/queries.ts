@@ -51,6 +51,7 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
   ga4MeasurementId,
   gtmContainerId,
   ctmScriptUrl,
+  embedReachScriptUrl,
   googleSiteVerification,
   localBusiness
 }`)

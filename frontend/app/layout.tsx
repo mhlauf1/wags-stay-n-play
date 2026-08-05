@@ -145,6 +145,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   const ga4Id = settings?.ga4MeasurementId
   const gtmId = settings?.gtmContainerId
   const ctmScriptUrl = settings?.ctmScriptUrl
+  const embedReachScriptUrl = settings?.embedReachScriptUrl
   let logoUrl: string | undefined
   try {
     if (settings?.logo?.asset?._ref) logoUrl = urlForImage(settings.logo).width(600).url()
@@ -224,6 +225,9 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           </>
         )}
         {ctmScriptUrl && <Script id="ctm" async src={ctmScriptUrl} strategy="afterInteractive" />}
+        {embedReachScriptUrl && (
+          <Script id="embedreach" async src={embedReachScriptUrl} strategy="afterInteractive" />
+        )}
       </head>
       <body>
         <Suspense fallback={null}>
