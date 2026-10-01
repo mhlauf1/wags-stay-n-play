@@ -20,6 +20,14 @@ In Progress
 
 ### What's been done
 
+#### Client feedback round 1 (in progress)
+
+- Branch: `content/client-feedback-round-1`
+- Code: removed duplicate Cat Nail Trim from the dog à la carte list in `pricingData.ts`; calculator cat box retitled "Cat Services"
+- Sanity (published 2026-10-01): play areas corrected to 4 indoor + 3 outdoor everywhere; hours changed to Mon–Fri 6:30 AM–7 PM, Sat–Sun 9 AM–12 PM & 2–5 PM (homepage, contact, daycare FAQ, LocalBusiness structured data, About pillar); email changed to wagsstaynplaymn@gmail.com (settings + contact block); assessment rule now covers new clients and clients inactive 6+ months, clarifies that only the dog stays 4 hours and that registration paperwork is required; spay/neuter changed to "by 9 months"; cat vaccines now include a negative FeLV test; final potty time removed; "Supervised Around the Clock" replaced with "Kuranda Beds & Clean Kennels"; mobile grooming, optional trimming, puppy package, and senior package removed; cat grooming limited to baths and nail trims; grooming days (Mon/Tue/Wed/Fri) and the grooming vaccine requirement added; "Individual Services" renamed "Walk-In Nail Trims & Add-Ons"; new Vaccine Requirements section on /new-clients; About CTA heading changed; Gallery footer link removed; Cat Nail Trim removed from the pricing page à la carte table
+- Code: hero accent lines (HeroMinimal `headingAccent`, HeroMarquee accent span) now match the main heading's color, size, and weight. The client read the two-tone hero headings as "two different fonts". **Template divergence note:** other Embark sites still use the two-tone accent.
+- Pending: Goose account-creation link (URL unknown), contact form recipient env var in Vercel, photo handoff (client can send photos or wait for Impact team handoff)
+
 #### Contact form hardening pilot (implemented; awaiting review)
 
 - Branch: `fix/contact-form-hardening`
