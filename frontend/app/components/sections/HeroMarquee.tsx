@@ -111,7 +111,7 @@ export default function HeroMarquee({block, index}: HeroMarqueeProps) {
                 {headingAccent && (
                   <>
                     <br />
-                    <span className="text-forest-card">{headingAccent}</span>
+                    <span>{headingAccent}</span>
                   </>
                 )}
               </h1>

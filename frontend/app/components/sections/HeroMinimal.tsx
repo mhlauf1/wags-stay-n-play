@@ -74,9 +74,7 @@ export default function HeroMinimal({block}: HeroMinimalProps) {
                   </span>
                 )}
                 {headingAccent && (
-                  <span
-                    className={`block text-[48px] font-medium md:text-[56px] lg:text-[72px] xl:text-[84px] tracking-tighter  leading-[110%]  ${isDark ? 'text-terracotta-light' : 'text-terracotta'}`}
-                  >
+                  <span className="block text-[48px] tracking-tight font-semibold md:text-[56px] lg:text-[72px] xl:text-[84px]  leading-[104%]">
                     {headingAccent}
                   </span>
                 )}

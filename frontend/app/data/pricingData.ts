@@ -217,7 +217,6 @@ export const alaCarteItems: AlaCarteItem[] = [
   {id: 'nailTrimFile', label: 'Nail Trim & File', price: 20},
   {id: 'blueberryFacial', label: 'Blueberry Facial', price: 10},
   {id: 'trimsBrushOut', label: 'Trims & Brush Out', price: 25},
-  {id: 'catNailTrim', label: 'Cat Nail Trim', price: 10},
 ]
 
 export const sizeLabels: Record<DogSize, string> = {
