@@ -26,7 +26,16 @@ In Progress
 - Code: removed duplicate Cat Nail Trim from the dog à la carte list in `pricingData.ts`; calculator cat box retitled "Cat Services"
 - Sanity (published 2026-10-01): play areas corrected to 4 indoor + 3 outdoor everywhere; hours changed to Mon–Fri 6:30 AM–7 PM, Sat–Sun 9 AM–12 PM & 2–5 PM (homepage, contact, daycare FAQ, LocalBusiness structured data, About pillar); email changed to wagsstaynplaymn@gmail.com (settings + contact block); assessment rule now covers new clients and clients inactive 6+ months, clarifies that only the dog stays 4 hours and that registration paperwork is required; spay/neuter changed to "by 9 months"; cat vaccines now include a negative FeLV test; final potty time removed; "Supervised Around the Clock" replaced with "Kuranda Beds & Clean Kennels"; mobile grooming, optional trimming, puppy package, and senior package removed; cat grooming limited to baths and nail trims; grooming days (Mon/Tue/Wed/Fri) and the grooming vaccine requirement added; "Individual Services" renamed "Walk-In Nail Trims & Add-Ons"; new Vaccine Requirements section on /new-clients; About CTA heading changed; Gallery footer link removed; Cat Nail Trim removed from the pricing page à la carte table
 - Code: hero accent lines (HeroMinimal `headingAccent`, HeroMarquee accent span) now match the main heading's color, size, and weight. The client read the two-tone hero headings as "two different fonts". **Template divergence note:** other Embark sites still use the two-tone accent.
-- Pending: Goose account-creation link (URL unknown), contact form recipient env var in Vercel, photo handoff (client can send photos or wait for Impact team handoff)
+- Pending: photo handoff (client can send photos or wait for Impact team handoff)
+
+#### Client feedback round 2
+
+- Branch: `content/client-feedback-round-2`
+- Sanity (published 2026-10-01): Goose account link (`https://booking.goose.pet/wags-stay-n-play/search/boarding/pets`) set as `settings.posUrls.registrationUrl`, added as a "Create Your Account" button on the /new-clients CTA banner, and referenced in assessment Step 1; new grooming FAQ "Do you offer mobile grooming?" refers clients to Home Away From Home's grooming page (client-requested cross-referral, an intentional exception to the no-sister-site rule)
+- Code: FaqAccordion now renders Portable Text link annotations (previously dropped). **Template divergence note:** backport to other Embark sites.
+- Confirmed by client: grooming vaccines match daycare/boarding (no change needed)
+- HAFH Sanity (published 2026-10-01): weekend boarding pickup cutoff changed 1:30 PM → 12:00 PM (boarding FAQ, boarding policy content, pricing footnote)
+- Pending: Vercel `CONTACT_FORM_TO_EMAIL` → `wagsstaynplaymn@gmail.com` (Production + Preview), then redeploy
 
 #### Contact form hardening pilot (implemented; awaiting review)
 

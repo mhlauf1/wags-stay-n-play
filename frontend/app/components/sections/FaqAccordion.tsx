@@ -1,11 +1,12 @@
 'use client'
 
 import {useState} from 'react'
-import {PortableText} from '@portabletext/react'
+import {PortableText, type PortableTextComponents} from '@portabletext/react'
 import type {PortableTextBlock} from 'next-sanity'
 import {toPlainText} from 'next-sanity'
 import {FadeIn} from '@/app/components/ui/FadeIn'
 import Badge from '../ui/Badge'
+import ResolvedLink from '@/app/components/ResolvedLink'
 
 type FaqAccordionProps = {
   block: {
@@ -20,6 +21,12 @@ type FaqAccordionProps = {
   index: number
   pageId: string
   pageType: string
+}
+
+const answerComponents: PortableTextComponents = {
+  marks: {
+    link: ({children, value: link}) => <ResolvedLink link={link}>{children}</ResolvedLink>,
+  },
 }
 
 function AccordionItem({
@@ -67,7 +74,7 @@ function AccordionItem({
       >
         {faq.answer && (
           <div className="px-6 font-sans text-[15px] md:text-[16px] leading-[170%] text-charcoal/75 prose prose-p:mb-3">
-            <PortableText value={faq.answer} />
+            <PortableText value={faq.answer} components={answerComponents} />
           </div>
         )}
       </div>
