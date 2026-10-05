@@ -176,9 +176,9 @@ export type GroomingService = 'fullGroom' | 'bathWorks' | 'exitBath'
 export type DogSize = 's' | 'm' | 'l' | 'xl'
 
 export const fullGroomRates: Record<DogSize, number> = {
-  s: 65,
-  m: 70,
-  l: 90,
+  s: 85,
+  m: 105,
+  l: 135,
   xl: 130,
 }
 

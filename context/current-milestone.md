@@ -37,6 +37,11 @@ In Progress
 - HAFH Sanity (published 2026-10-01): weekend boarding pickup cutoff changed 1:30 PM → 12:00 PM (boarding FAQ, boarding policy content, pricing footnote)
 - Pending: Vercel `CONTACT_FORM_TO_EMAIL` → `wagsstaynplaymn@gmail.com` (Production + Preview), then redeploy
 
+#### Client feedback round 3
+
+- Full Groom starting prices corrected to Small $85, Medium $105, Large $135 in `pricingData.ts` (calculator) and Sanity (published 2026-10-05: pricing page matrix, grooming page "Starting at $85" feature card)
+- Pending: client to confirm the XL Full Groom price (still $130)
+
 #### Contact form hardening pilot (implemented; awaiting review)
 
 - Branch: `fix/contact-form-hardening`
